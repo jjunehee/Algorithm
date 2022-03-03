@@ -49,7 +49,7 @@ public class Main {
 	}
 
 	public static int bfs() {
-		// 너비우선 탐색...
+		// TODO 너비우선 탐색을 통한 결과 출력.
 		Queue<Marble> queue = new LinkedList<>();
 		queue.add(new Marble(red.rx, red.ry, blue.bx, blue.by, 1));
 		visited[red.rx][red.ry][blue.bx][blue.by] = true;
