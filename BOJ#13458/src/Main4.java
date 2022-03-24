@@ -40,7 +40,6 @@ public class Main4 {
 			count = count + cNum;
 			if (studentNum[i] % C != 0) {
 				count++;
-				break;
 			}
 
 		}
