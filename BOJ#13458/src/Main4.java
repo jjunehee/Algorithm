@@ -26,7 +26,7 @@ public class Main4 {
 
 	}
 
-	public static long solve() {
+	private static long solve() {
 		long count = 0;
 		long cNum;
 		for (int i = 0; i < N; i++) {
