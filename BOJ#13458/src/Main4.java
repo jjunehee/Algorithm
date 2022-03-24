@@ -32,15 +32,17 @@ public class Main4 {
 		for (int i = 0; i < N; i++) {
 			studentNum[i] = studentNum[i] - B;
 			count++;
+			
+			if (studentNum[i] <= 0)
+				continue;
 
-			while (studentNum[i] > 0) {
-				cNum = studentNum[i] / C;
-				count = count + cNum;
-				if (studentNum[i] % C != 0) {
-					count++;
-					break;
-				}
+			cNum = studentNum[i] / C;
+			count = count + cNum;
+			if (studentNum[i] % C != 0) {
+				count++;
+				break;
 			}
+
 		}
 
 		return count;
