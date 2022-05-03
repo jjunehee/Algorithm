@@ -7,12 +7,13 @@ import java.util.*;
 public class Main6 {
 
 	public static int[][] map;
-	public static Fish shark, fish;
+	public static Shark shark;
 	public static int time = 0;
+	public static int N;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
+		N = Integer.parseInt(br.readLine());
 
 		map = new int[N][N];
 
@@ -26,12 +27,9 @@ public class Main6 {
 					continue;
 
 				if (map[i][j] == 9) {
-					shark = new Fish(i, j, 2);
-				} else {
-					fish = new Fish(i, j, map[i][j]);
+					shark = new Shark(i, j, 2);
 				}
 			}
-
 		}
 
 		while (shark.canEatFish()) {
@@ -41,42 +39,77 @@ public class Main6 {
 
 	}
 
-	public static class Fish {
+	public static class Shark {
 
 		private int[] dx = { -1, 0, 1, 0 };
 		private int[] dy = { 0, 1, 0, -1 };
+		int i;
+		int j;
+		int size;
+		private static Target target;
 
-		public Fish(int i, int j, int size) {
-
+		public Shark(int i, int j, int size) {
+			this.i = i;
+			this.j = j;
+			this.size = size;
 		}
 
 		private boolean canEatFish() {
 
-			while (search()) {
-				move();
-				eat();
+			boolean isTarget = true;
+			isTarget = search(this.i,this.j);
+
+			while (isTarget) {
+				moveAndEat();
+				isTarget = search(this.i,this.j);
 			}
 
 			return false;
 		}
 
-		private void move() {
-			while (reach()) {
-				time++;
+		private void moveAndEat() {
+			
+			int count = Math.abs(target.i - this.i) + Math.abs(j - this.j) 
+			time += count;
+			
+			this.i = target.i;
+			this.j = target.j;
+			map[i][j] = 0;
+			
+			return;
+		}
+
+		private boolean search(int curi,int curj) {
+			
+			// bfs
+			while (this.i < N || this.j < N) {
+
+				for (int dir = 0; dir < 4; dir++) {
+					
+					int nx = curi + dx[dir];
+					int ny = curj + dy[dir];
+					
+					if (this.size > map[nx][ny]) {
+						target = new Target(nx, ny);
+						return true;
+					} else {
+						search(nx,ny);
+					}
+				}
+
 			}
-		}
-
-		private boolean reach() {
 			return false;
-		}
-
-		private void eat() {
 
 		}
 
-		private boolean search() {
+		private static class Target {
+			int i;
+			int j;
 
-			return true;
+			public Target(int i, int j) {
+				this.i = i;
+				this.j = j;
+			}
 		}
 	}
 
