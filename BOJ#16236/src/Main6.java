@@ -3,7 +3,6 @@ package src;
 import java.io.*;
 import java.util.*;
 
-//아기 상어 문제
 public class Main6 {
 
 	public static int[][] map;
@@ -19,7 +18,6 @@ public class Main6 {
 
 		map = new int[N][N];
 
-		// map 입력
 		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
