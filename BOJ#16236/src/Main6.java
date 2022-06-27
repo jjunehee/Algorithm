@@ -8,6 +8,8 @@ public class Main6 {
 
 	public static int[][] map;
 	public static Shark shark;
+	public static Fish fish;
+	public static ArrayList<Fish> fishList = new ArrayList<Fish>();
 	public static int time = 0;
 	public static int N;
 
@@ -25,11 +27,22 @@ public class Main6 {
 
 				if (map[i][j] == 0)
 					continue;
-
-				if (map[i][j] == 9) {
+				else if (map[i][j] == 9) {
 					shark = new Shark(i, j, 2);
+					map[i][j] = 0;
+				} else {
+					fish = new Fish(i,j,map[i][j]);
+					fishList.add(fish);
 				}
 			}
+		}
+		
+		Collections.sort(fishList);
+			
+
+		
+		for(Fish s : fishList) {
+			System.out.print(s.size);
 		}
 
 		while (shark.canEatFish()) {
@@ -39,14 +52,13 @@ public class Main6 {
 
 	}
 
-	public static class Shark {
+	public static class Shark  {
 
 		private int[] dx = { -1, 0, 1, 0 };
 		private int[] dy = { 0, 1, 0, -1 };
 		int i;
 		int j;
 		int size;
-		private static Target target;
 
 		public Shark(int i, int j, int size) {
 			this.i = i;
@@ -54,63 +66,29 @@ public class Main6 {
 			this.size = size;
 		}
 
-		private boolean canEatFish() {
-
-			boolean isTarget = true;
-			isTarget = search(this.i,this.j);
-
-			while (isTarget) {
-				moveAndEat();
-				isTarget = search(this.i,this.j);
-			}
-
+		public boolean canEatFish() {
+			//Å½»ö
+			
 			return false;
 		}
 
-		private void moveAndEat() {
-			
-			int count = Math.abs(target.i - this.i) + Math.abs(j - this.j) 
-			time += count;
-			
-			this.i = target.i;
-			this.j = target.j;
-			map[i][j] = 0;
-			
-			return;
+	}
+	
+	public static class Fish implements Comparable<Fish> {
+		int x;
+		int y;
+		int size;
+		public Fish(int x, int y, int size) {
+			this.x = x;
+			this.y = y;
+			this.size = size;
 		}
-
-		private boolean search(int curi,int curj) {
-			
-			// bfs
-			while (this.i < N || this.j < N) {
-
-				for (int dir = 0; dir < 4; dir++) {
-					
-					int nx = curi + dx[dir];
-					int ny = curj + dy[dir];
-					
-					if (this.size > map[nx][ny]) {
-						target = new Target(nx, ny);
-						return true;
-					} else {
-						search(nx,ny);
-					}
-				}
-
-			}
-			return false;
-
-		}
-
-		private static class Target {
-			int i;
-			int j;
-
-			public Target(int i, int j) {
-				this.i = i;
-				this.j = j;
-			}
+		
+		@Override
+		public int compareTo(Fish arg) {
+			return this.size-arg.size;
 		}
 	}
+
 
 }
