@@ -25,7 +25,10 @@ public class Main14889 {
 	}
 
 	private static void dfs() {
-		//
+		
+		if() { //exit
+			
+		}
 		
 	}
 }
