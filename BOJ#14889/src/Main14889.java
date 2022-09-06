@@ -11,24 +11,26 @@ public class Main14889 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 
-		S = new int[N][N];
+		S = new int[N+1][N+1];
 
-		for (int i = 0; i < N; i++) {
+		for (int i = 1; i <= N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < N; j++) {
+			for (int j = 1; j <= N; j++) {
 				S[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 
-		dfs();
+		for(int[] i: S) {
+			for(int j: i) {
+				System.out.print(j + " ");
+			}
+			System.out.println();
+		}
+//		dfs();
 
 	}
 
 	private static void dfs() {
-
-		if() { //exit
-
-		}
 
 	}
 }
