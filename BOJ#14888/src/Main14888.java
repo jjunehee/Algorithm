@@ -1,48 +1,48 @@
 package src;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main14888 {
 
-	static int[] numbers;
-	static int[] operators;
-	static int N;
-	public static int Max = Integer.MIN_VALUE;
-	public static int Min = Integer.MAX_VALUE;
+	public static int[] numbers;
+	public static int[] operator;
+	public static int N;
+	public static int MAX = Integer.MIN_VALUE;
+	public static int MIN = Integer.MAX_VALUE;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
 		N = Integer.parseInt(br.readLine());
+
 		numbers = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
 			numbers[i] = Integer.parseInt(st.nextToken());
 		}
 
-		operators = new int[4];
+		operator = new int[4];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < 4; i++) {
-			operators[i] = Integer.parseInt(st.nextToken());
+			operator[i] = Integer.parseInt(st.nextToken());
 		}
 
 		dfs(numbers[0], 1);
-		System.out.println(Max);
-		System.out.println(Min);
+		System.out.println(MAX);
+		System.out.println(MIN);
 	}
 
 	private static void dfs(int num, int idx) {
-
 		if (idx == N) {
-			Max = Math.max(Max, num);
-			Min = Math.min(Min, num);
+			MAX = Math.max(MAX, num);
+			MIN = Math.min(MIN, num);
 		}
 
 		for (int i = 0; i < 4; i++) {
-			if (operators[i] >= 1) {
-				operators[i]--;
-
+			if (operator[i] >= 1) {
+				operator[i]--;
 				switch (i) {
 				case 0:
 					dfs(num + numbers[idx], idx + 1);
@@ -57,9 +57,8 @@ public class Main14888 {
 					dfs(num / numbers[idx], idx + 1);
 					break;
 				}
-				operators[i]++;
+				operator[i]++;
 			}
 		}
 	}
-
 }
