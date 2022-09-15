@@ -10,6 +10,7 @@ public class Main14890 {
 	public static int L;
 	public static int[][] map;
 	public static int count;
+
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -24,40 +25,69 @@ public class Main14890 {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
+		count = 0;
+		for (int i = 0; i < N; i++) {
 
-		dfs(map[0][0]);
-
+			if (search(i, 0, 0)) {
+				count++;// 행
+			}
+			if (search(0, i, 1)) {
+				count++;// 열
+			}
+		}
+		System.out.println(count);
 	}
 
-	private static void dfs(int cur) {
-		int nextC;
-		boolean canPass = true;
+	private static boolean search(int x, int y, int flag) {
+		int[] height = new int[N];
+		boolean[] installed = new boolean[N];
 		for (int i = 0; i < N; i++) {
-			int sameheight = 1;
-			for (int j = 0; j < N; j++) {
-
-				// 행 Check
-				nextC = map[i][j + 1];
-				if (nextC != cur) {
-					if (sameheight >= L) {
-						sameheight = 0;
-						cur = nextC;
-						continue;
-					} else {
-						canPass = false;
-						break;
-					}
-
-				} else {
-					sameheight++;
-				}
-				
-
+			if (flag == 0) {
+				height[i] = map[x][i];
+			} else {
+				height[i] = map[i][y];
 			}
-			if (canPass == true) {
-				count++;
-			}
-
 		}
+
+		for (int i = 0; i < N - 1; i++) {
+
+			if (height[i] == height[i + 1]) {
+				continue;
+			} else if (height[i] + 1 == height[i + 1]) { // 오르막
+
+				for (int j = i; j > i - L; j--) {
+
+					if (j < 0) {
+						return false;
+					}
+					if (installed[j]) {
+						return false;
+					}
+					if (height[i] != height[j]) {
+						return false;
+					}
+					installed[j] = true;
+
+				}
+
+			} else if (height[i] - 1 == height[i + 1]) { // 내리막
+
+				for (int j = i + 1; j < i + 1 + L; j++) {
+					if (j > N - 1) {
+						return false;
+					}
+					if (installed[j]) {
+						return false;
+					}
+					if (height[i + 1] != height[j]) {
+						return false;
+					}
+					installed[j] = true;
+				}
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 }
