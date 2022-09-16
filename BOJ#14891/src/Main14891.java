@@ -13,17 +13,17 @@ public class Main14891 {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		wheel = new int[4][8];
-		for (int i = 0; i < 4; i++) {
+		wheel = new int[5][9];
+		for (int i = 1; i <= 4; i++) {
 			String input = br.readLine();
-			for (int j = 0; j < 8; j++) {
-				wheel[i][j] = input.charAt(j) - '0';
+			for (int j = 1; j <= 8; j++) {
+				wheel[i][j] = input.charAt(j-1) - '0';
 			}
 		}
 
 		int K = Integer.parseInt(br.readLine());
 
-		for (int i = 0; i < K; i++) {
+		for (int i = 1; i <= K; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int idx = Integer.parseInt(st.nextToken());
 			int dir = Integer.parseInt(st.nextToken());
@@ -47,16 +47,16 @@ public class Main14891 {
 	private static void rotate(int idx, int dir) {
 		if (dir == 1) { // 시계방향 회전
 			int tmp = wheel[idx][7];
-			for (int i = 7; i > 0; i--) {
+			for (int i = 8; i > 1; i--) {
 				wheel[idx][i] = wheel[idx][i - 1];
 			}
-			wheel[idx][0] = tmp;
+			wheel[idx][1] = tmp;
 		} else { // 반시계방향 회전
-			int tmp = wheel[idx][0];
-			for (int i = 0; i < 7; i++) {
+			int tmp = wheel[idx][1];
+			for (int i = 1; i < 8; i++) {
 				wheel[idx][i] = wheel[idx][i+1];
 			}
-			wheel[idx][7] = tmp;
+			wheel[idx][8] = tmp;
 		}
 	}
 
