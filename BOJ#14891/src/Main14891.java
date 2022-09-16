@@ -13,10 +13,10 @@ public class Main14891 {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		wheel = new int[5][5];
-		for (int i = 1; i < 5; i++) {
+		wheel = new int[4][8];
+		for (int i = 0; i < 4; i++) {
 			String input = br.readLine();
-			for (int j = 1; j < 5; j++) {
+			for (int j = 0; j < 8; j++) {
 				wheel[i][j] = input.charAt(j) - '0';
 			}
 		}
@@ -29,6 +29,12 @@ public class Main14891 {
 			int dir = Integer.parseInt(st.nextToken());
 			operation(idx, dir);
 		}
+		for (int[] i : wheel) {
+			for (int j : i) {
+				System.out.print(j);
+			}
+			System.out.println();
+		}
 
 	}
 
@@ -39,22 +45,32 @@ public class Main14891 {
 	}
 
 	private static void rotate(int idx, int dir) {
-
+		if (dir == 1) { // 시계방향 회전
+			int tmp = wheel[idx][7];
+			for (int i = 7; i > 0; i--) {
+				wheel[idx][i] = wheel[idx][i - 1];
+			}
+			wheel[idx][0] = tmp;
+		} else { // 반시계방향 회전
+			int tmp = wheel[idx][0];
+			for (int i = 0; i < 7; i++) {
+				wheel[idx][i] = wheel[idx][i+1];
+			}
+			wheel[idx][7] = tmp;
+		}
 	}
 
 	private static void left(int idx, int dir) {
-		if (idx < 1) {
+		if (idx < 0) {
 			return;
 		}
-		
-		
+
 	}
 
 	private static void right(int idx, int dir) {
 		if (idx > 4) {
 			return;
 		}
-		
-		
+
 	}
 }
