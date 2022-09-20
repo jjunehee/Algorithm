@@ -9,6 +9,8 @@ import java.util.StringTokenizer;
 
 public class Main15686 {
 	public static int[][] map;
+	public static int[] dx = { 1, 0, -1, 0 };
+	public static int[] dy = { 0, 1, 0, -1 };
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -33,22 +35,29 @@ public class Main15686 {
 
 	private static void solution(Queue<House> house) {
 
-		while(!house.isEmpty()) {
+		while (!house.isEmpty()) {
 			House home = house.poll();
 			int x = home.x;
 			int y = home.y;
-			
-			chickenDistance(x,y);
+
+			chickenDistance(x, y, 0);
 		}
-		
+
 	}
 
-	private static void chickenDistance(int x, int y) {
-		if(map[x][y]==2) {
-			return;
+	private static int chickenDistance(int x, int y, int depth) {
+		if (map[x][y] == 2) {
+			return depth;
 		}
-		
-		
+
+		int distance = 0;
+		for (int dir = 0; dir < 4; dir++) {
+			int nx = x + dx[dir];
+			int ny = y + dy[dir];
+			distance = chickenDistance(nx, ny, depth + 1);
+		}
+		return distance;
+
 	}
 
 	public static class House {
