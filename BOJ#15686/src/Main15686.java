@@ -12,7 +12,8 @@ public class Main15686 {
 	public static int N, M;
 	static ArrayList<Place> chicken = new ArrayList<>();
 	static ArrayList<Place> house = new ArrayList<>();
-	static boolean[] chickenVisited;
+	static ArrayList<Place> chickenList = new ArrayList<>();
+	static boolean[] visited;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,7 +33,7 @@ public class Main15686 {
 				}
 			}
 		}
-		chickenVisited = new boolean[chicken.size()];
+		visited = new boolean[chicken.size()];
 		DFS(0, 0);
 		System.out.println(Min);
 
@@ -44,31 +45,27 @@ public class Main15686 {
 			for (int i = 0; i < house.size(); i++) {
 
 				int ret = Integer.MAX_VALUE;
-				for (int j = 0; j < chicken.size(); j++) {
-					if (chickenVisited[j] == true) {
-						int dist = Math.abs(house.get(i).x - chicken.get(j).x)
-								+ Math.abs(house.get(i).y - chicken.get(j).y);
+				for (int j = 0; j < chickenList.size(); j++) {
 
-						ret = Math.min(ret, dist);
-					}
+					int dist = Math.abs(house.get(i).x - chickenList.get(j).x)
+							+ Math.abs(house.get(i).y - chickenList.get(j).y);
+
+					ret = Math.min(ret, dist);
+
 				}
 				total += ret;
 
 			}
 			Min = Math.min(Min, total);
-			return;
-		}
 
+		}
 		for (int i = idx; i < chicken.size(); i++) {
-			if (chickenVisited[i] == false) {
-				chickenVisited[i] = true;
-				DFS(idx + 1, count + 1);
-				chickenVisited[i] = false;
-			}
+			chickenList.add(chicken.get(i));
+			DFS(idx + 1, count + 1);
+			chickenList.remove(chickenList.size() - 1);
+
 		}
-
 	}
-
 
 	public static class Place {
 		int x;
