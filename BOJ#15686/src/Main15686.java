@@ -14,7 +14,7 @@ public class Main15686 {
 	static ArrayList<Place> house = new ArrayList<>();
 	static ArrayList<Place> chickenList = new ArrayList<>();
 	static boolean[] visited;
-	// commit test
+	
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
