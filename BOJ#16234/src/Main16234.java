@@ -31,9 +31,7 @@ public class Main16234 {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-
 		System.out.println(solution());
-
 	}
 
 	private static int solution() {
