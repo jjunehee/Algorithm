@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main16235 {
 	public static int N, M, K;
 	public static int[][] A;
-	static ArrayList<Tree> treeList = new ArrayList<>();
+	static LinkedList<Tree> treeList = new LinkedList<>();
 	static Queue<Tree> deadList = new LinkedList<>();
 	public static int[][] ground;
 	public static int[] dx = { -1, -1, -1, 0, 0, 1, 1, 1 };
@@ -38,7 +38,6 @@ public class Main16235 {
 			}
 		}
 
-		treeList = new ArrayList<Tree>();
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int x = Integer.parseInt(st.nextToken());
@@ -54,7 +53,6 @@ public class Main16235 {
 	private static void solution() {
 		int year = 0;
 		while (year < K) {
-			
 
 			spring();
 			summer();
@@ -66,19 +64,19 @@ public class Main16235 {
 		System.out.println(treeList.size());
 	}
 
-
 	private static void spring() {
-		for (Tree tree : treeList) {
+		Iterator<Tree> iterator = treeList.iterator();
+
+		while (iterator.hasNext()) {
+			Tree tree = iterator.next();
+
 			if (ground[tree.x][tree.y] < tree.age) {
-				deadList.add(tree);
+				deadList.offer(tree);
+				iterator.remove();
 				continue;
 			}
 			ground[tree.x][tree.y] -= tree.age;
 			tree.age++;
-		}
-		
-		for(Tree deadTree : deadList) {
-			treeList.remove(deadTree);
 		}
 	}
 
@@ -86,14 +84,6 @@ public class Main16235 {
 		while (!deadList.isEmpty()) {
 			Tree tree = deadList.poll();
 			ground[tree.x][tree.y] += tree.age / 2;
-		}
-	}
-
-	private static void winter() {
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= N; j++) {
-				ground[i][j] += A[i][j];
-			}
 		}
 	}
 
@@ -114,6 +104,14 @@ public class Main16235 {
 
 		}
 		treeList.addAll(0, newTrees);
+	}
+
+	private static void winter() {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				ground[i][j] += A[i][j];
+			}
+		}
 	}
 
 	public static class Tree {
