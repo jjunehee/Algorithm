@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 public class Main16236 {
 	static int[][] map;
 	static Fish shark;
-	static boolean HaveEat = true;
 	static int[] dx = { 1, 0, -1, 0 };
 	static int[] dy = { 0, 1, 0, -1 };
 	static int N;
