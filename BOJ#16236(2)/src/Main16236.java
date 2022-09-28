@@ -27,7 +27,7 @@ public class Main16236 {
 			for (int j = 1; j <= N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 				if (map[i][j] == 9) {
-					shark = new Fish(i, j, 2, 0);
+					shark = new Fish(i, j, 2);
 					map[i][j] = 0;
 				}
 			}
@@ -38,50 +38,39 @@ public class Main16236 {
 
 	private static void simulation(Fish shark) {
 		int time = 0;
-		int eat = 0;
-		int age = 2;
 		Queue<Fish> q = new LinkedList<>();
 		q.add(shark);
 
 		while (true) {
-			visited = new boolean[N + 1][N + 1];
 			ArrayList<Fish> fishList = new ArrayList<>();
+			visited = new boolean[N + 1][N + 1];
+			int minDist = Integer.MAX_VALUE;
 			while (!q.isEmpty()) {
-				Fish fish = q.poll();
-				int x = fish.x;
-				int y = fish.y;
-				int size = fish.size;
-				int dist = fish.dist;
+				Fish sharkMove = q.poll();
 				for (int i = 0; i < 4; i++) {
-					int nx = x + dx[i];
-					int ny = y + dy[i];
-
+					int nx = sharkMove.x + dx[i];
+					int ny = sharkMove.y + dy[i];
+					int size = sharkMove.size;
+					int dist = sharkMove.dist;
 					if (nx < 1 || nx > N || ny < 1 || ny > N || visited[nx][ny]) {
 						continue;
 					}
-					if (map[nx][nx] <= size) {
+
+					if (map[nx][ny] <= shark.size) {
 						q.add(new Fish(nx, ny, size, dist + 1));
-						if (map[nx][ny] != 0) {
+						if (map[nx][ny] != 0 && map[nx][ny] < shark.size && dist <= minDist) {
 							fishList.add(new Fish(nx, ny, map[nx][ny], dist + 1));
+							minDist = Math.min(minDist, dist);
 						}
 					}
-//					visited[nx][ny] = true;
+					visited[nx][ny] = true;
 				}
 			}
-			for(Fish fish: fishList) {
-				System.out.println(fish.x+ " " + fish.y);
-			}
-			System.out.println();
-			if (fishList.isEmpty()) {
-				for (int i = 1; i <= N; i++) {
-					for (int j = 1; j <= N; j++) {
-						System.out.print(map[i][j] + " ");
-					}
-					System.out.println();
-				}
+			if (fishList.size() == 0) {
 				System.out.println(time);
 				return;
 			}
+
 			Fish selectedFish = fishList.get(0);
 			for (int i = 1; i < fishList.size(); i++) {
 				Fish fish = fishList.get(i);
@@ -97,18 +86,15 @@ public class Main16236 {
 					}
 				}
 			}
-
 			time += selectedFish.dist;
-			
-			eat++;
+			shark.eatCnt++;
 			map[selectedFish.x][selectedFish.y] = 0;
-			if (eat == age) {
-				age++;
-				eat = 0;
+			if (shark.eatCnt == shark.size) {
+				shark.size++;
+				shark.eatCnt = 0;
 			}
-			System.out.println(selectedFish.x + " " + selectedFish.y);
-			q.add(new Fish(selectedFish.x, selectedFish.y, age, 0));
-			
+
+			q.add(new Fish(selectedFish.x, selectedFish.y, shark.size, 0));
 		}
 
 	}
@@ -116,8 +102,16 @@ public class Main16236 {
 	public static class Fish {
 		int x;
 		int y;
-		int dist;
 		int size;
+		int dist;
+		int eatCnt;
+		boolean canMove;
+
+		public Fish(int x, int y, int size) {
+			this.x = x;
+			this.y = y;
+			this.size = size;
+		}
 
 		public Fish(int x, int y, int size, int dist) {
 			this.x = x;
