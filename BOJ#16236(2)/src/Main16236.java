@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 
 public class Main16236 {
 	static int[][] map;
-	static ArrayList<Fish> fishList = new ArrayList<>();
 	static Fish shark;
 	static boolean HaveEat = true;
 	static int[] dx = { 1, 0, -1, 0 };
@@ -22,17 +21,14 @@ public class Main16236 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 
-		map = new int[N][N];
-		visited = new boolean[N][N];
-		for (int i = 0; i < N; i++) {
+		map = new int[N + 1][N + 1];
+		for (int i = 1; i <= N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < N; j++) {
+			for (int j = 1; j <= N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
-				if (map[i][j] != 0) {
-					if (map[i][j] == 9) {
-						shark = new Fish(i, j, 2, 0);
-						break;
-					}
+				if (map[i][j] == 9) {
+					shark = new Fish(i, j, 2, 0);
+					map[i][j] = 0;
 				}
 			}
 		}
@@ -43,43 +39,49 @@ public class Main16236 {
 	private static void simulation(Fish shark) {
 		int time = 0;
 		int eat = 0;
-		int age = 0;
+		int age = 2;
 		Queue<Fish> q = new LinkedList<>();
 		q.add(shark);
 
 		while (true) {
+			visited = new boolean[N + 1][N + 1];
+			ArrayList<Fish> fishList = new ArrayList<>();
 			while (!q.isEmpty()) {
 				Fish fish = q.poll();
 				int x = fish.x;
 				int y = fish.y;
 				int size = fish.size;
 				int dist = fish.dist;
-
 				for (int i = 0; i < 4; i++) {
 					int nx = x + dx[i];
 					int ny = y + dy[i];
 
-					if (nx < 0 || nx >= N || ny < 1 || ny >= N || visited[nx][ny]) {
+					if (nx < 1 || nx > N || ny < 1 || ny > N || visited[nx][ny]) {
 						continue;
 					}
-					
-					if (map[nx][ny] != 0 && map[nx][ny] <= size) { // ¸ÔÀÕ°¨ ¹ß°ß
-						q.add(new Fish(nx, ny, map[nx][ny], dist + 1));
-						fishList.add(new Fish(nx, ny, map[nx][ny], dist + 1));
-						System.out.println("tt");
-					} else { // ¸ÔÀÌ ¹ß°ß ¸øÇÏ°í ÀÌµ¿¸¸
-						q.add(new Fish(nx, ny, map[nx][ny], dist + 1));
-						
+					if (map[nx][nx] <= size) {
+						q.add(new Fish(nx, ny, size, dist + 1));
+						if (map[nx][ny] != 0) {
+							fishList.add(new Fish(nx, ny, map[nx][ny], dist + 1));
+						}
 					}
-
+//					visited[nx][ny] = true;
 				}
 			}
-			
+			for(Fish fish: fishList) {
+				System.out.println(fish.x+ " " + fish.y);
+			}
+			System.out.println();
 			if (fishList.isEmpty()) {
+				for (int i = 1; i <= N; i++) {
+					for (int j = 1; j <= N; j++) {
+						System.out.print(map[i][j] + " ");
+					}
+					System.out.println();
+				}
 				System.out.println(time);
 				return;
 			}
-
 			Fish selectedFish = fishList.get(0);
 			for (int i = 1; i < fishList.size(); i++) {
 				Fish fish = fishList.get(i);
@@ -97,13 +99,16 @@ public class Main16236 {
 			}
 
 			time += selectedFish.dist;
+			
 			eat++;
 			map[selectedFish.x][selectedFish.y] = 0;
 			if (eat == age) {
 				age++;
 				eat = 0;
 			}
-			q.add(selectedFish);
+			System.out.println(selectedFish.x + " " + selectedFish.y);
+			q.add(new Fish(selectedFish.x, selectedFish.y, age, 0));
+			
 		}
 
 	}
