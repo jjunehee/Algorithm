@@ -35,6 +35,8 @@ public class Main17144 {
 				if (map[i][j] == -1 && map[i + 1][j] == -1) {
 					up = new Machine(i, 0);
 					down = new Machine(i + 1, 0);
+					map[i][j] = 0;
+					map[i+1][j] = 0;
 				}
 			}
 		}
@@ -43,14 +45,17 @@ public class Main17144 {
 			dustSpread();
 			up.upArea();
 			down.downArea();
-			time++;
-		}
-		for (int[] i : map) {
-			for (int j : i) {
-				System.out.print(j + " ");
+			for (int[] i : map) {
+				for (int j : i) {
+					System.out.print(j + " ");
+				}
+				System.out.println();
 			}
 			System.out.println();
+			System.out.println();		
+			time++;
 		}
+		
 
 		int sum =0;
 		for (int i = 0; i < R; i++) {
@@ -122,13 +127,14 @@ public class Main17144 {
 
 				}
 				if (nx == x && ny == y) {
-					map[x][y] = 0;
+					map[curX][curY] = 0;
 					break;
 				}
-				map[x][y] = map[nx][ny];
+				map[curX][curY] = map[nx][ny];
 				curX = nx;
 				curY = ny;
 			}
+			
 
 		}
 
@@ -148,10 +154,10 @@ public class Main17144 {
 
 				}
 				if (nx == x && ny == y) {
-					map[x][y] = 0;
+					map[curX][curY] = 0;
 					break;
 				}
-				map[x][y] = map[nx][ny];
+				map[curX][curY] = map[nx][ny];
 				curX = nx;
 				curY = ny;
 			}
