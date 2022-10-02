@@ -34,18 +34,25 @@ public class Main17144 {
 			for (int j = 0; j < C; j++) {
 				if (map[i][j] == -1 && map[i + 1][j] == -1) {
 					up = new Machine(i, 0);
+					down = new Machine(i+1,0);
 					map[i][j] = 0;
 					map[i + 1][j] = 0;
 				}
 			}
 		}
 		int time = 0;
-		while (time > T) {
+		while (time < T) {
 			dustSpread();
-			up.activate();
-			down.activate();
+			up.upArea();
+			down.downArea();
 			time++;
 		}
+//		for(int[] i: map) {
+//			for(int j: i) {
+//				System.out.print(j + " ");
+//			}
+//			System.out.println();
+//		}
 
 	}
 
@@ -91,37 +98,60 @@ public class Main17144 {
 			this.y = y;
 		}
 
-		void activate() {
-			upArea();
-			downArea();
-		}
+		
 
 		private void upArea() {
-			int endPosX = up.x;
-			int endPosY = up.y;
+			int endPosX = x;
+			int endPosY = y;
+			int dir = 2;
 			while (true) {
-				int dir = 2;
-				int nx = up.x + dx[dir];
-				int ny = up.y + dy[dir];
+				
+				int nx = x + dx[dir];
+				int ny = y + dy[dir];
 
-				if (nx < 0 || nx >= R || ny < 0 || ny >= R) {
+				if (nx < 0 || nx >= R || ny < 0 || ny >= C) {
 					dir = (dir + 3) % 4;
-					nx = up.x + dx[dir];
-					ny = up.y + dy[dir];
+					nx = x + dx[dir];
+					ny = y + dy[dir];
+				
 				}
-
-				map[up.x][up.y] = map[nx][ny];
-				up.x = nx;
-				up.y = ny;
-				if (up.x == endPosX && up.y == endPosY) {
+				if (nx == endPosX && ny == endPosY) {
+					map[x][y] = 0;
+					System.out.println("t");
 					break;
 				}
+				System.out.println(nx + " " + ny);
+				map[x][y] = map[nx][ny];
+				x = nx;
+				y = ny;
 			}
-			
+
 		}
 
 		private void downArea() {
+			int endPosX = x;
+			int endPosY = y;
+			int dir = 0;
+			while (true) {
+				
+				int nx = x + dx[dir];
+				int ny = y + dy[dir];
 
+				if (nx < 0 || nx >= R || ny < 0 || ny >= C) {
+					dir = (dir + 1) % 4;
+					nx = x + dx[dir];
+					ny = y + dy[dir];
+					
+				}
+
+				if (nx == endPosX && ny == endPosY) {
+					map[x][y] = 0;
+					break;
+				}
+				map[x][y] = map[nx][ny];
+				x = nx;
+				y = ny;
+			}
 		}
 	}
 }
