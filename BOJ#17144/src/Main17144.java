@@ -34,9 +34,7 @@ public class Main17144 {
 			for (int j = 0; j < C; j++) {
 				if (map[i][j] == -1 && map[i + 1][j] == -1) {
 					up = new Machine(i, 0);
-					down = new Machine(i+1,0);
-					map[i][j] = 0;
-					map[i + 1][j] = 0;
+					down = new Machine(i + 1, 0);
 				}
 			}
 		}
@@ -47,12 +45,22 @@ public class Main17144 {
 			down.downArea();
 			time++;
 		}
-//		for(int[] i: map) {
-//			for(int j: i) {
-//				System.out.print(j + " ");
-//			}
-//			System.out.println();
-//		}
+		for (int[] i : map) {
+			for (int j : i) {
+				System.out.print(j + " ");
+			}
+			System.out.println();
+		}
+
+		int sum =0;
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				if(map[i][j] != 0) {
+					sum += map[i][j];
+				}
+			}
+		}
+		System.out.println(sum);
 
 	}
 
@@ -98,60 +106,56 @@ public class Main17144 {
 			this.y = y;
 		}
 
-		
-
 		private void upArea() {
-			int endPosX = x;
-			int endPosY = y;
+			int curX = x;
+			int curY = y;
 			int dir = 2;
 			while (true) {
-				
-				int nx = x + dx[dir];
-				int ny = y + dy[dir];
 
-				if (nx < 0 || nx >= R || ny < 0 || ny >= C) {
+				int nx = curX + dx[dir];
+				int ny = curY + dy[dir];
+
+				if (nx < 0 || nx > x || ny < 0 || ny >= C) {
 					dir = (dir + 3) % 4;
-					nx = x + dx[dir];
-					ny = y + dy[dir];
-				
+					nx = curX + dx[dir];
+					ny = curY + dy[dir];
+
 				}
-				if (nx == endPosX && ny == endPosY) {
+				if (nx == x && ny == y) {
 					map[x][y] = 0;
-					System.out.println("t");
 					break;
 				}
-				System.out.println(nx + " " + ny);
 				map[x][y] = map[nx][ny];
-				x = nx;
-				y = ny;
+				curX = nx;
+				curY = ny;
 			}
 
 		}
 
 		private void downArea() {
-			int endPosX = x;
-			int endPosY = y;
+			int curX = x;
+			int curY = y;
 			int dir = 0;
 			while (true) {
-				
-				int nx = x + dx[dir];
-				int ny = y + dy[dir];
 
-				if (nx < 0 || nx >= R || ny < 0 || ny >= C) {
+				int nx = curX + dx[dir];
+				int ny = curY + dy[dir];
+
+				if (nx >= R || nx < x || ny < 0 || ny >= C) {
 					dir = (dir + 1) % 4;
-					nx = x + dx[dir];
-					ny = y + dy[dir];
-					
-				}
+					nx = curX + dx[dir];
+					ny = curY + dy[dir];
 
-				if (nx == endPosX && ny == endPosY) {
+				}
+				if (nx == x && ny == y) {
 					map[x][y] = 0;
 					break;
 				}
 				map[x][y] = map[nx][ny];
-				x = nx;
-				y = ny;
+				curX = nx;
+				curY = ny;
 			}
+
 		}
 	}
 }
