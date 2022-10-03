@@ -37,7 +37,12 @@ public class Main17143 {
 			map[r][c] = shark;
 		}
 		Collections.sort(sharkList, (o1, o2) -> (o1.size - o2.size));
-		simulation();
+		if (!sharkList.isEmpty()) {
+			simulation();
+		}
+		else
+			System.out.print("0");
+		
 	}
 
 	private static void simulation() {
@@ -45,7 +50,7 @@ public class Main17143 {
 
 		while (true) {
 			personPos++;
-			if (personPos > R) {
+			if (personPos > C) {
 				calculate();
 				break;
 			}
@@ -71,6 +76,7 @@ public class Main17143 {
 			int ny = shark.y;
 			for (int s = 0; s < shark.speed; s++) {
 
+
 				nx = nx + dx[shark.dir];
 				ny = ny + dy[shark.dir];
 				if (nx < 1) {
@@ -87,24 +93,17 @@ public class Main17143 {
 					shark.dir = 2;
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
+
 				}
 				if (ny > C) {
 					shark.dir = 3;
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
 				}
-				System.out.println(nx + " " + ny);
 			}
 			shark.x = nx;
 			shark.y = ny;
 			moveMap[shark.x][shark.y] = shark;
-			for (int I = 1; I <= R; I++) {
-				for (int J = 1; J <= C; J++) {
-					System.out.print(moveMap[I][J] + " ");
-				}
-				System.out.println();
-			}
-			System.out.println("change");
 		}
 
 		for (int i = 1; i <= R; i++) {
