@@ -36,13 +36,11 @@ public class Main17143 {
 			sharkList.add(shark);
 			map[r][c] = shark;
 		}
-		Collections.sort(sharkList, (o1, o2) -> (o1.size - o2.size));
 		if (!sharkList.isEmpty()) {
 			simulation();
-		}
-		else
+		} else
 			System.out.print("0");
-		
+
 	}
 
 	private static void simulation() {
@@ -76,34 +74,40 @@ public class Main17143 {
 			int ny = shark.y;
 			for (int s = 0; s < shark.speed; s++) {
 
-
 				nx = nx + dx[shark.dir];
 				ny = ny + dy[shark.dir];
 				if (nx < 1) {
 					shark.dir = 1;
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
-				}
-				if (nx > R) {
+				} else if (nx > R) {
 					shark.dir = 0;
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
-				}
-				if (ny < 1) {
+				} else if (ny < 1) {
 					shark.dir = 2;
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
 
-				}
-				if (ny > C) {
+				} else if (ny > C) {
 					shark.dir = 3;
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
 				}
 			}
+
 			shark.x = nx;
 			shark.y = ny;
-			moveMap[shark.x][shark.y] = shark;
+			if (moveMap[nx][ny] != null) {
+				if (moveMap[nx][ny].size < shark.size) {
+					sharkList.remove(moveMap[nx][ny]);
+					moveMap[nx][ny] = shark;
+				} else {
+					sharkList.remove(shark);
+				}
+			} else {
+				moveMap[nx][ny] = shark;
+			}
 		}
 
 		for (int i = 1; i <= R; i++) {
