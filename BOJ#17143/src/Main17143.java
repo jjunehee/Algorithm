@@ -10,6 +10,7 @@ public class Main17143 {
 	public static int R, C;
 	public static Shark[][] map;
 	static ArrayList<Shark> sharkList = new ArrayList<>();
+	static ArrayList<Shark> catchList = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,7 +18,7 @@ public class Main17143 {
 
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
-		map = new Shark[R+1][C+1];
+		map = new Shark[R + 1][C + 1];
 
 		int M = Integer.parseInt(st.nextToken());
 
@@ -31,7 +32,39 @@ public class Main17143 {
 			Shark shark = new Shark(r, c, s, d, z);
 			map[r][c] = shark;
 		}
+
+		simulation();
+	}
+
+	private static void simulation() {
+		int personPos = 0;
+
+		while (true) {
+			personPos++;
+			if (personPos > R) {
+				calculate();
+				break;
+			}
+			hunt(personPos);
+			sharkMove();
+		}
 		
+	}
+
+	private static void calculate() {
+		int sum = 0;
+		for (Shark shark : catchList) {
+			sum += shark.size;
+		}
+		System.out.println(sum);
+	}
+
+	private static void sharkMove() {
+
+	}
+
+	private static void hunt(int huntColumn) {
+
 	}
 
 	public static class Shark {
