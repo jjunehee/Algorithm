@@ -67,12 +67,16 @@ public class Main17143 {
 	}
 
 	private static void sharkMove() {
+
 		Shark[][] moveMap = new Shark[R + 1][C + 1];
+		ArrayList<Shark> removeList = new ArrayList<>();
 		for (int i = 0; i < sharkList.size(); i++) {
 			Shark shark = sharkList.get(i);
 			int nx = shark.x;
 			int ny = shark.y;
-			for (int s = 0; s < shark.speed; s++) {
+			int X = shark.dir < 2 ? R : C;
+			int speed = shark.speed % ((X - 1) * 2);
+			for (int s = 0; s < speed; s++) {
 
 				nx = nx + dx[shark.dir];
 				ny = ny + dy[shark.dir];
@@ -94,24 +98,31 @@ public class Main17143 {
 					nx = nx + dx[shark.dir] * 2;
 					ny = ny + dy[shark.dir] * 2;
 				}
+
 			}
 
 			shark.x = nx;
 			shark.y = ny;
 			if (moveMap[nx][ny] != null) {
 				if (moveMap[nx][ny].size < shark.size) {
-					sharkList.remove(moveMap[nx][ny]);
+					removeList.add(moveMap[nx][ny]);
 					moveMap[nx][ny] = shark;
 				} else {
-					sharkList.remove(shark);
+					removeList.add(shark);
 				}
 			} else {
 				moveMap[nx][ny] = shark;
 			}
 		}
 
+		for (Shark shark : removeList) {
+			sharkList.remove(shark);
+		}
+
 		for (int i = 1; i <= R; i++) {
-			map[i] = moveMap[i].clone();
+			for (int j = 1; j <= C; j++) {
+				map[i][j] = moveMap[i][j];
+			}
 		}
 	}
 
