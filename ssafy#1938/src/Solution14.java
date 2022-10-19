@@ -11,7 +11,7 @@ public class Solution14 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int A = Integer.parseInt(st.nextToken());
 		int B = Integer.parseInt(st.nextToken());
-
+		
 		for (int i = 1; i <= 4; i++) {
 			switch(i) {
 			case 1:
