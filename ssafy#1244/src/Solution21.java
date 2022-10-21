@@ -1,58 +1,54 @@
 package src;
-import java.util.Scanner;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Solution21 {
-    static int chance;
-    static int answer;
-    static String[] target;
+	static int[] answer;
+	static int max = Integer.MIN_VALUE;
+	static char[] num;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int n = Integer.parseInt(st.nextToken());
+		answer = new int[n];
 
-    public static void main(String[] args) {
+		for (int i = 0; i < n; i++) {
+			max = Integer.MIN_VALUE;
+			st = new StringTokenizer(br.readLine());
+			String str = st.nextToken();
+			int count = Integer.parseInt(st.nextToken());
 
-        Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
-        sc.nextLine();
+			dfs(str, 0, count);
+			answer[i] = max;
+		}
+		for (int i = 0; i < n; i++) {
+			System.out.println("#" + (i + 1) + " " + answer[i]);
+		}
+	}
 
-        for(int test_case = 1; test_case<= T; test_case++) {
-            String input = sc.nextLine();
-            String[] inputArray = input.split(" ");
+	private static void dfs(String str, int depth, int count) {
+		if (depth == count) {
+			max = Math.max(max, Integer.parseInt(str));
+		}
+		num = str.toCharArray();
+		for (int i = 0; i < count; i++) {
+			for (int j = i + 1; j < str.length(); j++) {
+				if (num[i] < num[j]) {
+					swap(i,j);
+					dfs(String.valueOf(num), depth + 1, count);
+					swap(j,i);
+				}
+			}
+		}
+	}
 
-            target = inputArray[0].split("");
-            chance = Integer.valueOf(inputArray[1]);
+	private static void swap(int i, int j) {
 
-            answer = 0;
-            answer = dfs(0, 0);
-
-            System.out.println("#" + test_case + " " + answer);
-        }
-    }
-
-    static int dfs(int k, int count) {
-        String temp;
-        String targetnum = "";
-
-        if(chance == count) { //교체 기회를 다 썼다면,
-            for (String tmp: target) {
-                targetnum += tmp;
-            }
-            if(Integer.valueOf(targetnum) > answer) {
-                answer = Integer.valueOf(targetnum);
-            }
-            return answer;
-        }
-
-
-        for(int i=k; i<target.length; i++) {
-            for(int j=i+1; j<target.length; j++) {
-
-                if(Integer.valueOf(target[i]) <= Integer.valueOf(target[j])) {
-                    temp = target[i]; target[i] = target[j]; target[j] = temp; // swap
-                    dfs(i, count+1);
-                    temp = target[i]; target[i] = target[j]; target[j] = temp; // swap
-                }
-            }
-        }
-        return answer;
-    }
-
-
+		char temp = num[i];
+		num[i] = num[j];
+		num[j] = temp;
+	}
 }
