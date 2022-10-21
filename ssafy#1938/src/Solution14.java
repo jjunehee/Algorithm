@@ -12,8 +12,8 @@ public class Solution14 {
 		int A = Integer.parseInt(st.nextToken());
 		int B = Integer.parseInt(st.nextToken());
 		
-		for (int i = 1; i <= 4; i++) {
-			switch(i) {
+		for (int j = 1; j <= 4; j++) {
+			switch(j) {
 			case 1:
 				System.out.println(A+B);
 				break;
