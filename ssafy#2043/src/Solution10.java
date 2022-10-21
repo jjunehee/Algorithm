@@ -6,12 +6,13 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Solution10 {
+	static int P,K;
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		int P = Integer.parseInt(st.nextToken());
-		int K = Integer.parseInt(st.nextToken());
+		P = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
 		
 		System.out.print(P-K+1);
 	}
