@@ -24,8 +24,8 @@ class Solution5 {
 		}
 		
 
-		for (int i = 1; i <= N; i++) {
-			System.out.println("#" + i + " " + list[i]);
+		for (int j = 1; j <= N; j++) {
+			System.out.println("#" + j + " " + list[j]);
 		}
 
 	}
