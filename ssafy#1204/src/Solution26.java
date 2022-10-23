@@ -28,12 +28,11 @@ public class Solution26 {
 			score = new int[1001];
 			Map<Integer, Integer> map = new HashMap<>();
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for (int j = 1; j <= 14; j++) {
+			for (int j = 1; j <= 1000; j++) {
 				score[j] = Integer.parseInt(st.nextToken());
 				map.compute(score[j], (num, count) -> count == null ? 1 : count + 1);
 			}
-			
-			
+	
 			List<Entry<Integer, Integer>> list_entries = new ArrayList<Entry<Integer, Integer>>(map.entrySet());
 
 			// 비교함수 Comparator를 사용하여 오름차순으로 정렬
@@ -44,21 +43,11 @@ public class Solution26 {
 					return obj1.getValue() - obj2.getValue();
 				}
 			});
-
-			for(Map.Entry<Integer, Integer> entry : list_entries){
-	            System.out.println("key : " + entry.getKey() + ", value : " + entry.getValue());
-	        }
-//			Iterator<Integer> iter = map.keySet().iterator();
-//
-//			while (iter.hasNext()) {
-//				Integer key = iter.next();
-//				Integer value = map.get(key);
-//
-//				System.out.println(key + " : " + value);
-//			}
-//			Stack<Integer> stack = new Stack<>();
-//			map.forEach(null);
-
+			answer[i] = list_entries.get(list_entries.size()-1).getKey();
+		}
+		
+		for (int i = 0; i < T; i++) {
+			System.out.println("#" + (i + 1) + " " + answer[i]);
 		}
 	}
 }
