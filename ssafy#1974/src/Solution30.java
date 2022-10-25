@@ -56,12 +56,20 @@ public class Solution30 {
 					break;
 				}
 			}
-
 			for (int i = 1; i <= 7; i += 3) {
-				for (int j = 1; j <= 7; j += 3) {
+				if (flag == 1) {
+					for (int j = 1; j <= 7; j += 3) {
+						sum = 0;
+						if (check(i, j)) {
+							flag = 1;
+						} else {
+							flag = 0;
+							break;
+						}
 
-					check(i, j);
-
+					}
+				} else {
+					break;
 				}
 			}
 
@@ -73,14 +81,15 @@ public class Solution30 {
 		}
 	}
 
-	public static void check(int i, int j) {
+	public static boolean check(int i, int j) {
 		for (int I = i; I < i + 3; I++) {
 			for (int J = j; J < j + 3; J++) {
 				sum += map[I][J];
-			}
-			if(sum!=45) {
-				return;
-			}
+			}	
 		}
+		if (sum != 45) {
+			return false;
+		}
+		return true;
 	}
 }
