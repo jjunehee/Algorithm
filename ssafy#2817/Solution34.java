@@ -28,7 +28,7 @@ public class Solution34 {
 		}
 
 		for (int i = 0; i < T; i++) {
-			System.out.println("#" + (i+1) + " " + answer[i]);
+			System.out.println("#" + (i + 1) + " " + answer[i]);
 		}
 	}
 
@@ -39,7 +39,7 @@ public class Solution34 {
 		}
 
 		for (int i = index; i < N; i++) {
-			dfs(i+1, sum + nums[i]);
+			dfs(i + 1, sum + nums[i]);
 		}
 
 	}
