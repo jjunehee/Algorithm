@@ -43,7 +43,6 @@ public class Solution33 {
 					for (int p = 0; p < N / 2; p++) {
 						if (map[i + p][j] != map[i + N - 1 - p][j]) {
 							flag = 1;
-							break;
 						}
 					}
 					if (flag == 0) {
