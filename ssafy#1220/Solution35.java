@@ -20,6 +20,24 @@ public class Solution35 {
 					map[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
+
+			for (int j = 0; j < 100; j++) {
+				boolean flag = false;
+				for (int i = 0; i < 100; i++) {
+					if (map[i][j] == 1) {
+						flag = true;
+					}
+
+					if (flag == true && map[i][j] == 2) {
+						answer[t]++;
+						flag = false;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < 10; i++) {
+			System.out.println("#" + (i+1) + " " + answer[i]);
 		}
 	}
 }
