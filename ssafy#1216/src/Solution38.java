@@ -5,29 +5,31 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Solution38 {
+	static final int MapSize = 100;
 	static char[][] map;
-	static final int mapSize = 100;
 	static int max;
 	static int[] answer;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		answer = new int[10];
-		for (int t = 0; t < 10; t++) {
+
+		answer = new int[10+1];
+		for (int t = 1; t <= 10; t++) {
 			int n = Integer.parseInt(br.readLine());
-			map = new char[mapSize][mapSize];
-			for (int i = 0; i < 100; i++) {
+			map = new char[MapSize][MapSize];
+			for (int i = 0; i < MapSize; i++) {
 				String str = br.readLine();
-				for (int j = 0; j < 100; j++) {
+				for (int j = 0; j < MapSize; j++) {
 					map[i][j] = str.charAt(j);
 				}
 			}
 
 			max = Integer.MIN_VALUE;
-			for (int L = 0; L <= mapSize; L++) {
+			for (int L = 0; L <= map.length; L++) {
+
 				// row check
-				for (int i = 0; i < mapSize; i++) {
-					for (int j = 0; j < mapSize - L + 1; j++) {
+				for (int i = 0; i < MapSize; i++) {
+					for (int j = 0; j < MapSize - L + 1; j++) {
 						boolean check = true;
 						for (int k = 0; k < L / 2; k++) {
 							if (map[i][j + k] != map[i][j + L - k - 1]) {
@@ -38,13 +40,12 @@ public class Solution38 {
 						if (check && max < L) {
 							max = L;
 						}
-
 					}
 				}
 
-				// column
-				for (int j = 0; j < mapSize; j++) {
-					for (int i = 0; i < mapSize - L + 1; i++) {
+				// column check
+				for (int j = 0; j < MapSize; j++) {
+					for (int i = 0; i < MapSize - L + 1; i++) {
 						boolean check = true;
 						for (int k = 0; k < L / 2; k++) {
 							if (map[i + k][j] != map[i + L - k - 1][j]) {
@@ -60,8 +61,9 @@ public class Solution38 {
 			}
 			answer[t] = max;
 		}
-		for (int i = 0; i < 10; i++) {
-			System.out.println("#" + (i + 1) + " " + answer[i]);
+
+		for (int i = 1; i <= 10; i++) {
+			System.out.println("#" + i + " " + answer[i]);
 		}
 	}
 }
