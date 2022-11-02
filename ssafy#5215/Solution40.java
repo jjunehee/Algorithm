@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Solution40 {
@@ -12,7 +13,17 @@ public class Solution40 {
 		int T = Integer.parseInt(br.readLine());
 
 		for (int t = 0; t < T; t++) {
-			Queue<Ingredient> list = new LinkedList<>();
+			PriorityQueue<Ingredient> pq = new PriorityQueue<>(new Comparator<Ingredient>() {
+				@Override // bigThree1rm 을 기준으로 오름차순 정렬
+				public int compare(Ingredient o1, Ingredient o2) {
+					if(o1.score > o2.score) {
+						return 1;
+					} else if (o1.score == o2.score) {
+						return o1.calorie - o2.calorie;
+					}else
+						return -1;
+				}
+			});
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int N = Integer.parseInt(st.nextToken());
 			int L = Integer.parseInt(st.nextToken());
@@ -22,8 +33,10 @@ public class Solution40 {
 				int score = Integer.parseInt(st.nextToken());
 				int calorie = Integer.parseInt(st.nextToken());
 
-				list.add(new Ingredient(score, calorie));
+				pq.add(new Ingredient(score, calorie));
 			}
+			
+			
 		}
 	}
 
