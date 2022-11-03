@@ -2,10 +2,11 @@
 
 import java.io.*;
 import java.util.*;
+import java.util.*;
 
 public class Main16234 {
 
-	static int[][] map;
+	public static int[][] map;
 	static boolean[][] visited;
 	static int L, R, N;
 	static int[] dx = { 1, 0, -1, 0 };
