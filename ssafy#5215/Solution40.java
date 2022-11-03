@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -14,7 +13,7 @@ public class Solution40 {
 
 		for (int t = 0; t < T; t++) {
 			PriorityQueue<Ingredient> pq = new PriorityQueue<>(new Comparator<Ingredient>() {
-				@Override // bigThree1rm 을 기준으로 오름차순 정렬
+				@Override
 				public int compare(Ingredient o1, Ingredient o2) {
 					if(o1.score > o2.score) {
 						return 1;
@@ -35,8 +34,6 @@ public class Solution40 {
 
 				pq.add(new Ingredient(score, calorie));
 			}
-			
-			
 		}
 	}
 
