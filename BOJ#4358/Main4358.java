@@ -7,11 +7,11 @@ import java.util.Map;
 
 public class Main4358 {
 	static int allcnt;
-	public static void main(String[] args) throws IOException {
+	public static void main(StringProblem[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		Map<String,Integer> map = new HashMap<>();
-		String st = br.readLine();
+		Map<StringProblem,Integer> map = new HashMap<>();
+		StringProblem st = br.readLine();
 		while(!st.equals("")) {
 			map.compute(st, (tree, count) -> count == null ? 1 : count + 1);
 			allcnt++;
@@ -24,11 +24,11 @@ public class Main4358 {
 		
 		StringBuilder sb = new StringBuilder();
 		for(Object key : keys) {
-			String keyStr = (String)key;
+			StringProblem keyStr = (StringProblem)key;
 			int count = map.get(keyStr);
 			double per = (count * 100.0) / allcnt;
 			
-			sb.append(keyStr + " " + String.format("%.4f", per) + "\n");
+			sb.append(keyStr + " " + StringProblem.format("%.4f", per) + "\n");
 		}
 		System.out.println(sb.toString());
 	}

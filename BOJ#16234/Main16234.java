@@ -10,10 +10,10 @@ public class Main16234 {
 	static boolean[][] visited;
 	static int L, R, N;
 	static int[] dx = { 1, 0, -1, 0 };
-	static int[] dy = { 0, 1, 0, -1 };
+	static int[] dy = { 0, 1, 0, -1 };	
 	static ArrayList<Country> list = new ArrayList<>();
 
-	public static void main(String[] args) throws IOException {
+	public static void main(StringProblem[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());

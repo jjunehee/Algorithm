@@ -4,13 +4,13 @@ import java.io.InputStreamReader;
 import java.util.Stack;
 
 public class Main4889 {
-	public static void main(String[] args) throws IOException {
+	public static void main(StringProblem[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		StringBuilder sb = new StringBuilder();
 		int test_case = 1;
 		while (true) {
-			String str = br.readLine();
+			StringProblem str = br.readLine();
 			if (str.contains("-")) {
 				break;
 			}

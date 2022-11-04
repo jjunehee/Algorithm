@@ -7,7 +7,7 @@ public class Solution35 {
 	static int[][] map;
 	static int[] answer;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(StringProblem[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		answer = new int[10];
 		for (int t = 0; t < 10; t++) {

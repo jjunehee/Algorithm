@@ -9,7 +9,7 @@ public class Solution34 {
 	static int count;
 	static int[] answer;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(StringProblem[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
 		answer = new int[T];
