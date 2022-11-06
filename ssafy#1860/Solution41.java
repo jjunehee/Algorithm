@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 public class Solution41 {
 	static boolean result;
 	static String[] answer;
+	static int[] guest;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -19,22 +20,21 @@ public class Solution41 {
 			int N = Integer.parseInt(st.nextToken());
 			int M = Integer.parseInt(st.nextToken());
 			int K = Integer.parseInt(st.nextToken());
-
+			guest = new int[N];
 			st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < N; i++) {
 				int time = Integer.parseInt(st.nextToken());
-				
+				guest[i] = time;
 			}
 
-			int time = 0;
-			int remain = 0;
-			while (true) {
-				time++;
-				if (time % M == 0) {
-					remain += K;
+			Arrays.sort(guest);
+
+			result = true;
+			for (int i = 0; i < N; i++) {
+				if (guest[i] / M * K - i < 1) {
+					result = false;
+					break;
 				}
-				if()
-				break;
 			}
 
 			if (result) {
