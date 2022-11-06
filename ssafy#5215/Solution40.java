@@ -1,50 +1,53 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Solution40 {
+	static int N, L;
+	static int[] score;
+	static int[] calorie;
+	static int max;
+	static int[] answer;
 
-	public static void main(StringProblem[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
-
+		answer = new int[T];
 		for (int t = 0; t < T; t++) {
-			PriorityQueue<Ingredient> pq = new PriorityQueue<>(new Comparator<Ingredient>() {
-				@Override
-				public int compare(Ingredient o1, Ingredient o2) {
-					if(o1.score > o2.score) {
-						return 1;
-					} else if (o1.score == o2.score) {
-						return o1.calorie - o2.calorie;
-					}else
-						return -1;
-				}
-			});
+			max = Integer.MIN_VALUE;
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			int N = Integer.parseInt(st.nextToken());
-			int L = Integer.parseInt(st.nextToken());
-
+			N = Integer.parseInt(st.nextToken());
+			L = Integer.parseInt(st.nextToken());
+			score = new int[N];
+			calorie = new int[N];
 			for (int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
-				int score = Integer.parseInt(st.nextToken());
-				int calorie = Integer.parseInt(st.nextToken());
-
-				pq.add(new Ingredient(score, calorie));
+				score[i] = Integer.parseInt(st.nextToken());
+				calorie[i] = Integer.parseInt(st.nextToken());
 			}
+			dfs(0, 0, 0);
+
+			answer[t] = max;
+		}
+
+		for (int i = 0; i < T; i++) {
+			System.out.println("#" + (i+1) + " " + answer[i]);
 		}
 	}
 
-	public static class Ingredient {
-		int score;
-		int calorie;
-
-		public Ingredient(int score, int calorie) {
-			this.score = score;
-			this.calorie = calorie;
+	public static void dfs(int idx, int totalScore, int totalCalorie) {
+		if (totalCalorie > L) {
+			return;
 		}
+		if (idx == N) {
+			max = Math.max(max, totalScore);
+			return;
+		}
+
+		dfs(idx + 1, totalScore + score[idx], totalCalorie + calorie[idx]);
+		dfs(idx + 1, totalScore, totalCalorie);
 
 	}
 }
