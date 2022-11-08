@@ -6,11 +6,11 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Solution39 {
-	static StringProblem[] answer;
+	static String[] answer;
 	public static void main(StringProblem[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		answer = new StringProblem[10];
+		answer = new String[10];
 		for (int t = 0; t < 10; t++) {
 			Queue<Integer> q = new LinkedList<>();
 			int n = Integer.parseInt(br.readLine());
@@ -33,9 +33,9 @@ public class Solution39 {
 				value = (value % 5)+1;
 			}
 
-			StringProblem str = "#" + (t + 1) + " ";
+			String str = "#" + (t + 1) + " ";
 			while (!q.isEmpty()) {
-				str += StringProblem.valueOf(q.poll()) + " ";
+				str += String.valueOf(q.poll()) + " ";
 			}
 
 			answer[t] = str;
