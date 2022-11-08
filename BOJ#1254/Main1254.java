@@ -3,9 +3,9 @@ import java.util.*;
 import java.io.*;
 
 public class Main1254 {
-	public static void main(StringProblem[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringProblem str = br.readLine();
+		String str = br.readLine();
 
 		for (int i = 0; i < str.length(); i++) {
 			if (isPelindrome(str.substring(i))) {
@@ -16,7 +16,7 @@ public class Main1254 {
 
 	}
 
-	public static boolean isPelindrome(StringProblem s) {
+	public static boolean isPelindrome(String s) {
 
 		int start = 0;
 		int end = s.length() - 1;
