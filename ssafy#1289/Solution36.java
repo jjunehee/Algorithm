@@ -5,13 +5,13 @@ import java.io.InputStreamReader;
 public class Solution36 {
 	static int count;
 	static int[] answer;
-	public static void main(StringProblem[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
 		answer = new int[T];
 		for (int i = 0; i < T; i++) {
-			StringProblem str = br.readLine();
-			StringProblem[] st = str.split("");
+			String str = br.readLine();
+			String[] st = str.split("");
 
 			count = 0;
 			for (int index = 0; index < st.length; index++) {
@@ -27,10 +27,10 @@ public class Solution36 {
 		}
 	}
 
-	public static void search(int i, StringProblem[] st, int end) {
-		StringProblem prev = "0";	
+	public static void search(int i, String[] st, int end) {
+		String prev = "0";	
 		for (int start = i; start < end; start++) {
-			StringProblem cur = st[start];
+			String cur = st[start];
 			if (!prev.equals(cur)) {
 				count++;
 				prev = cur;
