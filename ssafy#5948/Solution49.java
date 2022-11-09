@@ -1,17 +1,19 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Solution49 {
 	static int[] answer;
 	static Set<Integer> set = new HashSet<>();
-	static PriorityQueue<Integer> pq = new PriorityQueue<>();
+	static ArrayList<Integer> list = new ArrayList<>();
+	static boolean[] visited = new boolean[7];
 
 	public static void main(String[] args) throws IOException {
 
@@ -26,12 +28,15 @@ public class Solution49 {
 			}
 
 			dfs(0, arr, 0, 0);
-			set.forEach((value) -> pq.add(value));
+			set.forEach((value) -> list.add(value));
+			Collections.reverse(list);
+			answer[t] = list.get(4);
 		}
-		Iterator iter = pq.iterator();
-		while (iter.hasNext()) {
-			System.out.println(iter.next());
+
+		for (int i = 0; i < T; i++) {
+			System.out.println("#" + (i+1) + " " + answer[i]);
 		}
+
 	}
 
 	public static void dfs(int idx, int[] arr, int count, int value) {
@@ -41,8 +46,11 @@ public class Solution49 {
 		}
 
 		for (int i = idx; i < 7; i++) {
-			dfs(idx + 1, arr, count + 1, value + arr[i]);
-			dfs(idx + 1, arr, count, value);
+			if (!visited[i]) {
+				visited[i] = true;
+				dfs(idx + 1, arr, count + 1, value + arr[i]);
+				visited[i] = false;
+			}
 		}
 	}
 }
