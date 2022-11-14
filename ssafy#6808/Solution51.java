@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 public class Solution51 {
 	static int[] A;
 	static int[] B;
-	static boolean[] visited = new boolean[19];
+	static boolean[] visited;
 	static boolean[] check;
 	static int[] result;
 	static int Wincount;
@@ -21,6 +21,7 @@ public class Solution51 {
 		for (int t = 0; t < T; t++) {
 			A = new int[9];
 			B = new int[9];
+			visited = new boolean[19];
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < 9; i++) {
 				A[i] = Integer.parseInt(st.nextToken());
@@ -60,7 +61,6 @@ public class Solution51 {
 					Bscore += A[i] + result[i];
 				}
 			}
-
 			if (Ascore > Bscore) {
 				Wincount++;
 			}
