@@ -7,16 +7,24 @@ public class Solution57 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
 
-		for (int t = 0; t < T; t++) {
+		StringBuffer sb = new StringBuffer();
+		for (int t = 1; t <= T; t++) {
+			sb.append("#" + t + " ");
 			String str = br.readLine();
-			if(str.substring(0,str.length()/2).equals(str.substring(str.length()/2+1))) {
-				System.out.println(str.substring(str.length()/2+1));
-				System.out.println("1");
-			} else {
-				System.out.println(str.substring(str.length()/2+1));
+			int start = 0;
+			int end = str.length() - 1;
 
-				System.out.println("0");
+			boolean isPelindrome = true;
+			for (int i = 0; i < str.length() / 2; i++) {
+				if (str.charAt(start) != str.charAt(end)) {
+					isPelindrome = false;
+					break;
+				}
+				start++;
+				end--;
 			}
+			sb.append(isPelindrome == true ? "1" : "0").append("\n");
 		}
+		System.out.println(sb);
 	}
 }

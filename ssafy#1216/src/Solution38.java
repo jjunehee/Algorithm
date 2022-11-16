@@ -1,69 +1,73 @@
+
 package src;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Solution38 {
-	static final int MapSize = 100;
 	static char[][] map;
-	static int max;
-	static int[] answer;
-
+	static boolean flag;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		answer = new int[10+1];
+		StringBuffer sb = new StringBuffer();
 		for (int t = 1; t <= 10; t++) {
+			sb.append("#" + t + " ");
 			int n = Integer.parseInt(br.readLine());
-			map = new char[MapSize][MapSize];
-			for (int i = 0; i < MapSize; i++) {
-				String str = br.readLine();
-				for (int j = 0; j < MapSize; j++) {
-					map[i][j] = str.charAt(j);
+			map = new char[101][101];
+			for (int i = 0; i < 100; i++) {
+				char[] str = br.readLine().toCharArray();
+				for (int j = 0; j < 100; j++) {
+					map[i][j] = str[j];
 				}
 			}
-
-			max = Integer.MIN_VALUE;
-			for (int L = 0; L <= map.length; L++) {
-
+			int max = 1;
+			flag = true;
+			for (int L = 1; L <= 100; L++) {
 				// row check
-				for (int i = 0; i < MapSize; i++) {
-					for (int j = 0; j < MapSize - L + 1; j++) {
-						boolean check = true;
-						for (int k = 0; k < L / 2; k++) {
-							if (map[i][j + k] != map[i][j + L - k - 1]) {
-								check = false;
+				loopOut:
+				for (int i = 0; i < 100; i++) {
+					for (int j = 0; j < 100 - L + 1; j++) {
+						flag = true;
+						for (int p = 0; p < L / 2; p++) {
+							if (map[i][j + p] != map[i][j + L - 1 - p]) {
+								flag = false;
 								break;
 							}
 						}
-						if (check && max < L) {
+						if (flag && max < L) {
 							max = L;
+							break loopOut;
 						}
 					}
 				}
+				
 
-				// column check
-				for (int j = 0; j < MapSize; j++) {
-					for (int i = 0; i < MapSize - L + 1; i++) {
-						boolean check = true;
-						for (int k = 0; k < L / 2; k++) {
-							if (map[i + k][j] != map[i + L - k - 1][j]) {
-								check = false;
+				// column check;
+
+				loopOut:
+				for (int j = 0; j < 100; j++) {
+					for (int i = 0; i < 100 - L + 1; i++) {
+						flag = true;
+						for (int p = 0; p < L / 2; p++) {
+							if (map[i + p][j] != map[i + L - 1 - p][j]) {
+								flag = false;
 								break;
 							}
 						}
-						if (check && max < L) {
+						if (flag && max < L) {
 							max = L;
+							break loopOut;
 						}
 					}
 				}
 			}
-			answer[t] = max;
-		}
+			sb.append(max).append("\n");
 
-		for (int i = 1; i <= 10; i++) {
-			System.out.println("#" + i + " " + answer[i]);
 		}
+		System.out.println(sb);
+
 	}
 }
