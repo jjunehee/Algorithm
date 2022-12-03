@@ -13,12 +13,15 @@ public class Main14501_dfs {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 
+		
 		T = new int[N + 10];
 		P = new int[N + 10];
+		
 		for (int i = 1; i <= N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			T[i] = Integer.parseInt(st.nextToken());
 			P[i] = Integer.parseInt(st.nextToken());
+			T[i] = Integer.parseInt(st.nextToken());
+			
 		}
 
 		solve_dfs(1, 0);
