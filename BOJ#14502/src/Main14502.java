@@ -5,19 +5,20 @@ import java.util.*;
 
 public class Main14502 {
 
-	static final int dx[] = { 0, 0, 1, -1 }; // »óÇÏÁÂ¿ì ¹æÇâ ¼³Á¤
-	static final int dy[] = { 1, -1, 0, 0 }; // »óÈ­ÁÂ¿ì ¹æÇâ ¼³Á¤
+	static final int dx[] = { 0, 0, 1, -1 }; // ìƒí•˜ì¢Œìš° ë°©í–¥ ì„¤ì •
+	static final int dy[] = { 1, -1, 0, 0 }; // ìƒí™”ì¢Œìš° ë°©í–¥ ì„¤ì •
 	static int originalMap[][];
 	static int n, m;
-	static int maxSafeZone = Integer.MIN_VALUE; // ÃÖ´ë°ªÀ» Ã£±â À§ÇÑ ÃÖ¼Ò°ª ¼³Á¤
+	static int maxSafeZone = Integer.MIN_VALUE; // ìµœëŒ€ê°’ì„ ì°¾ê¸° ìœ„í•œ ìµœì†Œê°’ ì„¤ì •
 	static int wallCnt = 0;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
+		n = Integer.parseInt(st.nextToken());
+		
 		originalMap = new int[n][m];
 
 		for (int i = 0; i < n; i++) {
