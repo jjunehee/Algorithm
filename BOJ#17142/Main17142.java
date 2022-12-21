@@ -5,11 +5,12 @@ import java.util.StringTokenizer;
 
 public class Main17142 {
 	static int[][] map;
+	static int N,M;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		int M = Integer.parseInt(st.nextToken());
-		int N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
 
 		map = new int[M][M];
 		for (int i = 0; i < M; i++) {
@@ -18,5 +19,17 @@ public class Main17142 {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
+		
+		pickN(0);
 	}
+	private static void pickN(int num) { // DFS
+		if(num == N) {
+			spreadSimulation();
+		}
+
+	}
+	private static void spreadSimulation() {
+		
+	}
+	
 }
