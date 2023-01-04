@@ -20,9 +20,18 @@ public class Main17142 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		map = new int[N][N];
 		active = new Virus[M];
 		for (int i = 0; i < N; i++) {
+=======
+=======
+>>>>>>> Stashed changes
+		map = new int[M][M];
+		active = new Virus[N];
+		for (int i = 0; i < M; i++) {
+>>>>>>> Stashed changes
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
@@ -34,25 +43,53 @@ public class Main17142 {
 		pickN(0, 0);
 	}
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	private static void pickN(int num, int start) { // DFS
 		if (num == M) {
+=======
+	private static void pickN(int count, int start) { // DFS¸¦ »ç¿ëÇØ¼­ N°³ÀÇ ¹ÙÀÌ·¯½º Á¶ÇÕ(Combination) ±¸ÇÏ±â
+		if (count == N) {
+>>>>>>> Stashed changes
+=======
+	private static void pickN(int count, int start) { // DFS¸¦ »ç¿ëÇØ¼­ N°³ÀÇ ¹ÙÀÌ·¯½º Á¶ÇÕ(Combination) ±¸ÇÏ±â
+		if (count == N) {
+>>>>>>> Stashed changes
 			spreadSimulation();
 			return;
 		}
 
 		for (int i = start; i < list.size(); i++) {
-			active[num] = list.get(i);
-			pickN(num + 1, i + 1);
+			active[count] = list.get(i); // TODO ÀÌ·¸°Ô Àü¿ªº¯¼ö·Î spreadSimulation¿¡¼­ »ç¿ëÇÏµµ·Ï ÇÏ´Â °ÍÀÌ °ú¿¬ ¸Â´Â ¹æ¹ýÀÏ±î.
+			pickN(count + 1, i + 1);
 		}
 
 	}
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	private static void spreadSimulation() {
 		// Mê°œì˜ ë°”ì´ëŸ¬ìŠ¤ ëª¨ë‘ ë™ì‹œì— í¼ì ¸ì•¼í•¨
 		boolean endFlag = false;
 		while(!endFlag) {
 			
 		}
+=======
+=======
+>>>>>>> Stashed changes
+	private static void spreadSimulation() { // BFS·Î Spread simulation
+		// active¹è¿­¿¡ Virus 3°³ ÀÖ´Â »óÅÂ.
+
+		
+			for (int i = 0; i < active.length; i++) {
+				Virus virus = active[i];
+				System.out.println(virus.x + " " + virus.y);
+			}
+		
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 	}
 
 	public static class Virus {
