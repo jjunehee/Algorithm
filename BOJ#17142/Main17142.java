@@ -9,10 +9,10 @@ public class Main17142 {
 	static int[][] map;
 	static int N, M;
 	static ArrayList<Virus> list = new ArrayList<>();
-	static Virus[] active;
 	static int count;
 	static int[] dx = { -1, 0, 1, 0 };
 	static int[] dy = { 0, 1, 0, -1 };
+	static int min = Integer.MAX_VALUE;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,18 +20,9 @@ public class Main17142 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 		map = new int[N][N];
 		active = new Virus[M];
 		for (int i = 0; i < N; i++) {
-=======
-=======
->>>>>>> Stashed changes
-		map = new int[M][M];
-		active = new Virus[N];
-		for (int i = 0; i < M; i++) {
->>>>>>> Stashed changes
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
@@ -43,53 +34,39 @@ public class Main17142 {
 		pickN(0, 0);
 	}
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 	private static void pickN(int num, int start) { // DFS
 		if (num == M) {
-=======
-	private static void pickN(int count, int start) { // DFS¸¦ »ç¿ëÇØ¼­ N°³ÀÇ ¹ÙÀÌ·¯½º Á¶ÇÕ(Combination) ±¸ÇÏ±â
-		if (count == N) {
->>>>>>> Stashed changes
-=======
-	private static void pickN(int count, int start) { // DFS¸¦ »ç¿ëÇØ¼­ N°³ÀÇ ¹ÙÀÌ·¯½º Á¶ÇÕ(Combination) ±¸ÇÏ±â
-		if (count == N) {
->>>>>>> Stashed changes
-			spreadSimulation();
+			min = Math.min(min, spreadSimulation());
 			return;
 		}
 
 		for (int i = start; i < list.size(); i++) {
-			active[count] = list.get(i); // TODO ÀÌ·¸°Ô Àü¿ªº¯¼ö·Î spreadSimulation¿¡¼­ »ç¿ëÇÏµµ·Ï ÇÏ´Â °ÍÀÌ °ú¿¬ ¸Â´Â ¹æ¹ýÀÏ±î.
-			pickN(count + 1, i + 1);
+			active[num] = list.get(i);
+			pickN(num + 1, i + 1);
 		}
 
 	}
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-	private static void spreadSimulation() {
-		// Mê°œì˜ ë°”ì´ëŸ¬ìŠ¤ ëª¨ë‘ ë™ì‹œì— í¼ì ¸ì•¼í•¨
+	private static int spreadSimulation() {
+		// M°³ÀÇ ¹ÙÀÌ·¯½º ¸ðµÎ µ¿½Ã¿¡ ÆÛÁ®¾ßÇÔ
+		ArrayList<Virus> activeList = new ArrayList<>();
+		int time = 0;
 		boolean endFlag = false;
-		while(!endFlag) {
-			
-		}
-=======
-=======
->>>>>>> Stashed changes
-	private static void spreadSimulation() { // BFS·Î Spread simulation
-		// active¹è¿­¿¡ Virus 3°³ ÀÖ´Â »óÅÂ.
-
-		
+		while (!activeList.isEmpty()) {
 			for (int i = 0; i < active.length; i++) {
 				Virus virus = active[i];
-				System.out.println(virus.x + " " + virus.y);
+
+				int x = virus.x;
+				int y = virus.y;
+				for (int dir = 0; dir < 4; dir++) {
+					if (map[x + dx[dir]][y + dy[dir]] == 0) {
+						activeList.add(new Virus(x + dx[dir], y + dy[dir]));
+					}
+				}
 			}
-		
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+			time++;
+		}
+		return time;
 	}
 
 	public static class Virus {
