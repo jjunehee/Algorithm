@@ -10,18 +10,19 @@ public class Main17142 {
 	static int N, M;
 	static ArrayList<Virus> list = new ArrayList<>();
 	static Virus[] active;
-
 	static int count;
+	static int[] dx = { -1, 0, 1, 0 };
+	static int[] dy = { 0, 1, 0, -1 };
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		M = Integer.parseInt(st.nextToken());
 		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 
-		map = new int[M][M];
+		map = new int[N][N];
 		active = new Virus[M];
-		for (int i = 0; i < M; i++) {
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
@@ -34,7 +35,7 @@ public class Main17142 {
 	}
 
 	private static void pickN(int num, int start) { // DFS
-		if (num == N) {
+		if (num == M) {
 			spreadSimulation();
 			return;
 		}
@@ -47,7 +48,11 @@ public class Main17142 {
 	}
 
 	private static void spreadSimulation() {
-
+		// M개의 바이러스 모두 동시에 퍼져야함
+		boolean endFlag = false;
+		while(!endFlag) {
+			
+		}
 	}
 
 	public static class Virus {
