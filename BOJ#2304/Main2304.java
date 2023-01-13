@@ -15,20 +15,24 @@ public class Main2304 {
 
 		int N = Integer.parseInt(br.readLine());
 
-		
-
+		int maxHeightIndex = 0;
+		int maxHeight = 0;
 		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int L = Integer.parseInt(st.nextToken());
 			int H = Integer.parseInt(st.nextToken());
-			pList.add(new Pillar(L, H));
+			pList.add(new Pillar(L, H)); // 기둥정보를 저장
+
+			if (maxHeight < H) {
+				maxHeight = H;
+				maxHeightIndex = L;
+			}
 		}
 
-		Collections.sort(pList);
+		Collections.sort(pList); // 입력에 위치 순서가 보장되지 않으니 정렬해준다.
 
-		for (Pillar p : pList) {
-			System.out.println(p.L);
-		}
+		int minIndex = pList.get(0).L;
+		int maxIndex = pList.get(pList.size() - 1).L;
 	}
 
 	public static class Pillar implements Comparable<Pillar> {
