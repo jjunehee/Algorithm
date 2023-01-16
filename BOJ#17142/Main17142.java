@@ -62,8 +62,12 @@ public class Main17142 {
 
 			for (int dir = 0; dir < 4; dir++) {
 				// 사방에 0(바이러스가 퍼질 수 있는 공간)이 있는지 확인
-				if (v.x + dx[dir] < 0) {
-
+				int nx = v.x + dx[dir];
+				int ny = v.y + dy[dir];
+				if (nx >= 0 && nx < M && ny >= 0 && ny < M && map[nx][ny] == 0) {
+					
+					activeQ.add(new Virus(nx, ny));
+					map[nx][ny] = 2;
 				}
 
 			}
