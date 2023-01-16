@@ -24,6 +24,7 @@ public class Main2008 {
 					map[i][j] = st.nextToken();
 				}
 			}
+			
 			int maxHeight = Integer.MIN_VALUE;
 			int height = 0;
 			for (int i = 0; i < N; i++) {
