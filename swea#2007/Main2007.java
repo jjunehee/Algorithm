@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+//스위치 on off
 public class Main2007 {
 	static int[] arr;
 
