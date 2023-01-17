@@ -7,7 +7,9 @@ public class Main2006 {
 	static int winCondtion = 0;
 	static int game;
 	static boolean flag;
-
+	
+	
+	//가위바위보 문제
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		System.out.print("번호를 입력하세요 : ");
