@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+//Building problem
 public class Main2008 {
 	static String[][] map;
 	static int[] dx = { -1, -1, 0, 1, 1, 1, 0, -1 };
