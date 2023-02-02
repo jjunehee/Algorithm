@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main17142 {
-	static int[][] map;
+	static char[][] map;
 	static int N, M;
 	static List<Virus> vList = new ArrayList<>();
 	static Virus[] active;
@@ -24,13 +24,14 @@ public class Main17142 {
 		M = Integer.parseInt(st.nextToken());
 
 		active = new Virus[M];
-		map = new int[N][N];
+		map = new char[N][N];
 		for (int i = 0; i < N; i++) { // map을 입력 0빈칸, 1벽, 2바이러스 놓을 수 있는 위치
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-				if (map[i][j] == 2) {
+				map[i][j] = st.nextToken().charAt(0);
+				if (map[i][j] == '2') {
 					vList.add(new Virus(i, j));
+					map[i][j] = '*';
 				}
 			}
 		}
@@ -53,34 +54,54 @@ public class Main17142 {
 	}
 
 	private static void spread() {
-		int time = 0;
-		Queue<Virus> VirusQ = new LinkedList<>();
-		for (Virus v : active) {
-			VirusQ.add(v);
+		char[][] copyMap = new char[N][N];
+
+		for (int i = 0; i < map.length; i++) {
+			copyMap[i] = map[i].clone();
 		}
+		int time = 1;
+		Queue<Virus> VirusQ = new LinkedList<>();
+		Queue<Virus> totalQ = new LinkedList<>();
+		for (Virus v : active) {
+			copyMap[v.x][v.y] = 'V'; 
+			totalQ.add(v);
+		}
+		
+		while (!totalQ.isEmpty()) {
 
-		while (!VirusQ.isEmpty()) {
-			Virus v = VirusQ.poll();
+			while (!totalQ.isEmpty()) {
+				Virus v1 = totalQ.poll();
+				VirusQ.add(v1);
+			}
 
-			int nx;
-			int ny;
-			for (int dir = 0; dir < 4; dir++) {
-				nx = v.x + dx[dir];
-				ny = v.y + dy[dir];
+			while (!VirusQ.isEmpty()) {
+				Virus v = VirusQ.poll();
+				int nx;
+				int ny;
+				for (int dir = 0; dir < 4; dir++) {
+					nx = v.x + dx[dir];
+					ny = v.y + dy[dir];
 
-				if (nx < 0 || ny < 0 || nx >= N || ny >= N) {
-					continue;
-				}
+					if (nx < 0 || ny < 0 || nx >= N || ny >= N) {
+						continue;
+					}
 
-				if (map[nx][ny] == 0) {
-					VirusQ.add(new Virus(nx, ny));
-					map[nx][ny] = 2;
+					if (map[nx][ny] == '0') {
+						totalQ.add(new Virus(nx, ny));
+						copyMap[nx][ny] = (char)(time+'0');
+					}
 				}
 			}
 			time++;
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					System.out.print(copyMap[i][j] + " ");
+				}
+				System.out.println();
+			}
+			System.out.println();
 		}
 		minTime = Math.min(minTime, time);
-
 
 	}
 
