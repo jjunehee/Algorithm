@@ -15,6 +15,7 @@ public class Main17142 {
 	static int[] dx = { 1, 0, -1, 0 };
 	static int[] dy = { 0, -1, 0, 1 };
 	static int minTime = Integer.MAX_VALUE;
+	static int emptySpace;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,6 +33,10 @@ public class Main17142 {
 				if (map[i][j] == '2') {
 					vList.add(new Virus(i, j));
 					map[i][j] = '*';
+				} else if (map[i][j] == '1') {
+					map[i][j] = 'w';
+				} else if (map[i][j] == '0') {
+					emptySpace++;
 				}
 			}
 		}
@@ -54,19 +59,20 @@ public class Main17142 {
 	}
 
 	private static void spread() {
+		boolean allSpread = false;
 		char[][] copyMap = new char[N][N];
 
 		for (int i = 0; i < map.length; i++) {
 			copyMap[i] = map[i].clone();
 		}
-		int time = 1;
+		int time = 0;
 		Queue<Virus> VirusQ = new LinkedList<>();
 		Queue<Virus> totalQ = new LinkedList<>();
 		for (Virus v : active) {
-			copyMap[v.x][v.y] = 'V'; 
+			copyMap[v.x][v.y] = 'V';
 			totalQ.add(v);
 		}
-		
+
 		while (!totalQ.isEmpty()) {
 
 			while (!totalQ.isEmpty()) {
@@ -86,13 +92,22 @@ public class Main17142 {
 						continue;
 					}
 
-					if (map[nx][ny] == '0') {
+					if (copyMap[nx][ny] == '0') {
 						totalQ.add(new Virus(nx, ny));
-						copyMap[nx][ny] = (char)(time+'0');
+						copyMap[nx][ny] = (char) (time + '0');
+						emptySpace--;
 					}
 				}
 			}
-			time++;
+			
+			
+			if (emptySpace == 0) {
+				allSpread = true;
+				break;
+			} else if (totalQ.isEmpty()) {
+				allSpread = false;
+				break;
+			}
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
 					System.out.print(copyMap[i][j] + " ");
@@ -100,8 +115,12 @@ public class Main17142 {
 				System.out.println();
 			}
 			System.out.println();
+			time++;
 		}
-		minTime = Math.min(minTime, time);
+		System.out.println("끝" + time);
+		if (allSpread) {
+			minTime = Math.min(minTime, time);
+		}
 
 	}
 
