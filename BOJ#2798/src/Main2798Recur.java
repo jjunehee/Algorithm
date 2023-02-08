@@ -3,12 +3,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main2798 {
+public class Main2798Recur {
 	static int[] cards;
 	static int[] result;
 	static int N, M;
 	static int sum;
 	static int max = Integer.MIN_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
