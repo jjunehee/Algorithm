@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;public class Main2798Recur {
+import java.util.StringTokenizer;
+
+public class Main2798recur2 {
 	static int[] cards;
 	static int[] result;
 	static int N, M;
@@ -23,26 +25,24 @@ import java.util.StringTokenizer;public class Main2798Recur {
 			cards[i] = Integer.parseInt(st.nextToken());
 		}
 
-		recur(0, 0);
+		recur(0, 0, 0);
 		System.out.println(max);
 	}
 
-	private static void recur(int cnt, int idx) {
+	private static void recur(int cnt, int idx, int result) {
 		if (cnt == 3) {
-			int sum = 0;
-			for (int i = 0; i < result.length; i++) {
-				sum += result[i];
-			}
-			if (sum <= M) {
-				max = Math.max(sum, max);
+
+			if (result <= M) {
+				max = Math.max(max, result);
 			}
 			return;
 		}
-
-		for (int i = idx; i < N; i++) {
-			result[cnt] = cards[i];
-			recur(cnt + 1, i + 1);
-		}
+		
+		if(idx == cards.length) return;
+		
+		recur(cnt+1, idx+1, result + cards[idx]);
+		recur(cnt, idx+1, result);
+		
 
 	}
 }
