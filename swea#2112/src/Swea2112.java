@@ -11,8 +11,6 @@ public class Swea2112 {
 	static int[] selectRow;
 	static int[][] copyMap;
 	static int[] Row;
-	static boolean signal;
-	static boolean pass;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -35,11 +33,12 @@ public class Swea2112 {
 					map[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
-			
+
 			copyMap = new int[D][W];
 			for (int i = 0; i < D; i++) {
 				copyMap[i] = map[i].clone();
 			}
+			
 			if (test()) {
 				Flag = true;
 			} else {
@@ -50,7 +49,7 @@ public class Swea2112 {
 				selectRow = new int[num];
 				combRow(0, 0);
 
-				if (pass) {
+				if (Flag) {
 					break;
 				}
 				num++;
@@ -61,13 +60,14 @@ public class Swea2112 {
 	}
 
 	private static void combRow(int cnt, int idx) {
+		if (!Flag) {
+			return;
+		}
+		
 		if (cnt == num) {
 
 			Row = new int[num];
 			combAB(0, 0);
-			if (!signal) {
-				pass = false;
-			}
 			return;
 		}
 
@@ -75,16 +75,17 @@ public class Swea2112 {
 			selectRow[cnt] = i;
 			combRow(cnt + 1, i + 1);
 		}
+		
 	}
 
 	private static void combAB(int cnt, int idx) {
+		if (!Flag) {
+			return;
+		}
 
 		if (cnt == num) {
 			change();
 			test();
-			if (!Flag) {
-				signal = false;
-			}
 			return;
 		}
 
