@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+// ì¹˜í‚¨ ë°°ë‹¬
 public class Main15686 {
 	static int[][] map;
 	static ArrayList<Chicken> chickenList = new ArrayList<>();
@@ -47,7 +48,7 @@ public class Main15686 {
 
 	}
 
-	private static void calculate() { // ¸ðµç Áý¿¡¼­ »ÌÀº Ä¡Å²Áý±îÁöÀÇ °Å¸®µéÀÇ ÇÕ °è»ê
+	private static void calculate() { // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¡Å²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
 
 		int distance = 0;
 		int sum = 0;
