@@ -52,13 +52,12 @@ public class Main16935 {
 				break;
 			}
 		}
-		System.out.println();
-//		for (int[] i : map) {
-//			for (int j : i) {
-//				System.out.print(j + " ");
-//			}
-//			System.out.println();
-//		}
+		for (int[] i : map) {
+			for (int j : i) {
+				System.out.print(j + " ");
+			}
+			System.out.println();
+		}
 	}
 
 	public static void cal1() {
@@ -85,8 +84,8 @@ public class Main16935 {
 	}
 
 	public static void cal3() {
-		M = map[0].length;
 		N = map.length;
+		M = map[0].length;
 		map3 = new int[M][N];
 		Queue<Integer> q = new LinkedList<>();
 		for (int j = 0; j < M; j++) {
@@ -96,32 +95,18 @@ public class Main16935 {
 		}
 
 		for (int i = 0; i < M; i++) {
-			for (int j = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				map3[i][j] = q.poll();
 			}
 		}
-		for (int[] i : map3) {
-			for (int j : i) {
-				System.out.print(j + " ");
-			}
-			System.out.println();
-		}
-//		while (!q.isEmpty()) {
-//			for (int i = 0; i < N; i++) {
-//				System.out.print(q.poll() + " ");
-//			}
-//			System.out.println();
-//		}
+		N = map[0].length;
+		M = map.length;
 		map = map3;
 	}
 
 	public static void cal4() {
-		for (int[] i : map) {
-			for (int j : i) {
-				System.out.print(j + " ");
-			}
-			System.out.println();
-		}
+		N = map.length;
+		M = map[0].length;
 		
 		map4 = new int[M][N];
 		Queue<Integer> q = new LinkedList<>();
@@ -131,23 +116,13 @@ public class Main16935 {
 			}
 		}
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; i < M; i++) {
+		for (int i = 0; i < M; i++) {
+			for (int j = 0; j < N; j++) {
 				map4[i][j] = q.poll();
 			}
 		}
-		for (int[] i : map4) {
-			for (int j : i) {
-				System.out.print(j + " ");
-			}
-			System.out.println();
-		}
-//		while (!q.isEmpty()) {
-//			for (int i = 0; i < N; i++) {
-//				System.out.print(q.poll() + " ");
-//			}
-//			System.out.println();
-//		}
+		N = map[0].length;
+		M = map.length;
 		map = map4;
 	}
 
