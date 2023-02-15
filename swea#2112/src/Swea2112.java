@@ -34,21 +34,20 @@ public class Swea2112 {
 				}
 			}
 
+			num = 0;
 			copyMap = new int[D][W];
 			for (int i = 0; i < D; i++) {
 				copyMap[i] = map[i].clone();
 			}
-
 			if (test()) {
 				Flag = true;
 			} else {
 				num++;
 			}
-			while (!Flag) {
-
+			while (true) {
 				selectRow = new int[num];
+				Flag = true;
 				combRow(0, 0);
-
 				if (Flag) {
 					break;
 				}
@@ -61,17 +60,17 @@ public class Swea2112 {
 
 	private static void combRow(int cnt, int idx) {
 		if (!Flag) {
+			System.out.println("q");
 			return;
 		}
-
 		if (cnt == num) {
-
+			System.out.println("c");
 			tempValue = new int[num];
 			combAB(0);
 			return;
 		}
-
 		for (int i = idx; i < D; i++) {
+			Flag = true;
 			selectRow[cnt] = i;
 			combRow(cnt + 1, i + 1);
 		}
@@ -80,11 +79,11 @@ public class Swea2112 {
 
 	private static void combAB(int cnt) {
 
-		if(!Flag) {
+		if (!Flag) {
 			return;
 		}
 		if (cnt == num) {
-
+			System.out.println("num : " + num + " tttttttttttttttttttttttt");
 			copyMap = new int[D][W];
 			for (int i = 0; i < D; i++) {
 				copyMap[i] = map[i].clone();
@@ -96,8 +95,15 @@ public class Swea2112 {
 				}
 			}
 			
-			test();
+			for (int i = 0; i < D; i++) {
+				for (int j = 0; j < W; j++) {
+					System.out.print(copyMap[i][j] + " ");
+				}
+				System.out.println();
+			}
+			System.out.println("---------------------");
 			
+			test();
 			return;
 		}
 
@@ -111,22 +117,32 @@ public class Swea2112 {
 	}
 
 	private static boolean test() {
-
+		int cnt = 0;
 		for (int j = 0; j < W; j++) {
+			Flag = true;
 			for (int i = 0; i <= D - K; i++) {
 				check(i, j);
 				if (!Flag) {
-					return false;
+					break;
 				}
 			}
+			
+			if(Flag) { // 해당 열이 check에 통과하게되면 합격기준 cnt++;
+				cnt++;
+			}
 		}
-		return true;
+		if(cnt>=K) {
+			Flag = true;
+			return true;
+		}
+		Flag = false;
+		return false;
 	}
 
 	private static void check(int i, int j) {
-
-		for (int k = 0; k < K; k++) {
-			if (copyMap[i][j] == copyMap[i + k][j]) {
+		
+		for (int t = 0; t < 3; t++) {
+			if (copyMap[i][j] == copyMap[i + t][j]) {
 				Flag = true;
 				continue;
 			}
