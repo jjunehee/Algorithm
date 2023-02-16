@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-// 연산자 끼워넣기
 public class Main14888 {
 	static int[] Operator = new int[4];
 	static int[] num;
