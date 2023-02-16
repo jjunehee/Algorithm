@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// 보호 필름
 public class Swea2112 {
 	static int[][] map;
 	static boolean Flag;
