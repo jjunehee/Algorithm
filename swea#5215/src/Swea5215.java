@@ -7,8 +7,10 @@ public class Swea5215 {
 	static int[] T;
 	static int[] K;
 	static int[] pick;
-	static int N;
+	static int N, L;
 	static boolean[] visited;
+	static int n;
+	static int maxScore;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,7 +23,7 @@ public class Swea5215 {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 
 			N = Integer.parseInt(st.nextToken());
-			int L = Integer.parseInt(st.nextToken());
+			L = Integer.parseInt(st.nextToken());
 
 			T = new int[N];
 			K = new int[N];
@@ -31,28 +33,27 @@ public class Swea5215 {
 				K[i] = Integer.parseInt(st.nextToken());
 			}
 
-			pick = new int[N];
-			visited = new boolean[N];
-			comb(0, 0);
+			maxScore = Integer.MIN_VALUE;
+			comb(0, 0, 0, 0);
 
+			sb.append(maxScore).append("\n");
 		}
+		System.out.println(sb.toString());
 	}
 
-	private static void comb(int cnt, int idx) {
+	private static void comb(int cnt, int idx, int sumT, int sumK) {
 
-		if (cnt == N) {
-			for (int i = 0; i < N; i++) {
-				System.out.print(visited[i] + " ");
+		if (idx == N) {
+
+			if (sumK <= L) {
+				maxScore = Math.max(maxScore, sumT);
 			}
+			return;
+
 		}
 
-		for (int i = idx; i < N; i++) {
-			if (visited[i])
-				continue;
-			pick[i] = i;
-			visited[i] = true;
-			comb(cnt + 1, i + 1);
-			visited[i] = false;
-		}
+		comb(cnt + 1, idx + 1, sumT + T[idx], sumK + K[idx]);
+		comb(cnt, idx + 1, sumT, sumK);
+
 	}
 }
