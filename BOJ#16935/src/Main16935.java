@@ -107,7 +107,7 @@ public class Main16935 {
 	public static void cal4() {
 		N = map.length;
 		M = map[0].length;
-		
+
 		map4 = new int[M][N];
 		Queue<Integer> q = new LinkedList<>();
 		for (int j = M - 1; j >= 0; j--) {
@@ -127,61 +127,29 @@ public class Main16935 {
 	}
 
 	public static void cal5() {
-		temp = new int[N][M];
 
 		for (int i = 0; i < N / 2; i++) {
 			for (int j = 0; j < M / 2; j++) {
-				temp[i][M / 2 + j] = map[i][j];
+				int tmp = map[i][j];
+				map[i][j] = map[i + N / 2][j];
+				map[i + N / 2][j] = map[i + N / 2][j + M / 2];
+				map[i + N / 2][j + M / 2] = map[i][j + M / 2];
+				map[i][j + M / 2] = tmp;
 			}
 		}
-
-		for (int i = 0; i < N / 2; i++) {
-			for (int j = M / 2; j < M; j++) {
-				temp[N / 2 + i][j] = map[i][j];
-			}
-		}
-
-		for (int i = N / 2; i < N; i++) {
-			for (int j = M / 2; j < M; j++) {
-				temp[i][j - M / 2] = map[i][j];
-			}
-		}
-
-		for (int i = N / 2; i < N; i++) {
-			for (int j = 0; j < M / 2; j++) {
-				temp[i - N / 2][j] = map[i][j];
-			}
-		}
-		map = temp;
 	}
 
 	public static void cal6() {
-		temp = new int[N][M];
 
 		for (int i = 0; i < N / 2; i++) {
 			for (int j = 0; j < M / 2; j++) {
-				temp[N / 2 + i][j] = map[i][j];
+				int tmp = map[i][j];
+				map[i][j] = map[i][j + M / 2];
+				map[i][j + M / 2] = map[i + N / 2][j + M / 2];
+				map[i + N / 2][j + M / 2] = map[i + N / 2][j];
+				map[i + N / 2][j] = tmp;
 			}
 		}
 
-		for (int i = 0; i < N / 2; i++) {
-			for (int j = M / 2; j < M; j++) {
-				temp[i][j - M / 2] = map[i][j];
-			}
-		}
-
-		for (int i = N / 2; i < N; i++) {
-			for (int j = M / 2; j < M; j++) {
-				temp[i - N / 2][j] = map[i][j];
-			}
-		}
-
-		for (int i = N / 2; i < N; i++) {
-			for (int j = 0; j < M / 2; j++) {
-				temp[i][j + M / 2] = map[i][j];
-			}
-		}
-
-		map = temp;
 	}
 }
