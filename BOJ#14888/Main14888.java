@@ -52,6 +52,7 @@ public class Main14888 {
 			perm(cnt + 1);
 			Operator[i]++;
 		}
+		
 	}
 
 	private static void calculate() {

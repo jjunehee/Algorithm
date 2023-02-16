@@ -33,21 +33,28 @@ public class Swea2112 {
 					map[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
-
+			
+			
+			Flag = false;
 			num = 0;
+			
 			copyMap = new int[D][W];
 			for (int i = 0; i < D; i++) {
 				copyMap[i] = map[i].clone();
 			}
-			if (test()) {
+			
+			if (K==1 || test()) { // 합격기준이 1이면 바로 합격 or 약품투입 해보지않고 바로 test()했을때, 합격 나오면 투입 X
 				Flag = true;
 			} else {
 				num++;
 			}
-			while (true) {
+			
+			//약품 투입 조합 start
+			while (!Flag) {
+				
 				selectRow = new int[num];
-				Flag = true;
-				combRow(0, 0);
+				combRow(0, 0); // 약품 투입 조합 start
+				
 				if (Flag) {
 					break;
 				}
@@ -59,18 +66,19 @@ public class Swea2112 {
 	}
 
 	private static void combRow(int cnt, int idx) {
-		if (!Flag) {
-			System.out.println("q");
+		if (Flag) {
 			return;
 		}
-		if (cnt == num) {
-			System.out.println("c");
+		if (cnt == num || cnt==K) {
 			tempValue = new int[num];
 			combAB(0);
 			return;
 		}
+		
+		if(cnt > K) {
+			return;
+		}
 		for (int i = idx; i < D; i++) {
-			Flag = true;
 			selectRow[cnt] = i;
 			combRow(cnt + 1, i + 1);
 		}
@@ -79,11 +87,10 @@ public class Swea2112 {
 
 	private static void combAB(int cnt) {
 
-		if (!Flag) {
+		if (Flag) {
 			return;
 		}
 		if (cnt == num) {
-			System.out.println("num : " + num + " tttttttttttttttttttttttt");
 			copyMap = new int[D][W];
 			for (int i = 0; i < D; i++) {
 				copyMap[i] = map[i].clone();
@@ -94,15 +101,6 @@ public class Swea2112 {
 					copyMap[selectRow[i]][j] = tempValue[i];
 				}
 			}
-			
-			for (int i = 0; i < D; i++) {
-				for (int j = 0; j < W; j++) {
-					System.out.print(copyMap[i][j] + " ");
-				}
-				System.out.println();
-			}
-			System.out.println("---------------------");
-			
 			test();
 			return;
 		}
@@ -120,18 +118,20 @@ public class Swea2112 {
 		int cnt = 0;
 		for (int j = 0; j < W; j++) {
 			Flag = true;
-			for (int i = 0; i <= D - K; i++) {
+			for (int i = 0; i <= D-K; i++) {
 				check(i, j);
-				if (!Flag) {
+				if (Flag) {
 					break;
+				} else {
+					continue;
 				}
 			}
 			
-			if(Flag) { // 해당 열이 check에 통과하게되면 합격기준 cnt++;
+			if(Flag) {
 				cnt++;
 			}
 		}
-		if(cnt>=K) {
+		if(cnt==W) {
 			Flag = true;
 			return true;
 		}
@@ -141,13 +141,13 @@ public class Swea2112 {
 
 	private static void check(int i, int j) {
 		
-		for (int t = 0; t < 3; t++) {
+		for (int t = 0; t < K; t++) {
 			if (copyMap[i][j] == copyMap[i + t][j]) {
 				Flag = true;
 				continue;
 			}
 			Flag = false;
-			break;
+			return;
 		}
 
 	}
