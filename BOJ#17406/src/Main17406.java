@@ -8,12 +8,16 @@ import java.util.StringTokenizer;
 
 public class Main17406 {
 	static int[][] map;
-	static Queue<Operator> q = new LinkedList<>();
-	static int[] dx = { 0, 1, 0, -1 };
-	static int[] dy = { 1, 0, -1, 0 };
-	static int N, M;
-	static boolean[][] visited;
-
+	static int[][] copyMap;
+	static Operator[] opList;
+	static int[] dx = { 1, 0, -1, 0 };
+	static int[] dy = { 0, 1, 0, -1 };
+	static int N, M, K;
+	static boolean[] visited;
+	static int[] sum;
+	static Operator[] pick;
+	static int min = Integer.MAX_VALUE;
+	static int ccnt;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -21,9 +25,10 @@ public class Main17406 {
 
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		int K = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
 
 		map = new int[N + 1][M + 1];
+		copyMap = new int[N + 1][M + 1];
 		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 1; j <= M; j++) {
@@ -31,106 +36,91 @@ public class Main17406 {
 			}
 		}
 
+		opList = new Operator[K];
 		for (int i = 0; i < K; i++) {
 			st = new StringTokenizer(br.readLine());
 			int r = Integer.parseInt(st.nextToken());
 			int c = Integer.parseInt(st.nextToken());
 			int s = Integer.parseInt(st.nextToken());
-			q.add(new Operator(r, c, s));
+			opList[i] = new Operator(r, c, s);
 		}
 
-		visited = new boolean[N + 1][M + 1];
-		move();
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= M; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
-		}
-
+		visited = new boolean[K];
+		pick = new Operator[K];
+		move(0);
+		System.out.print(min);
 	}
 
-	private static void move() { // q에서 하나씩 빼면서 map을 변경해줄 메소드
+	private static void move(int cnt) { // q에서 하나씩 빼면서 map을 변경해줄 메소드
 
-		while (!q.isEmpty()) { // 존재하는 연산을 모두 마칠때까지 조져주자
-			Operator op = q.poll(); // 첫번째 연산 꺼내
+		if (cnt == K) { // pick이 모두 채워졌다 == 연산의 순서가 모두 정해져서 들어가졌다.
+			ccnt++;
+			for (int i = 1; i <= N; i++) {
+				copyMap[i] = map[i].clone();
+			}
 
-			// 돌리는 직사각형의 시작점과 끝점을 구해야지.
-			int startX, startY;
-			int endX, endY;
+			for (Operator op : pick) { // 연산 꺼내
+				int startX, startY;
+				int endX, endY;
+				// 돌리는 직사각형의 시작점과 끝점을 구해야지.
+				startX = op.r - op.s;
+				startY = op.c - op.s;
 
-			startX = op.r - op.s;
-			startY = op.c - op.s;
+				endX = op.r + op.s;
+				endY = op.c + op.s;
 
-			endX = op.r + op.s;
-			endY = op.c + op.s;
-
-			// 자~ 이제 직사각형을 돌려주자
-			rotate(startX, startY, endX, endY);
-
+				// 자~ 이제 직사각형을 돌려주자
+				rotate(startX, startY, endX, endY);
+			}
+			
+			sum = new int[N + 1];
+			for (int i = 1; i <= N; i++) {
+				for (int j = 1; j <= M; j++) {
+					sum[i] += copyMap[i][j];
+				}
+				min = Math.min(min, sum[i]);
+			}
+			return;
 		}
+
+		for (int i = 0; i < K; i++) {
+			if(visited[i]) continue;
+			
+			visited[i] = true;
+			pick[cnt] = opList[i];
+			move(cnt + 1);
+			visited[i] = false;
+		}
+
 	}
 
 	private static void rotate(int x1, int y1, int x2, int y2) {
+		int depth = Math.min(x2 - x1, y2 - y1) / 2;
 
-		int endX = x1;
-		int endY = y1;
-		int nx = x1;
-		int ny = y1;
-		int dir = 0;
-//		System.out.println(x1 + " " + y1 + " " + x2 + " " + y2);
-		Deque<Integer> q = new LinkedList<>();
-		int cnt = 0;
-		
-		int x = x1;
-		int y = y1;
-		while (true) {
-			q.add(map[x][y]);
-			nx = x + dx[dir];
-			ny = y + dy[dir];
-			if (nx == endX && ny == endY) {
-				
-				q.add(q.pollLast());
-				
-				
-				int X = x1;
-				int Y = y1;
-				dir = 0;
-				while (!q.isEmpty()) {
-					map[X][Y] = q.poll();
-					System.out.println(X + " " + Y);
-					nx = X + dx[dir];
-					ny = Y + dy[dir];
-					
-					// nx, ny가 범위 밖을 벗어난다면, 방향 틀어주기
-					if (nx < 0 || nx < x1 || nx > x2 || ny < 0 || ny < y1 || ny > y2 || nx > N || ny > M ) {
-						dir = (dir + 1) % 4;
-						nx = X + dx[dir];
-						ny = Y + dy[dir];
-					}
-
-					X = nx;
-					Y = ny;
+		for (int d = 0; d < depth; d++) {
+			int nowi = x1 + d, nowj = y1 + d;
+			int tmp = copyMap[nowi][nowj];
+			int dir = 0;
+			while (true) {
+				int nexti = nowi + dx[dir];
+				int nextj = nowj + dy[dir];
+				// 옆칸이 더이상 가면 안되는 칸
+				if (nexti == x1 + d - 1 || nexti == x2 - d + 1 || nextj == y1 + d - 1 || nextj == y2 - d + 1) {
+					dir++;
+					if (dir == 4) {
+						break; // 한바퀴 돌았네 옆칸이고 뭐고 그만해
+					} else
+						continue; // 바꾼 방향으로 다시 위로 가서 옆칸좌표 다시 계산해라.
 				}
-				
-				
-				
-				break;
-//				rotate(x1 + 1, y1 + 1, x2 - 1, y2 - 1);
-			}
-			
-			// nx, ny가 범위 밖을 벗어난다면, 방향 틀어주기
-			if (nx < 0 || nx < x1 || nx > x2 || ny < 0 || ny < y1 || ny > y2 || nx > N || ny > M || visited[nx][ny]) {
-				dir = (dir + 1) % 4;
-				nx = x + dx[dir];
-				ny = y + dy[dir];
-			}
-			System.out.println(nx + " " + ny + "  value" + map[nx][ny]);
 
-			visited[nx][ny] = true;
-			x = nx;
-			y = ny;
+				// 음.. 옆칸이 가도 되는 칸인가보네 ? 옆칸에 있는 값 땡겨오고
+				copyMap[nowi][nowj] = copyMap[nexti][nextj];
+				nowi = nexti; // 나는 그칸으로 이동!
+				nowj = nextj;
+			}
+			copyMap[x1 + d][y1 + d + 1] = tmp;
 		}
+
 	}
 
 	public static class Operator {
