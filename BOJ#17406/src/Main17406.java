@@ -17,7 +17,6 @@ public class Main17406 {
 	static int[] sum;
 	static Operator[] pick;
 	static int min = Integer.MAX_VALUE;
-	static int ccnt;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -54,7 +53,6 @@ public class Main17406 {
 	private static void move(int cnt) { // q에서 하나씩 빼면서 map을 변경해줄 메소드
 
 		if (cnt == K) { // pick이 모두 채워졌다 == 연산의 순서가 모두 정해져서 들어가졌다.
-			ccnt++;
 			for (int i = 1; i <= N; i++) {
 				copyMap[i] = map[i].clone();
 			}
