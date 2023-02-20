@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-// 거듭제곱 구하기
+// 단순재귀, 분할정복을 이용한 거듭제곱 구하기
 public class DivideAndConquer {
 
 	static int cnt1;
