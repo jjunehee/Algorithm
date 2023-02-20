@@ -11,6 +11,7 @@ public class Main14503re {
 	static int[] dy = { 0, 1, 0, -1 };
 	static int cnt;
 	static int N, M;
+	static final int visited = 5;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -36,23 +37,16 @@ public class Main14503re {
 
 		Robot robot = new Robot(r, c, d);
 
-		if (map[r][c] == 0) {
-			map[r][c] = 3;
-			cnt++;
-		}
 		// 로봇이 움직임이 가능할 때 까지.
-		while (robot.canMove()) {
-			cnt++;
-			map[robot.r][robot.c] = 3;
-			System.out.println("dir" + robot.d);
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < M; j++) {
-					System.out.print(map[i][j] + " ");
-				}
-				System.out.println();
+		while (true) {
+
+			if (robot.Move()) {
+				map[robot.r][robot.c] = visited;
+				continue;
 			}
-			System.out.println();
-			System.out.println(cnt);
+			
+			break;
+			
 		}
 
 		System.out.println(cnt);
@@ -68,13 +62,14 @@ public class Main14503re {
 			this.r = r;
 			this.c = c;
 			this.d = d;
+			map[r][c] = visited;
+			cnt++;
 		}
 
 		// 움직일 수 있다는 것은..
-		public boolean canMove() {
+		public boolean Move() {
 			// 주변 4칸 중 청소되지 않은 빈칸이 없고, 뒤로도 갈 수 없는 경우!
 			if (checkDir()) { // 주변 4칸 중 조건을 만족하는 것이 존재한다면
-				
 				d = (d + 3) % 4; // 방향을 반시계 방향으로 틀고
 				int nx = r + dx[d];
 				int ny = c + dy[d];
@@ -82,27 +77,25 @@ public class Main14503re {
 				if (map[nx][ny] == 0 && nx >= 0 && nx < N && ny >= 0 && ny < M) {
 					r = nx;
 					c = ny;
+					cnt++;
 				}
 				return true;
 			} else {
 				if (canMoveBack()) {
-					d = (d + 2) % 4;
-					this.r = this.r + dx[d];
-					this.c = this.c + dy[d];
+					// 방향은 바뀌지 않고 후진!
+					this.r = this.r + dx[(d + 2) % 4];
+					this.c = this.c + dy[(d + 2) % 4];
 					return true;
 				} else {
-					System.out.println("Q");
 					return false;
 				}
-
 			}
 		}
 
 		private boolean canMoveBack() {
-			d = (d + 2) % 4;
-			int nx = this.r + dx[d];
-			int ny = this.c + dy[d];
-			
+			int nx = this.r + dx[(this.d + 2) % 4];
+			int ny = this.c + dy[(this.d + 2) % 4];
+
 			if (map[nx][ny] != 1 && nx >= 0 && nx < N && ny >= 0 && ny < M) {
 				return true;
 			}
