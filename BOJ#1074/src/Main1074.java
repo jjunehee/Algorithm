@@ -6,9 +6,9 @@ import java.util.StringTokenizer;
 // Z
 public class Main1074 {
 
-	static int[][] map;
+	static long[][] map;
 	static int N, r, c;
-	static int count;
+	static long count;
 
 	public static void main(String[] args) throws IOException {
 
@@ -20,7 +20,7 @@ public class Main1074 {
 		c = Integer.parseInt(st.nextToken());
 
 		int n = (int) Math.pow(2, N);
-		map = new int[n][n];
+		map = new long[n][n];
 
 		divide(0, 0, n, 0);
 
