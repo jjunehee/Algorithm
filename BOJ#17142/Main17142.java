@@ -16,7 +16,7 @@ public class Main17142 {
 	static int[] dy = { 0, -1, 0, 1 };
 	static int minTime = Integer.MAX_VALUE;
 	static int emptySpace;
-
+	static boolean flag;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -42,7 +42,11 @@ public class Main17142 {
 		}
 		// M개 만큼 2번 자리에 바이러스를 배치
 		pickM(0, 0);
-		System.out.println(minTime);
+		if(!flag) {
+			System.out.println("-1");
+		} else {
+			System.out.println(minTime);
+		}
 	}
 
 	private static void pickM(int cnt, int idx) { // 바이러스를 놓을 수 있는 위치 중에서 M개 만큼을 조합을 톹해 pick
@@ -60,7 +64,7 @@ public class Main17142 {
 	private static void spread() {
 		boolean allSpread = false;
 		char[][] copyMap = new char[N][N];
-
+//		System.out.println("시작");
 		for (int i = 0; i < map.length; i++) {
 			copyMap[i] = map[i].clone();
 		}
@@ -71,15 +75,16 @@ public class Main17142 {
 			copyMap[v.x][v.y] = 'V';
 			totalQ.add(v);
 		}
+		int empty = emptySpace;
 
-		while (emptySpace != 0 && !totalQ.isEmpty()) {
+		while (empty != 0 && !totalQ.isEmpty()) {
 
 			while (!totalQ.isEmpty()) {
 				Virus v1 = totalQ.poll();
 				VirusQ.add(v1);
 			}
 			time++;
-			System.out.println("size" + VirusQ.size());
+//			System.out.println("size" + VirusQ.size());
 			while (!VirusQ.isEmpty()) {
 				Virus v = VirusQ.poll();
 				int nx;
@@ -95,7 +100,7 @@ public class Main17142 {
 					if (copyMap[nx][ny] == '0') {
 						totalQ.add(new Virus(nx, ny));
 						copyMap[nx][ny] = (char) (time + '0');
-						emptySpace--;
+						empty--;
 					} else if(copyMap[nx][ny] == '*') {
 						totalQ.add(new Virus(nx, ny));
 						copyMap[nx][ny] = (char) (time + '0');
@@ -103,16 +108,16 @@ public class Main17142 {
 				}
 
 			}
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < N; j++) {
-					System.out.print(copyMap[i][j] + " ");
-				}
-				System.out.println();
-			}
-			System.out.println();
+//			for (int i = 0; i < N; i++) {
+//				for (int j = 0; j < N; j++) {
+//					System.out.print(copyMap[i][j] + " ");
+//				}
+//				System.out.println();
+//			}
+//			System.out.println();
 
 		}
-		if (emptySpace == 0) {
+		if (empty == 0) {
 			allSpread = true;
 		} else if (totalQ.isEmpty()) {
 			allSpread = false;
@@ -120,6 +125,7 @@ public class Main17142 {
 //		System.out.println("끝" + (time) + " " + allSpread + " " + emptySpace);
 		if (allSpread) {
 			minTime = Math.min(minTime, time);
+			flag = true;
 		}
 
 	}
