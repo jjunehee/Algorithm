@@ -64,7 +64,6 @@ public class Main17142 {
 	private static void spread() {
 		boolean allSpread = false;
 		char[][] copyMap = new char[N][N];
-//		System.out.println("시작");
 		for (int i = 0; i < map.length; i++) {
 			copyMap[i] = map[i].clone();
 		}
@@ -84,7 +83,6 @@ public class Main17142 {
 				VirusQ.add(v1);
 			}
 			time++;
-//			System.out.println("size" + VirusQ.size());
 			while (!VirusQ.isEmpty()) {
 				Virus v = VirusQ.poll();
 				int nx;
@@ -108,13 +106,6 @@ public class Main17142 {
 				}
 
 			}
-//			for (int i = 0; i < N; i++) {
-//				for (int j = 0; j < N; j++) {
-//					System.out.print(copyMap[i][j] + " ");
-//				}
-//				System.out.println();
-//			}
-//			System.out.println();
 
 		}
 		if (empty == 0) {
@@ -122,7 +113,7 @@ public class Main17142 {
 		} else if (totalQ.isEmpty()) {
 			allSpread = false;
 		}
-//		System.out.println("끝" + (time) + " " + allSpread + " " + emptySpace);
+		
 		if (allSpread) {
 			minTime = Math.min(minTime, time);
 			flag = true;
