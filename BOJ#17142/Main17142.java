@@ -40,21 +40,20 @@ public class Main17142 {
 				}
 			}
 		}
-
 		// M개 만큼 2번 자리에 바이러스를 배치
 		pickM(0, 0);
 		System.out.println(minTime);
 	}
 
-	private static void pickM(int idx, int num) { // 바이러스를 놓을 수 있는 위치 중에서 M개 만큼을 조합을 톹해 pick
-		if (num == M) {
+	private static void pickM(int cnt, int idx) { // 바이러스를 놓을 수 있는 위치 중에서 M개 만큼을 조합을 톹해 pick
+		if (cnt == M) {
 			spread();
 			return;
 		}
 
 		for (int i = idx; i < vList.size(); i++) {
-			active[num] = vList.get(i);
-			pickM(i + 1, num + 1);
+			active[cnt] = vList.get(i);
+			pickM(cnt + 1, i + 1);
 		}
 	}
 
@@ -73,13 +72,14 @@ public class Main17142 {
 			totalQ.add(v);
 		}
 
-		while (!totalQ.isEmpty()) {
+		while (emptySpace != 0 && !totalQ.isEmpty()) {
 
 			while (!totalQ.isEmpty()) {
 				Virus v1 = totalQ.poll();
 				VirusQ.add(v1);
 			}
-
+			time++;
+			System.out.println("size" + VirusQ.size());
 			while (!VirusQ.isEmpty()) {
 				Virus v = VirusQ.poll();
 				int nx;
@@ -96,17 +96,12 @@ public class Main17142 {
 						totalQ.add(new Virus(nx, ny));
 						copyMap[nx][ny] = (char) (time + '0');
 						emptySpace--;
+					} else if(copyMap[nx][ny] == '*') {
+						totalQ.add(new Virus(nx, ny));
+						copyMap[nx][ny] = (char) (time + '0');
 					}
 				}
-			}
-			
-			
-			if (emptySpace == 0) {
-				allSpread = true;
-				break;
-			} else if (totalQ.isEmpty()) {
-				allSpread = false;
-				break;
+
 			}
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
@@ -115,9 +110,14 @@ public class Main17142 {
 				System.out.println();
 			}
 			System.out.println();
-			time++;
+
 		}
-		System.out.println("끝" + time);
+		if (emptySpace == 0) {
+			allSpread = true;
+		} else if (totalQ.isEmpty()) {
+			allSpread = false;
+		}
+//		System.out.println("끝" + (time) + " " + allSpread + " " + emptySpace);
 		if (allSpread) {
 			minTime = Math.min(minTime, time);
 		}
