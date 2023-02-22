@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main6987 {
-	static int[] report;
-	static int[] pick;
 	static boolean flag;
-	static int count;
-	static ArrayList<Integer>[] countries;
+	static int[][] countries;
+	static final int win = 0;
+	static int draw = 1;
+	static int lose = 2;
+	static int[][] copy;
+	static int[] pick;
 
 	public static void main(String[] args) throws IOException {
 
@@ -17,30 +19,22 @@ public class Main6987 {
 
 		StringBuffer sb = new StringBuffer();
 
-		for (int t = 1; t <= 4; t++) {
-			countries = new ArrayList[7];
-			for (int i = 1; i <= 6; i++) {
-				countries[i] = new ArrayList<>();
-			}
+		for (int t = 1; t <= 1; t++) {
+			countries = new int[7][3];
+			copy = new int[7][3];
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int i = 1; i <= 6; i++) {
-				countries[i].add(Integer.parseInt(st.nextToken()));
-				countries[i].add(Integer.parseInt(st.nextToken()));
-				countries[i].add(Integer.parseInt(st.nextToken()));
+				countries[i][0] = Integer.parseInt(st.nextToken());
+				countries[i][1] = Integer.parseInt(st.nextToken());
+				countries[i][2] = Integer.parseInt(st.nextToken());
 			}
 
-			for (int country = 1; country <= 6; country++) {
-
-				pick = new int[4];
-				flag = false;
-				comb(0, country);
-				if (!flag) {
-					sb.append("0 ");
-					break;
-				}
-			}
-			if (flag) {
+			pick = new int[3];
+			combTeam(0, 0);
+			if (check()) {
 				sb.append("1 ");
+			} else {
+				sb.append("0 ");
 			}
 
 		}
@@ -48,48 +42,59 @@ public class Main6987 {
 
 	}
 
-	private static void comb(int cnt, int country) {
-		if (cnt == 5) {
-			for (int i = 1; i <= 3; i++) {
-				System.out.print(pick[i] + " ");
+	private static boolean check() {
+		for (int i = 1; i <= 6; i++) {
+			for (int j = 0; j < 3; j++) {
+
+				if (copy[i][j] != 0) {
+					return false;
+				}
 			}
-			flag = true;
+		}
+
+		return true;
+	}
+
+	private static void combTeam(int cnt, int idx) {
+		if (cnt == 2) {
+			for (int i = 1; i <= 6; i++) {
+				copy[i] = countries[i].clone();
+			}
+			comb(0, 0);
+		}
+
+		// 대결할 두팀을 뽑아야 함
+		for (int i = idx; i <= 6; i++) {
+			pick[cnt] = i;
+			combTeam(cnt + 1, i + 1);
+		}
+	}
+
+	private static void comb(int cnt, int country) {
+		if (cnt == 10) {
 			return;
 		}
 
-		// 가지치기를 하면서 원하는 재귀로만 뻗어가자.
-		// 근데 가지치기해서 아무리 잘 뻗어나간다고 해도
-		// 나라별 경기 수 5만 맞춰진거고,
-		// 승,무,패가 알맞게 분배된 것을 판단할 수가 없다.
+		// 1팀이 이기는 경우
+		countries[pick[1]][win]--;
+		countries[pick[2]][lose]--;
+		comb(cnt + 1, country);
+		countries[pick[1]][win]++;
+		countries[pick[2]][lose]++;
 
-		if (pick[1] < report[3 * country + 1]) {
-			if (minusLose(country))
-				comb(cnt + 1, country);
-		} else if (pick[2] < report[3 * country + 2]) {
-			if (minusDraw(country))
-				comb(cnt + 1, country);
-		} else if (pick[3] < report[3 * country + 3]) {
-			if (minusWin(country))
-				comb(cnt + 1, country);
-		}
+		// 2팀이 이기는 경우
+		countries[pick[1]][lose]--;
+		countries[pick[2]][win]--;
+		comb(cnt + 1, country);
+		countries[pick[1]][lose]++;
+		countries[pick[2]][win]++;
 
-	}
+		// 1,2팀이 무승부 하는 경우
+		countries[pick[1]][draw]--;
+		countries[pick[2]][draw]--;
+		comb(cnt + 1, country);
+		countries[pick[1]][draw]++;
+		countries[pick[2]][draw]++;
 
-	private static boolean minusWin(int country) {
-		// country를 제외한 곳에서 줄여야한다.
-		// 어떻게 줄일까..
-		for (int i = 1; i <= 6; i++) {
-		}
-		return false;
-	}
-
-	private static boolean minusLose(int country) {
-		// country를 제외한 곳에서 줄여야한다.
-		return false;
-	}
-
-	private static boolean minusDraw(int country) {
-		// country를 제외한 곳에서 줄여야한다.
-		return false;
 	}
 }
