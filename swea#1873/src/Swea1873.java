@@ -148,11 +148,11 @@ public class Swea1873 {
 		void left() {
 			move(3);
 		}
+
 		void down() {
 			move(2);
 		}
 
-		
 		void move(int dir) {
 			int nx = this.x + dx[dir];
 			int ny = this.y + dy[dir];
