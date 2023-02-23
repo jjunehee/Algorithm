@@ -28,7 +28,7 @@ public class BOJ2667 {
 		for (int i = 0; i < N; i++) {
 			String str = br.readLine();
 			for (int j = 0; j < N; j++) {
-				map[i][j] = str.charAt(j);
+				map[i][j] = str.charAt(j) - '0';
 			}
 		}
 
@@ -58,7 +58,7 @@ public class BOJ2667 {
 		int count = 0;
 		while (!q.isEmpty()) {
 			Point cur = q.poll();
-			
+			System.out.println(cur.x + " " + cur.y);
 			for (int dir = 0; dir < 4; dir++) {
 				int nx = cur.x + dx[dir];
 				int ny = cur.y + dy[dir];
