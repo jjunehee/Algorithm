@@ -1,6 +1,9 @@
 
 
-// 게리맨더링2 . 딱 기다려 잡으러 온다.
+// 게리맨더링2
 public class Main17779 {
-
+	public static void main(String[] args) {
+		
+		// 완탐.
+	}
 }
