@@ -1,16 +1,16 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Swea1238 {
 
 	static int N;
-
 	static ArrayList<Integer>[] list;
 	static boolean[] visited;
-	static int time;
 	static int maxTime;
 	static int max;
 
@@ -37,6 +37,7 @@ public class Swea1238 {
 			}
 
 			max = Integer.MIN_VALUE;
+			maxTime = 0;
 			call(startV);
 			sb.append(max).append("\n");
 		}
@@ -46,20 +47,54 @@ public class Swea1238 {
 
 	private static void call(int v) {
 
-		
-		for (int vertex : list[v]) {
+//		visited[v] = true;
+//		System.out.println("cur : " + v +  " time : " + time);
+//		for (int vertex : list[v]) {
+//
+//			if (!visited[vertex]) {
+//				call(vertex, time + 1);
+//			}
+//		}
+//		if (time == maxTime) {
+//			max = Math.max(max, v);
+//			maxTime = time;
+//		} else if (time > maxTime) {
+//			max = v;
+//			maxTime = time;
+//		}
 
-			if (!visited[vertex]) {
-				visited[vertex] = true;
-				System.out.println(vertex + " time " + time);
-				time++;
-				call(vertex);
-				time--;
+		Queue<Vertex> q = new ArrayDeque<>();
+		q.offer(new Vertex(v, 0));
+		visited[v] = true;
+
+		while (!q.isEmpty()) {
+			Vertex cur = q.poll();
+			int curV = cur.v;
+			int curTime = cur.time;
+
+			if (curTime > maxTime) {
+				max = curV;
+				maxTime = curTime;
+			} else if (curTime == maxTime) {
+				max = Math.max(max, curV);
+			}
+
+			for (int vertex : list[curV]) {
+				if (!visited[vertex]) {
+					visited[vertex] = true;
+					q.offer(new Vertex(vertex, curTime + 1));
+				}
 			}
 		}
-		if (time >= maxTime) {
-			max = Math.max(max, v);
-			maxTime = time;
+	}
+
+	public static class Vertex {
+		int v;
+		int time;
+
+		public Vertex(int v, int time) {
+			this.v = v;
+			this.time = time;
 		}
 	}
 }
