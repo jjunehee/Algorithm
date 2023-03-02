@@ -44,7 +44,18 @@ public class Main17779 {
 	}
 
 	private static void solution(int x, int y, int d1, int d2) {
-		
-		
+
+		boolean[][] border = new boolean[N][N];
+
+		for (int i = 0; i <= d1; i++) {
+			border[x + i][y - i] = true;
+			border[x + d2 + i][y + d2 - i] = true;
+		}
+
+		for (int i = 0; i <= d2; i++) {
+			border[x + i][y + i] = true;
+			border[x + d1 + i][y - d1 + i] = true;
+		}
+
 	}
 }
