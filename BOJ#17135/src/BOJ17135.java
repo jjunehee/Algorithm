@@ -83,7 +83,6 @@ public class BOJ17135 {
 	private static void attack() {
 
 
-		Set<Pos> target = new HashSet<>(); // 궁수의 타깃이 될 target 집합 ( 타깃이 같을 수 있기때문에 Set으로 설정)
 
 		for (int i = 0; i < 3; i++) { // pick된 궁수 3명에 대해서 공격 3번 진행
 			
@@ -107,7 +106,7 @@ public class BOJ17135 {
 					visited[nx][ny] = true; // 방문 처리
 
 					if (copyMap[nx][ny] == 1) { // 그곳에 적이 있다면
-						target.add(new Pos(nx, ny)); // target에 추가.
+						copyMap[nx][ny] = 7;
 						break; // 방향이 왼쪽부터 진행되기 때문에, 적이 발견된다면 더이상 볼 필요없이 바로 break
 					}
 					acher.add(new Pos(nx, ny)); // 적을 찾지 못해서, 거리를 늘려서 적 찾기 위해 이어나갈 위치 add
@@ -116,11 +115,15 @@ public class BOJ17135 {
 
 			}
 		}
-
-		for (Pos t : target) { // target에 공격후 map 수정, score++
-			copyMap[t.x][t.y] = 0;
-			score++;
+		for(int i=0; i<N; i++) { // 여기서 최대 3명이고 어쩔땐 0,1,2겠지. 암튼 적을 동시에 쏴죽임.
+			for(int j=0; j<M; j++) {
+				if(copyMap[i][j]==7) {
+					copyMap[i][j]= 0;
+					score++;
+				}
+			}
 		}
+
 
 	}
 
