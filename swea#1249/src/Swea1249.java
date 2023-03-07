@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+
+//보급로
 public class Swea1249 {
 	static int[][] map;
 	static int N;
