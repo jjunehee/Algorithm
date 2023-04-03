@@ -31,6 +31,7 @@ public class FightGame {
 			}
 		}
 
+		pList.add(new Player(-1, -1, -1, -1, 0));
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int x = Integer.parseInt(st.nextToken());
@@ -43,6 +44,9 @@ public class FightGame {
 		scoreBoard = new int[M + 1];
 		GameStart();
 
+		for (int i = 1; i <= M; i++) {
+			System.out.print(scoreBoard[i] + " ");
+		}
 	}
 
 	private static void GameStart() {
@@ -50,7 +54,7 @@ public class FightGame {
 		int round = 1;
 		while (round <= K) {
 
-			for (int i = 0; i < M; i++) {
+			for (int i = 1; i <= M; i++) {
 				Player player = pList.get(i); // 해당 선수 차례시작.
 				int dir = player.dir; // 이 선수가 갈 방향.
 
@@ -103,6 +107,7 @@ public class FightGame {
 					}
 				}
 			}
+			round++;
 
 		}
 	}
@@ -126,6 +131,7 @@ public class FightGame {
 				pList.get(p1).gun = map[player1.x][player1.y];
 				map[player1.x][player1.y] = tmp;
 			}
+			scoreBoard[p1] += (p1Total - p2Total);
 
 		} else if (p1Total < p2Total) { // p2 승리
 			// 진 사람은 총 버린 후 이동.
@@ -139,7 +145,7 @@ public class FightGame {
 				pList.get(p2).gun = map[player2.x][player2.y];
 				map[player2.x][player2.y] = tmp;
 			}
-
+			scoreBoard[p2] += (p2Total - p1Total);
 		} else { // total이 같다면
 
 			// 기본 능력치 비교
