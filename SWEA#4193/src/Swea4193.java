@@ -26,7 +26,7 @@ public class Swea4193 {
 
 			StringTokenizer st;
 			hList = new ArrayList<>();
-			for (int i = 0; i < N; i++) {
+			for (int i = 0; i < N; i++) {	
 				st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < N; j++) {
 					map[i][j] = Integer.parseInt(st.nextToken());
