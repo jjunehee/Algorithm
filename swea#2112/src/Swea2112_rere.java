@@ -8,7 +8,7 @@ public class Swea2112_rere {
 	static int[][] map;
 	static int[][] tempMap;
 	static int[] selectedRow;
-	static int min = Integer.MAX_VALUE;
+	static int min;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,7 +32,8 @@ public class Swea2112_rere {
 					tempMap[i][j] = map[i][j]; // 맵 입력
 				}
 			}
-
+			
+			min = D;
 			if (K==1 || test()) {
 				sb.append(0).append("\n");
 			} else {
@@ -93,7 +94,7 @@ public class Swea2112_rere {
 				int value = tempMap[i][j];
 				if (check == value) {
 					count++;
-					if (count == 3) {
+					if (count == K) {
 						flag = true;
 						break;
 					}
