@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+//키 순서2
 public class BOJ2458_2 {
 
 	static int N, M;
