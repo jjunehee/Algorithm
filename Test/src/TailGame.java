@@ -84,7 +84,12 @@ public class TailGame {
 
 			break;
 		}
-
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				System.out.print(map[i][j] + " ");
+			}
+			System.out.println();
+		}
 		totalCnt();
 	}
 
@@ -94,22 +99,58 @@ public class TailGame {
 
 	private static void move() {
 
+		visited = new boolean[N][N];
+
 		for (int i = 1; i <= M; i++) { // 1팀부터 M팀까지 이동할껀데~
 			int idx = tail[i];
-			while (true) {
+
+			while (idx >= 0) {
 				Point now = team[i].get(idx); // 꼬리
 				for (int dir = 0; dir < 4; dir++) {
 					int nx = now.x + dx[dir];
 					int ny = now.y + dy[dir];
-					if (nx >= 0 && nx < N && ny >= 0 && ny < N && map[nx][ny] != 0 && map[nx][ny] != 4) {
+
+					if (idx == 0) { // 마지막으로 head를 앞에 4로 움직일때.
+						if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny] && map[nx][ny] != 0) {
+							visited[nx][ny] = true;
+							team[i].get(idx).x = nx;
+							team[i].get(idx).y = ny;
+						}
+					} else if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny] && map[nx][ny] != 0
+							&& map[nx][ny] != 4) {
+						visited[nx][ny] = true;
 						team[i].get(idx).x = nx;
 						team[i].get(idx).y = ny;
-						continue;
 					}
 				}
-				
+				idx--;
 			}
+		}
 
+		System.out.println(team[1].size());
+		for (int i = 0; i < team[1].size(); i++) {
+			System.out.println(team[1].get(i).x + " " + team[1].get(0).y);
+		}
+
+		System.out.println("=====================");
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (map[i][j] != 0 && map[i][j] != 4) {
+					map[i][j] = 4;
+				}
+			}
+		}
+
+		for (int i = 1; i <= M; i++) {
+			int cnt = 1;
+			int size = team[i].size();
+			for (Point p : team[i]) {
+				if (cnt == 1 || cnt == size) {
+					map[p.x][p.y] = cnt++;
+				} else {
+					map[p.x][p.y] = cnt;
+				}
+			}
 		}
 	}
 
