@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+//나무 박멸
 public class FuckingTree {
 
 	static int[][] map;
