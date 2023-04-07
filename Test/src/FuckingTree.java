@@ -2,10 +2,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
+//나무 박멸
 public class FuckingTree {
 
 	static int[][] map;
@@ -20,6 +19,7 @@ public class FuckingTree {
 	static int[][] mInfo;
 	static int year;
 	static boolean[][] ban;
+	static int ret;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,7 +32,8 @@ public class FuckingTree {
 		c = Integer.parseInt(st.nextToken());
 
 		map = new int[n][n];
-
+		ban = new boolean[n][n];
+		mInfo = new int[n][n];
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < n; j++) {
@@ -44,7 +45,7 @@ public class FuckingTree {
 		}
 
 		simulation();
-
+		System.out.println(ret);
 	}
 
 	private static void simulation() {
@@ -52,87 +53,41 @@ public class FuckingTree {
 		year = 1;
 		while (year <= m) {
 
+			
 			// 나무 성장
 			treeGrow();
 
 			// 나무 번식
 			treeSpread();
 
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					System.out.print(map[i][j] + " ");
-				}
-				System.out.println();
-			}
 			// 체조제 처리
 			medicine();
 
 			// 삭제할 제초제 처리
+			removeMedicine();
 
-			break;
+			year++;
 		}
 
 	}
 
-	private static void medicine() {
-		Queue<Point> q = new LinkedList<>();
-		int max = Integer.MIN_VALUE;
-		boolean[][] visited2;
+	private static void treeGrow() {
+
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				if (map[i][j] != 0 && map[i][j] != -1) {
 
-					int sum = 0;
-					q.add(new Point(i, j));
-					visited2 = new boolean[n][n];
-					visited2[i][j] = true;
-					System.out.println(i + "시작 " + j);
-					while (!q.isEmpty()) {
-						Point now = q.poll();
-						for (int dir = 0; dir < 4; dir++) {
-							int nx = now.x + mdx[dir];
-							int ny = now.y + mdy[dir];
-							// 나무라면
-//						System.out.println( i + " " + j);
-							if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] != 0 && map[nx][ny] != -1
-									&& !visited2[nx][ny]) {
-								visited2[nx][ny] = true;
-								System.out.println(nx + " " + ny);
-								sum += map[nx][ny];
-								q.add(new Point(nx, ny));
-							}
+				if (map[i][j] > 0) {
+					int cnt = 0;
+					for (int dir = 0; dir < 4; dir++) {
+						int nx = i + dx[dir];
+						int ny = j + dy[dir];
+						// 옆에 나무가 있는 경우
+						if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] > 0
+								&& !ban[nx][ny]) {
+							cnt++;
 						}
 					}
-					System.out.println(sum);
-					System.out.println("============");
-//				if (map[i][j] > max) {
-//					max = map[i][j];
-//					mx = i;
-//					my = j;
-//				}
-				}
-			}
-		}
-
-		Queue<Point> mq = new LinkedList<>();
-
-		mInfo = new int[n][n];
-
-		ban = new boolean[n][n];
-		map[mx][my] = 0;
-		mInfo[mx][my] = year + c;
-		mq.add(new Point(mx, my));
-
-		while (!mq.isEmpty()) {
-			Point now = mq.poll();
-			for (int dir = 0; dir < 4; dir++) {
-				int nx = now.x + mdx[dir];
-				int ny = now.y + mdy[dir];
-				// 나무라면
-				if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] != 0 && map[nx][ny] != -1) {
-					mInfo[nx][ny] = year + c;
-					map[nx][ny] = 0;
-					ban[nx][ny] = true;
+					map[i][j] += cnt;
 				}
 			}
 		}
@@ -141,23 +96,27 @@ public class FuckingTree {
 	private static void treeSpread() {
 
 		spreadTree = new int[n][n];
-		for (int i = 0; i < treeList.size(); i++) {
-			Point tree = treeList.get(i);
 
-			int cnt = 0;
-			for (int dir = 0; dir < 4; dir++) {
-				int nx = tree.x + dx[dir];
-				int ny = tree.y + dy[dir];
-				if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] == 0) {
-					cnt++;
-				}
-			}
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
 
-			for (int dir = 0; dir < 4; dir++) {
-				int nx = tree.x + dx[dir];
-				int ny = tree.y + dy[dir];
-				if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] == 0) {
-					spreadTree[nx][ny] += (map[tree.x][tree.y] / cnt);
+				if (map[i][j] != 0 && map[i][j] != -1) {
+					int cnt = 0;
+					for (int dir = 0; dir < 4; dir++) {
+						int nx = i + dx[dir];
+						int ny = j + dy[dir];
+						if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] == 0 && !ban[nx][ny]) {
+							cnt++;
+						}
+					}
+
+					for (int dir = 0; dir < 4; dir++) {
+						int nx = i + dx[dir];
+						int ny = j + dy[dir];
+						if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] == 0 && !ban[nx][ny]) {
+							spreadTree[nx][ny] += (map[i][j] / cnt);
+						}
+					}
 				}
 			}
 		}
@@ -169,21 +128,80 @@ public class FuckingTree {
 		}
 	}
 
-	private static void treeGrow() {
-
-		for (int i = 0; i < treeList.size(); i++) {
-			Point tree = treeList.get(i);
-
-			int cnt = 0;
-			for (int dir = 0; dir < 4; dir++) {
-				int nx = tree.x + dx[dir];
-				int ny = tree.y + dy[dir];
-				// 옆에 나무가 있는 경우
-				if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] != 0 && map[nx][ny] != -1) {
-					cnt++;
+	private static void removeMedicine() {
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (year == mInfo[i][j]) {
+					ban[i][j] = false;
 				}
 			}
-			map[tree.x][tree.y] += cnt;
+		}
+	}
+
+	private static void medicine() {
+		int max = Integer.MIN_VALUE;
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (map[i][j] > 0) { // 나무가 있다면
+					int sum = map[i][j]; // 그 나무에 대한 박멸갯수를 카운트 해본다.
+					for (int dir = 0; dir < 4; dir++) { // 4개 방향
+						int nowX = i;
+						int nowY = j;
+						for (int t = 0; t < k; t++) {
+							int nx = nowX + mdx[dir];
+							int ny = nowY + mdy[dir];
+							if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] > 0) { // 대각선 방향에 나무가 있다면 sum 추가
+								sum += map[nx][ny];
+								
+							} else {
+								break;
+							}
+							nowX = nx;
+							nowY = ny;
+						}
+					}
+					if (sum > max) {
+						max = sum;
+						mx = i;
+						my = j;
+					}
+				}
+			}
+		}
+
+		ret += map[mx][my];
+		map[mx][my] = 0;
+		mInfo[mx][my] = year + c;
+		ban[mx][my] = true;
+
+		for (int dir = 0; dir < 4; dir++) {
+			int nowX = mx;
+			int nowY = my;
+
+			for (int t = 0; t < k; t++) {
+				int nx = nowX + mdx[dir];
+				int ny = nowY + mdy[dir];
+
+				if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] > 0) {
+					ret += map[nx][ny];
+					map[nx][ny] = 0;
+					mInfo[nx][ny] = year + c;
+					ban[nx][ny] = true;
+				} else if (nx >= 0 && nx < n && ny >= 0 && ny < n && map[nx][ny] == 0) {
+					if(ban[nx][ny]) {
+						mInfo[nx][ny] = year + c;
+						break;
+					} else {
+						mInfo[nx][ny] = year + c;
+						ban[nx][ny] = true;
+						break;
+					}
+				} else {
+					break;
+				}
+				nowX = nx;
+				nowY = ny;
+			}
 		}
 	}
 
