@@ -11,12 +11,12 @@ public class Solution {
 
 	public void dfs(int[] numbers, int idx, int sum, int target) {
 
-		if (idx == 5 && sum == target) {
+		if (idx == numbers.length && sum == target) {
 			cnt++;
 			return;
 		}
 		
-		if (idx >= 5) {
+		if (idx >= numbers.length) {
 			return;
 		}
 
