@@ -1,3 +1,4 @@
+// 타겟 넘버
 public class Solution {
 	static int cnt = 0;
 
