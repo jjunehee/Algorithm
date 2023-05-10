@@ -99,7 +99,7 @@ public class Solution {
 			Pos cur = q.poll();
 			int x = cur.x;
 			int y = cur.y;
-			
+
 			if (cur.x == endX && cur.y == endY && cur.mode == endMode) {
 				return cur.cnt;
 			}
@@ -113,11 +113,11 @@ public class Solution {
 					nx = x + dx[dir];
 					ny = y + dy[dir];
 					if (nx >= 0 && nx < N && ny >= 0 && ny < N && map[nx][ny] == '0' && !visited[x][y][2]) {
-						
+
 						rotate_cnt++;
 					}
 				}
-				if(rotate_cnt == 8) {
+				if (rotate_cnt == 8) {
 					visited[x][y][2] = true;
 					q.add(new Pos(x, y, 2, cur.cnt + 1));
 				}
@@ -153,11 +153,11 @@ public class Solution {
 					nx = x + dx[dir];
 					ny = y + dy[dir];
 					if (nx >= 0 && nx < N && ny >= 0 && ny < N && map[nx][ny] == '0' && !visited[x][y][1]) {
-						
+
 						rotate_cnt++;
 					}
 				}
-				if(rotate_cnt == 8) {
+				if (rotate_cnt == 8) {
 					visited[x][y][1] = true;
 					q.add(new Pos(x, y, 1, cur.cnt + 1));
 				}
