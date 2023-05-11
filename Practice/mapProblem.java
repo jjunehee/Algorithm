@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,9 +10,9 @@ import java.util.StringTokenizer;
 public class mapProblem {
 
 	public static void main(String[] args) throws IOException {
-		// µ¿¸íÀÌÀÎ Áß ÃÖ´ë,ÃÖ¼Ò °ª ±¸ÇÏ±â
-		// ÀÔ·Â : »ç¶÷ÀÌ¸§ °ª
-		// Ãâ·Â : ÀÌ¸§ ÃÖ¼Ò ÃÖ´ë
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½,ï¿½Ö¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
+		// ï¿½Ô·ï¿½ : ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ : ï¿½Ì¸ï¿½ ï¿½Ö¼ï¿½ ï¿½Ö´ï¿½
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int peopleAmount = 5;
