@@ -45,7 +45,8 @@ public class Solution {
 						}
 						check = new boolean[101];
 						check[map[nx][ny]] = true;
-						DFS(i, j, nx, ny, 1, dir);
+						DFS(i, j, nx, ny, 1, dir,0);
+						check[map[nx][ny]] = false;
 					}
 				}
 			}
@@ -57,16 +58,13 @@ public class Solution {
 		System.out.println(sb.toString());
 	}
 
-	public static void DFS(int eX, int eY, int x, int y, int depth, int dir) {
+	public static void DFS(int eX, int eY, int x, int y, int depth, int dir, int turnCnt) {
 		
-		if(eX == 5 && eY == 5) {
-			System.out.println(x + " " + y + " " + depth);
+		if(turnCnt >=4) {
+			return;
 		}
 		
 		if (x == eX && y == eY) {
-//			if(depth == 10) {
-//				System.out.println(eX +  " " + eY);
-//			}
 			ret = Math.max(depth, ret);
 		}
 
@@ -78,7 +76,7 @@ public class Solution {
 		if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
 			if (!check[map[nx][ny]]) {
 				check[map[nx][ny]] = true;
-				DFS(eX, eY, nx, ny, depth + 1, dir);
+				DFS(eX, eY, nx, ny, depth + 1, dir,turnCnt);
 				check[map[nx][ny]] = false;
 			}
 		}
@@ -91,7 +89,7 @@ public class Solution {
 		if (nx >= 0 && nx < N && ny >= 0 && ny < N) {
 			if (!check[map[nx][ny]]) {
 				check[map[nx][ny]] = true;
-				DFS(eX, eY, nx, ny, depth + 1, dir);
+				DFS(eX, eY, nx, ny, depth + 1, dir, turnCnt+1);
 				check[map[nx][ny]] = false;
 			}
 		}
