@@ -21,10 +21,10 @@ public class swea4012 {
 		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= T; t++) {
 			sb.append("#" + t + " ");
-			
+
 			N = Integer.parseInt(br.readLine());
 			S = new int[N + 1][N + 1];
-			
+
 			for (int i = 1; i <= N; i++) {
 				StringTokenizer st = new StringTokenizer(br.readLine());
 				for (int j = 1; j <= N; j++) {
@@ -36,9 +36,9 @@ public class swea4012 {
 			Bingredient = new int[N / 2];
 			Ingredient = new boolean[N + 1];
 			min = Integer.MAX_VALUE;
-			
+
 			comb(0, 1);
-			
+
 			sb.append(min).append("\n");
 		}
 		System.out.println(sb.toString());
@@ -72,7 +72,7 @@ public class swea4012 {
 
 		Asynergy = 0;
 		Bsynergy = 0;
-		
+
 		a = new int[2];
 		Acomb(0, 0);
 		b = new int[2];
@@ -87,7 +87,7 @@ public class swea4012 {
 			Asynergy += (S[a[0]][a[1]] + S[a[1]][a[0]]);
 			return;
 		}
-		
+
 		if (idx == N / 2) {
 			return;
 		}
@@ -113,5 +113,5 @@ public class swea4012 {
 			Bcomb(cnt + 1, i + 1);
 		}
 	}
-	
+
 }
