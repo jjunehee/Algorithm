@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 public class aProblemTopology {
 
 	static int N;
-	static int[] orgInDegree, times, inDegree, D;
+	static int[] orgInDegree, inDegree, times, D;
 	static ArrayList<Integer>[] adjList;
 
 	public static void main(String[] args) throws IOException {
@@ -23,8 +23,8 @@ public class aProblemTopology {
 			N = Integer.parseInt(br.readLine());
 
 			orgInDegree = new int[N + 1];
-			times = new int[N + 1];
 			inDegree = new int[N + 1];
+			times = new int[N + 1];
 			D = new int[N + 1];
 			adjList = new ArrayList[N + 1];
 
@@ -62,14 +62,12 @@ public class aProblemTopology {
 			times[i] = temp;
 		}
 		return min;
-
 	}
 
 	public static int getTime() {
-
 		Queue<Integer> q = new ArrayDeque<>();
-
 		for (int i = 1; i <= N; i++) {
+
 			D[i] = 0;
 			inDegree[i] = orgInDegree[i];
 			if (inDegree[i] == 0) {
@@ -92,6 +90,8 @@ public class aProblemTopology {
 				}
 			}
 		}
+
 		return cnt == N ? max : -1;
+
 	}
 }
