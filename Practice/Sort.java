@@ -29,7 +29,7 @@ public class Sort {
 
 		pList.add(new Person("조준희", 28));
 		pList.add(new Person("정규성", 26));
-		pList.add(new Person("박영기", 30));
+		pList.add(new Person("최준서", 30));
 
 		Collections.sort(pList);
 
