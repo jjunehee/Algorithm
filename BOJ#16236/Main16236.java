@@ -88,6 +88,7 @@ public class Main16236 {
 			time += selectedFish.dist;
 			shark.eatCnt++;
 			map[selectedFish.x][selectedFish.y] = 0;
+			System.out.println(selectedFish.x + " " + selectedFish.y);
 			if (shark.eatCnt == shark.size) {
 				shark.size++;
 				shark.eatCnt = 0;
