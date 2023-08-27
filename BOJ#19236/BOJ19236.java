@@ -60,9 +60,10 @@ public class BOJ19236 {
 				continue;
 			}
 
-			shark.dir = map[nx][ny].dir;
 			result += map[nx][ny].num;
+			shark.dir = map[nx][ny].dir;
 			map[nx][ny].isAlive = false;
+			map[nx][ny] = shark;
 
 			simulation(nx, ny, shark.dir);
 
