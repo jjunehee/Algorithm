@@ -28,7 +28,6 @@ public class BOJ2805 {
 
 		int min = 0;
 		int mid = 0;
-
 		while (min <= max) {
 
 			mid = (min + max) / 2;
