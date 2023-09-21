@@ -1,161 +1,178 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
-// 청소년 상어
 public class BOJ19236 {
 
-	static int[][] map;
+	static Fish[][] map = new Fish[4][4];
+
 	static int[] dx = { -1, -1, 0, 1, 1, 1, 0, -1 };
 	static int[] dy = { 0, -1, -1, -1, 0, 1, 1, 1 };
-	static Fish shark;
-	static int result;
+
 	static int maxResult = Integer.MIN_VALUE;
-	static List<Fish> fishList = new ArrayList<>();
-	static boolean[][] visited;
+	static int result;
 
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		map = new int[4][4];
-		visited = new boolean[4][4];
 		for (int i = 0; i < 4; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < 4; j++) {
 				int num = Integer.parseInt(st.nextToken());
-				int dir = Integer.parseInt(st.nextToken());
-				Fish fish = new Fish(i, j, num, dir-1, true);
-				map[i][j] = fish.num;
-				fishList.add(fish);
+				int dir = Integer.parseInt(st.nextToken()) - 1;
+				Fish fish = new Fish(i, j, num, dir);
+				map[i][j] = fish;
 			}
 		}
 
-		Collections.sort(fishList);
+		Fish shark = new Fish(0, 0, 0, map[0][0].dir);
+		result += map[0][0].num;
+		map[0][0] = shark;
+		simulation(map, shark, result);
 
-		// 0,0
-		shark = new Fish(0, 0, 0, fishList.get(map[0][0]).dir, true);
-		fishList.add(shark);
-		Collections.sort(fishList);
-		
-		result += map[0][0];
-		map[0][0] = -1;
-
-		simulation(0, 0, shark.dir);
-		
 		System.out.println(maxResult);
 	}
 
-	public static void simulation(int sharkX, int sharkY, int sharkDir) { // DFS를 이용한 시뮬레이션
+	public static void simulation(Fish[][] map, Fish shark, int result) {
 
-		if(maxResult > result) {
+		if (maxResult < result) {
 			maxResult = result;
 		}
-		
-		fishMove();
+
+		fishesMove(map);
 
 		// sharkMove
-		for (int dist = 1; dist < 4; dist++) {
-			int nx = sharkX + dx[sharkDir];
-			int ny = sharkY + dy[sharkDir];
+		int nx, ny;
+		for (int i = 0; i < 3; i++) {
+			nx = shark.x + dx[shark.dir];
+			ny = shark.y + dy[shark.dir];
 
-			if (nx < 0 || nx >= 4 || ny < 0 || ny >= 4 || map[nx][ny] == 0 || visited[nx][ny]) {
+			if (!isIn(nx, ny)) { // 경계를 넘었거나, 물고기가 없다면
+				continue;
+			} else if (map[nx][ny] == null) {
 				continue;
 			}
 
-			result += map[nx][ny];
-			shark.dir = fishList.get(map[nx][ny]).dir;
-			fishList.get(map[nx][ny]).isAlive = false;
-			map[sharkX][sharkY] = 0;
-			int tmp = map[nx][ny];
-			map[nx][ny] = -1;
-			visited[nx][ny] = true;
+			Fish newShark = new Fish(nx, ny, 0, map[nx][ny].dir);
+			Fish[][] cloneMap = cloning(map);
 
-			simulation(nx, ny, shark.dir);
+			cloneMap[shark.x][shark.y] = null;
 
-			visited[nx][ny] = false;
-			fishList.get(tmp).isAlive = true;
-			shark.dir = sharkDir;
-			result -= map[nx][ny];
-			map[nx][ny] = tmp;
-			map[sharkX][sharkY] = -1;
+			cloneMap[nx][ny] = newShark;
 
-			sharkX = nx;
-			sharkY = ny;
+			simulation(cloneMap, newShark, result + map[nx][ny].num);
+
+			shark.x = nx;
+			shark.y = ny;
+
 		}
 
 	}
 
-	public static void fishMove() {
-		// 물고기 이동
-		for (Fish fish : fishList) {
+	public static Fish[][] cloning(Fish[][] map) {
+		Fish[][] clone = new Fish[4][4];
 
-			if (!fish.isAlive) {
-				continue;
+		for (int i = 0; i < 4; i++) {
+
+			for (int j = 0; j < 4; j++) {
+				clone[i][j] = map[i][j];
 			}
-
-			int nx, ny;
-
-			for (int i = 0; i < 8; i++) {
-				nx = fish.x + dx[fish.dir];
-				ny = fish.y + dy[fish.dir];
-
-				// 맵 안에 있고, 상어가 없다면
-				if (check(nx, ny) && map[nx][ny] != -1) {
-
-					if (map[nx][ny] >= 1) { // 다른 물고기가 있다면
-						int temp = map[nx][ny];
-						map[nx][ny] = fish.num;
-						map[fish.x][fish.y] = temp;
-
-						fishList.get(map[nx][ny]).x = fish.x;
-						fishList.get(map[nx][ny]).y = fish.y;
-
-					} else { // 비어있는 공간이라면
-						map[nx][ny] = fish.num;
-						map[fish.x][fish.y] = 0;
-					}
-
-					fish.x = nx;
-					fish.y = ny;
-					
-					break;
-				}
-
-				fish.dir = (fish.dir + 1) % 8;
-			}
-
 		}
+
+		return clone;
 	}
 
-	public static boolean check(int nx, int ny) {
+	public static boolean isIn(int nx, int ny) {
+
 		if (nx < 0 || nx >= 4 || ny < 0 || ny >= 4) {
 			return false;
 		}
+
 		return true;
 	}
 
-	public static class Fish implements Comparable<Fish> {
+	public static void fishesMove(Fish[][] map) {
+
+		for (int num = 1; num <= 16; num++) {
+
+			breakpoint: for (int i = 0; i < 4; i++) {
+				for (int j = 0; j < 4; j++) {
+					if (map[i][j] != null && map[i][j].num == num) {
+						fishMove(map, map[i][j]);
+						break breakpoint;
+					}
+				}
+			}
+		}
+	}
+
+	public static void fishMove(Fish[][] map, Fish fish) {
+
+		int nx, ny;
+
+		for (int i = 0; i < 8; i++) {
+			nx = fish.x + dx[fish.dir];
+			ny = fish.y + dy[fish.dir];
+			if (!isIn(nx, ny)) { // 그 방향이 경계 밖이거나, 상어가 있는 경우
+
+				fish.dir = (fish.dir + 1) % 8;
+
+				continue;
+			}
+
+			if (map[nx][ny] != null && map[nx][ny].num == 0) {
+				fish.dir = (fish.dir + 1) % 8;
+
+				continue;
+			}
+
+			if (map[nx][ny] == null) { // 갈 곳이 빈 공간인 경우
+				map[nx][ny] = fish;
+				map[fish.x][fish.y] = null;
+				fish.x = nx;
+				fish.y = ny;
+				return;
+
+			} else { // 다른 물고기가 있는 경우
+				Fish f1 = map[nx][ny];
+
+				map[nx][ny] = fish;
+
+				map[fish.x][fish.y] = f1;
+
+				f1.x = fish.x;
+				f1.y = fish.y;
+
+				fish.x = nx;
+				fish.y = ny;
+				return;
+			}
+
+		}
+	}
+
+	public static void printMap(Fish[][] map) {
+
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				System.out.print(map[i][j].num + " ");
+			}
+			System.out.println();
+		}
+	}
+
+	public static class Fish {
 		int x, y;
 		int num;
 		int dir;
-		boolean isAlive;
 
-		public Fish(int x, int y, int num, int dir, boolean isAlive) {
+		public Fish(int x, int y, int num, int dir) {
 			this.x = x;
 			this.y = y;
 			this.num = num;
 			this.dir = dir;
-			this.isAlive = true;
-		}
-
-		@Override
-		public int compareTo(Fish o) {
-			return this.num - o.num;
 		}
 	}
 }
