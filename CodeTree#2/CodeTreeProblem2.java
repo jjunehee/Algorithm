@@ -25,7 +25,7 @@ public class CodeTreeProblem2 {
 
 		map = new int[N][N];
 		likeInfo = new int[N * N + 1][N * N + 1];
-		int[] order = new int[10];
+		int[] order = new int[N*N+1];
 
 		// n명의 사람
 		for (int i = 1; i <= N * N; i++) {
@@ -39,11 +39,10 @@ public class CodeTreeProblem2 {
 			}
 		}
 
-		for (int i = 1; i <= 9; i++) {
+		for (int i = 1; i <= N*N; i++) {
 			selectPos(order[i]);
 		}
 
-		printMap();
 		System.out.println(calculateScore());
 
 	}
@@ -98,7 +97,10 @@ public class CodeTreeProblem2 {
 		// 좋아하는 사람이 가장 많은 자리 셀렉. 동률이면 어떻게 할 것인가.
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-
+				
+				if(map[i][j] != 0 ) {
+					continue;
+				}
 				int aroundCnt = 0;
 				for (int dir = 0; dir < 4; dir++) {
 
