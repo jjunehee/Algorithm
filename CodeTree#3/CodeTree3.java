@@ -32,6 +32,14 @@ public class CodeTree3 {
 			}
 		}
 
+		tmpMap = new LinkedList[N][N];
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				tmpMap[i][j] = new LinkedList<>();
+			}
+		}
+
 		// 원자 입력
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -67,14 +75,6 @@ public class CodeTree3 {
 
 	public static void simulation() {
 
-		tmpMap = new LinkedList[N][N];
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				tmpMap[i][j] = new LinkedList<>();
-			}
-		}
-
 		int time = 0;
 		while (true) {
 
@@ -86,70 +86,11 @@ public class CodeTree3 {
 			move();
 			// 겹치는 원자 확인 및 조치
 			checkDuplicate();
-			
+
 			initializeMap();
 			time++;
 		}
 
-	}
-
-	public static void checkDuplicate() {
-
-		int[][] sizeInfo = new int[N][N];
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				sizeInfo[i][j] = tmpMap[i][j].size();
-			}
-		}
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if (sizeInfo[i][j] >= 2) {
-
-					int checkDir = 0;
-					int checkMess = 0;
-					int checkSpeed = 0;
-					
-					for (int k = 0; k < sizeInfo[i][j]; k++) {
-						Atom atom = tmpMap[i][j].poll();
-						checkDir += atom.d;
-						checkMess += atom.m;
-						checkSpeed += atom.s;
-					}
-
-					if (checkDir % 2 == 0) {
-
-						for (int dir = 0; dir <= 6; dir += 2) {
-							if (checkMess / 5 > 0) {
-								tmpMap[i][j].add(new Atom(i, j, checkMess / 5, checkSpeed / sizeInfo[i][j], dir));
-							}
-						}
-
-					} else {
-						
-						for (int dir = 1; dir <= 7; dir += 2) {
-							if (checkMess / 5 > 0) {
-								tmpMap[i][j].add(new Atom(i, j, checkMess / 5, checkSpeed / sizeInfo[i][j], dir));
-							}
-						}
-						
-					}
-
-				}
-			}
-		}
-	}
-
-	public static void initializeMap() {
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				while (!tmpMap[i][j].isEmpty()) {
-					map[i][j].add(tmpMap[i][j].poll());
-				}
-			}
-		}
 	}
 
 	public static void move() {
@@ -161,17 +102,16 @@ public class CodeTree3 {
 
 					Atom now = map[i][j].poll();
 
-					for (int s = 0; s < now.s; s++) {
-						int nx = now.x + dx[now.d];
-						int ny = now.y + dy[now.d];
+					int nx = (now.x + dx[now.d] * now.s) % N;
+					int ny = (now.y + dy[now.d] * now.s) % N;
 
-						Point nextPoint = checkAndMove(nx, ny);
-
-						now.x = nextPoint.x;
-						now.y = nextPoint.y;
+					if (nx < 0) {
+						nx = -(Math.abs(nx) % N) + N;
 					}
-
-					tmpMap[now.x][now.y].add(new Atom(now.x, now.y, now.m, now.s, now.d));
+					if (ny < 0) {
+						ny = -(Math.abs(ny) % N) + N;
+					}
+					tmpMap[nx][ny].add(new Atom(nx, ny, now.m, now.s, now.d));
 
 				}
 			}
@@ -197,6 +137,65 @@ public class CodeTree3 {
 		}
 
 		return new Point(nx, ny);
+	}
+
+	public static void checkDuplicate() {
+
+		int[][] sizeInfo = new int[N][N];
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				sizeInfo[i][j] = tmpMap[i][j].size();
+			}
+		}
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (sizeInfo[i][j] >= 2) {
+
+					int[] checkDir = new int[2];
+					int checkMess = 0;
+					int checkSpeed = 0;
+
+					for (int k = 0; k < sizeInfo[i][j]; k++) {
+						Atom atom = tmpMap[i][j].poll();
+						checkDir[atom.d % 2]++;
+						checkMess += atom.m;
+						checkSpeed += atom.s;
+					}
+
+					if (checkDir[0] == sizeInfo[i][j] || checkDir[1] == sizeInfo[i][j]) {
+
+						for (int dir = 0; dir <= 6; dir += 2) {
+							if (checkMess / 5 > 0) {
+								tmpMap[i][j].add(new Atom(i, j, checkMess / 5, checkSpeed / sizeInfo[i][j], dir));
+							}
+						}
+
+					} else {
+
+						for (int dir = 1; dir <= 7; dir += 2) {
+							if (checkMess / 5 > 0) {
+								tmpMap[i][j].add(new Atom(i, j, checkMess / 5, checkSpeed / sizeInfo[i][j], dir));
+							}
+						}
+
+					}
+
+				}
+			}
+		}
+	}
+
+	public static void initializeMap() {
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				while (!tmpMap[i][j].isEmpty()) {
+					map[i][j].add(tmpMap[i][j].poll());
+				}
+			}
+		}
 	}
 
 	public static class Point {
