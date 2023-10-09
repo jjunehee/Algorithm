@@ -121,7 +121,7 @@ public class CodeTree3 {
 					if (checkDir % 2 == 0) {
 
 						for (int dir = 0; dir <= 6; dir += 2) {
-							if (checkMess / sizeInfo[i][j] > 0) {
+							if (checkMess / 5 > 0) {
 								tmpMap[i][j].add(new Atom(i, j, checkMess / 5, checkSpeed / sizeInfo[i][j], dir));
 							}
 						}
@@ -129,7 +129,7 @@ public class CodeTree3 {
 					} else {
 						
 						for (int dir = 1; dir <= 7; dir += 2) {
-							if (checkMess / sizeInfo[i][j] > 0) {
+							if (checkMess / 5 > 0) {
 								tmpMap[i][j].add(new Atom(i, j, checkMess / 5, checkSpeed / sizeInfo[i][j], dir));
 							}
 						}
