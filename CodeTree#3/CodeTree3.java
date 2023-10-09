@@ -116,7 +116,6 @@ public class CodeTree3 {
 				}
 			}
 		}
-
 	}
 
 	public static Point checkAndMove(int nx, int ny) {
