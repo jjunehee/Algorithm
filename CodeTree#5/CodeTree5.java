@@ -10,7 +10,7 @@ public class CodeTree5 {
 	static int N, M, K;
 	static Pos[][] map;
 
-	static Queue<Person> personList;
+	static Queue<Person>[][] personList;
 	static Pos exit;
 	static int goal;
 	static int result;
@@ -29,22 +29,23 @@ public class CodeTree5 {
 
 		map = new Pos[N][N];
 
+		personList = new LinkedList[N][N];
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
 				int num = Integer.parseInt(st.nextToken());
 				map[i][j] = new Pos(i, j, num, false, false);
+				personList[i][j] = new LinkedList<>();
 			}
 		}
 
-		personList = new LinkedList<>();
 		int x, y;
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			x = Integer.parseInt(st.nextToken()) - 1;
 			y = Integer.parseInt(st.nextToken()) - 1;
 			map[x][y].isPerson = true;
-			personList.add(new Person(x, y));
+			personList[x][y].add(new Person(x, y));
 		}
 
 		st = new StringTokenizer(br.readLine());
@@ -82,41 +83,53 @@ public class CodeTree5 {
 
 	public static void move() {
 
-		int size = personList.size();
-		
-		System.out.println("size : " + size);
-		for (int i = 0; i < size; i++) {
-			Person person = personList.poll();
+		int[][] sizeInfo = new int[N][N];
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				sizeInfo[i][j] = personList[i][j].size();
+			}
+		}
 
-			int nx, ny;
-			for (int dir = 0; dir < 4; dir++) {
-				nx = person.x + dx[dir];
-				ny = person.y + dy[dir];
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (map[i][j].isPerson) {
 
-				if (checkBound(nx, ny)) {
-					continue;
-				}
+					for (int k = 0; k < sizeInfo[i][j]; k++) {
 
-				if (map[nx][ny].durability == 0 && checkDist(person.x, person.y, nx, ny)) { // 그곳이 빈칸이고, 거리가 짧아지는 곳이라면
-																							// 이동 가능
-					System.out.println("여기서 : " + person.x + " " + person.y);
-					map[person.x][person.y].isPerson = false;
-					person.x = nx;
-					person.y = ny;
-					System.out.println("여기로이동!!" + person.x + " " + person.y);
-					result++;
-					if (exit.x == person.x && exit.y == person.y) { // 이동한 그곳이 출구가 있는 곳이라면
-						System.out.println("골~!!");
-						goal++;
-						break;
+						Person person = personList[i][j].poll();
+
+						int nx, ny;
+						for (int dir = 0; dir < 4; dir++) {
+							nx = person.x + dx[dir];
+							ny = person.y + dy[dir];
+
+							if (checkBound(nx, ny)) {
+								continue;
+							}
+
+							if (map[nx][ny].durability == 0 && checkDist(person.x, person.y, nx, ny)) { // 그곳이 빈칸이고, 거리가
+																										// 짧아지는 곳이라면
+																										// 이동 가능
+								System.out.println("여기서 : " + person.x + " " + person.y);
+								map[person.x][person.y].isPerson = false;
+								person.x = nx;
+								person.y = ny;
+								System.out.println("여기로이동!!" + person.x + " " + person.y);
+								result++;
+								if (exit.x == person.x && exit.y == person.y) { // 이동한 그곳이 출구가 있는 곳이라면
+									System.out.println("골~!!");
+									goal++;
+									break;
+								}
+								map[person.x][person.y].isPerson = true;
+								personList[person.x][person.y].add(person); // 이동 했던 안했던 personList에 다시 추가
+								break;
+							}
+						}
 					}
-					map[person.x][person.y].isPerson = true;
-					personList.add(person); // 이동 했던 안했던 personList에 다시 추가
-					break;
+
 				}
 			}
-
-				
 		}
 	}
 
@@ -143,11 +156,20 @@ public class CodeTree5 {
 
 	public static void rotateRec(int x, int y, int size) {
 
-		Queue<Pos> tmp = new LinkedList<>();
+		Queue<Pos>[][] tmp = new LinkedList[size][size];
 
-		for (int i = x; i < x + size; i++) {
-			for (int j = y; j < y + size; j++) {
-				tmp.add(map[i][j]);
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				tmp[i][j] = new LinkedList<>();
+			}
+		}
+
+		for (int i = x, a = 0; i < x + size && a < size; i++, a++) {
+			for (int j = y, b = 0; j < y + size && b < size; j++, b++) {
+				while (!map[i][j].isEmpty()) {
+					tmp[a][b].add(map[i][j].poll());
+				}
+
 			}
 
 		}
@@ -172,8 +194,8 @@ public class CodeTree5 {
 
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				if(map[i][j].isPerson) {
-					personList.add(new Person(i,j));
+				if (map[i][j].isPerson) {
+					personList.add(new Person(i, j));
 				}
 			}
 		}
@@ -235,13 +257,13 @@ public class CodeTree5 {
 			System.out.println();
 		}
 	}
-	
+
 	public static void printPerson() {
-		
+
 		System.out.println("=========");
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				if(map[i][j].isPerson) {
+				if (map[i][j].isPerson) {
 					System.out.print("T ");
 				} else {
 					System.out.print("0 ");
