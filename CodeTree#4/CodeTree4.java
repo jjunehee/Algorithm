@@ -56,24 +56,29 @@ public class CodeTree4 {
 
 		while (true) {
 
-			if (time == m) {
-				break;
-			}
-
 			// 제초제 제거
 			remove();
 
+			if (time == m) {
+//				printMap();
+				break;
+			}
+//			System.out.println("========");
+//			printLog();
 			// 성장
 			grow();
 			tmpToMap();
 
+//			printMap();
+
 			// 번식
 			spread();
 			tmpToMap();
+//			printMap();
 
 			// 제초제 선택, 처리
 			kill();
-
+//			printLog();
 			time++;
 		}
 	}
@@ -120,7 +125,7 @@ public class CodeTree4 {
 							continue;
 						}
 
-						if (map[nx][ny] > 0) { // 나무가 있다면
+						if (map[nx][ny] > 0 && !isMedicine[nx][ny]) { // 나무가 있다면
 							cnt++;
 						}
 					}
@@ -190,22 +195,19 @@ public class CodeTree4 {
 
 						int nx = i;
 						int ny = j;
-						outerloop: while (true) {
-							for (int dist = 0; dist < k; dist++) {
+						outerloop: for (int dist = 0; dist < k; dist++) {
 
-								nx = nx + dA[dir];
-								ny = ny + dB[dir];
+							nx = nx + dA[dir];
+							ny = ny + dB[dir];
 
-								if (checkBound(nx, ny)) { // 경계를 넘어감.
-									break outerloop;
-								}
-
-								if (map[nx][ny] == 0 || map[nx][ny] == -1) { // 빈칸이거나, 벽이 있을 때
-									break outerloop;
-								}
-								cntKill += map[nx][ny];
+							if (checkBound(nx, ny)) { // 경계를 넘어감ㅁ.
+								break outerloop;
 							}
 
+							if (map[nx][ny] == 0 || map[nx][ny] == -1) { // 빈칸이거나, 벽이 있을 때
+								break outerloop;
+							}
+							cntKill += map[nx][ny];
 						}
 
 					}
@@ -214,44 +216,45 @@ public class CodeTree4 {
 			}
 		}
 
-		if (pq.size() > 0) {
-			Tree tree = pq.poll();
+		if (pq.isEmpty())
+			return;
 
-			// 제초제 뿌리는 시뮬레이션
-			// 대각선 방향
-			isMedicine[tree.x][tree.y] = true;
-			expireTime[tree.x][tree.y] = time + c + 1;
-			map[tree.x][tree.y] = 0;
-			for (int dir = 0; dir < 4; dir++) {
+		Tree tree = pq.poll();
+//		System.out.println("나무 이거다!" + tree.x + " " + tree.y);
 
-				int nx = tree.x;
-				int ny = tree.y;
-				outerloop2: while (true) {
+		// 제초제 뿌리는 시뮬레이션
+		// 대각선 방향
+		isMedicine[tree.x][tree.y] = true;
+		expireTime[tree.x][tree.y] = time + c + 1;
+		map[tree.x][tree.y] = 0;
+		for (int dir = 0; dir < 4; dir++) {
 
-					for (int dist = 0; dist < k; dist++) {
-						nx = nx + dA[dir];
-						ny = ny + dB[dir];
+			int nx = tree.x;
+			int ny = tree.y;
+			outerloop2: for (int dist = 0; dist < k; dist++) {
+				nx = nx + dA[dir];
+				ny = ny + dB[dir];
+//				System.out.println(nx + " " + ny);
 
-						if (checkBound(nx, ny)) { // 경계를 넘어감.
-							break outerloop2;
-						}
-
-						if (map[nx][ny] == 0 || map[nx][ny] == -1) { // 빈칸이거나, 벽이 있을 때
-							isMedicine[nx][ny] = true;
-							expireTime[nx][ny] = time + c + 1;
-							break outerloop2;
-						}
-
-						isMedicine[nx][ny] = true;
-						expireTime[nx][ny] = time + c + 1;
-						map[nx][ny] = 0;
-
-					}
+				if (checkBound(nx, ny)) { // 경계를 넘어감.
+					break outerloop2;
 				}
+
+				if (map[nx][ny] == 0 || map[nx][ny] == -1) { // 빈칸이거나, 벽이 있을 때
+					isMedicine[nx][ny] = true;
+					expireTime[nx][ny] = time + c + 1;
+					break outerloop2;
+				}
+
+				isMedicine[nx][ny] = true;
+				expireTime[nx][ny] = time + c + 1;
+				map[nx][ny] = 0;
+
 			}
 
-			result += tree.kill;
 		}
+
+		result += tree.kill;
 
 	}
 
@@ -288,7 +291,22 @@ public class CodeTree4 {
 		}
 	}
 
+	public static void printLog() {
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (isMedicine[i][j]) {
+					System.out.print("T ");
+				} else {
+					System.out.print("F ");
+				}
+			}
+			System.out.println();
+		}
+	}
+
 	public static void printMap() {
+		System.out.println("===");
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
