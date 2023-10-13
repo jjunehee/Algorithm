@@ -15,7 +15,7 @@ public class CodeTree5 {
 	static int[] dy = { 0, 0, -1, 1 };
 
 	static int result;
-
+	static int[][] newMap;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -76,11 +76,16 @@ public class CodeTree5 {
 		int time = 0;
 		while (time < K) {
 
-//			printMap();
+			System.out.println("시작");
+			printMap();
+			System.out.println();
+
+			System.out.println("이동");
 			move();
-//			printMap();
+			printMap();
+			System.out.println();
 			rotate();
-//			printMap();
+			printMap();
 
 			time++;
 		}
@@ -89,16 +94,20 @@ public class CodeTree5 {
 
 	public static void move() {
 
-		int[][] newMap = new int[N][N];
+		newMap = new int[N][N];
 
+//		for (int i = 0; i < N; i++) {
+//			for (int j = 0; j < N; j++) {
+//				newMap[i][j] = map[i][j];
+//			}
+//		}
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
-				newMap[i][j] = map[i][j];
-			}
-		}
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-
+//
+//				if (i == 2 && j == 5) {
+//					System.out.println("여기있찌");
+//					System.out.println(map[i][j]);
+//				}
 				if (map[i][j] > 0) { // 사람
 
 					int nx, ny;
@@ -106,8 +115,14 @@ public class CodeTree5 {
 						nx = i + dx[dir];
 						ny = j + dy[dir];
 
-						if (!checkBound(nx, ny) && (map[nx][ny] >= 0 || map[nx][ny] == -10)
-								&& checkDist(i, j, nx, ny)) { // 그 곳이 빈칸 or 사람이 있고
+						if (checkBound(nx, ny)) {
+							continue;
+						}
+
+						
+						System.out.println();
+						if ((map[nx][ny] >= 0 || map[nx][ny] == -10) && checkDist(i, j, nx, ny)) { // 그 곳이 빈칸 or 사람이 있고
+							System.out.println(i + " " + j + " " + nx + " " + ny);
 							Pos exit = findExit();
 							result += map[i][j];
 							if (exit.x == nx && exit.y == ny) { // 이동한 그 곳이 도착지
@@ -116,6 +131,13 @@ public class CodeTree5 {
 							}
 							newMap[nx][ny] += map[i][j];
 							newMap[i][j] = 0;
+							System.out.println("=============");
+							for (int a = 0; a < N; a++) {
+								for (int b = 0; b < N; b++) {
+									System.out.print(newMap[a][b] + " ");
+								}
+								System.out.println();
+							}
 							break;
 						}
 					}
@@ -132,7 +154,6 @@ public class CodeTree5 {
 	}
 
 	public static boolean checkBound(int nx, int ny) {
-
 		if (nx < 0 || nx >= N || ny < 0 || ny >= N) {
 			return true;
 		} else {
@@ -153,7 +174,6 @@ public class CodeTree5 {
 				}
 			}
 		}
-
 	}
 
 	public static boolean test(int x, int y, int size) {
@@ -182,6 +202,7 @@ public class CodeTree5 {
 
 	public static void rotateRec(int x, int y, int size) {
 
+		System.out.println("회전 드가자" + x + " " + y + " 사이즈 :" + size);
 		Queue<Integer> q = new LinkedList<>();
 
 		for (int i = x; i < x + size; i++) {
@@ -223,6 +244,7 @@ public class CodeTree5 {
 			this.y = y;
 		}
 	}
+	
 
 	public static void printMap() {
 		System.out.println("=============");
