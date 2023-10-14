@@ -12,7 +12,6 @@ public class CodeTree6 {
 
 	static int N, M, K;
 	static int[][] map;
-	static boolean[][] isBroken;
 	static boolean[][] check;
 	static PriorityQueue<Pos> pq;
 	static int time;
@@ -63,16 +62,15 @@ public class CodeTree6 {
 			pq = new PriorityQueue<>();
 			// 공격자 선정
 			Pos attacker = searchAttacker();
-			System.out.println("공격자!" + attacker.x + " " + attacker.y);
 			// 타겟 선정
 			Pos target = searchTarget();
-			System.out.println("타겟! " + target.x + " "+ target.y);
 
 			attacker.power += (N + M);
 			map[attacker.x][attacker.y] += (N + M);
 
 			// 공격
-			if (attackLaser(attacker, target)) {
+			if (canLaser(attacker, target)) {
+				attackLaser(attacker, target);
 			} else { // 포탄 공격
 				attackRocket(attacker, target);
 			}
@@ -80,12 +78,9 @@ public class CodeTree6 {
 			// 정비
 			heal();
 
-			System.out.println("==========");
-			pritnMap();
 			time++;
 		}
 
-//		pritnMap();
 		return getResult();
 
 	}
@@ -119,6 +114,7 @@ public class CodeTree6 {
 		}
 		attackTime[attacker.x][attacker.y] = time;
 		check[attacker.x][attacker.y] = true;
+		check[target.x][target.y] = true;
 
 		int nx, ny;
 		for (int dir = 0; dir < 8; dir++) {
@@ -141,6 +137,40 @@ public class CodeTree6 {
 			}
 			check[newPos.x][newPos.y] = true;
 		}
+	}
+	
+	public static boolean canLaser(Pos attacker, Pos target) {
+		Queue<Pos> q = new LinkedList<>();
+		q.add(new Pos(attacker.x, attacker.y));
+
+		boolean[][] visited = new boolean[N][M];
+
+		while (!q.isEmpty()) {
+			Pos now = q.poll();
+
+			int nx, ny;
+			for (int dir = 0; dir < 4; dir++) {
+				nx = now.x + dx[dir];
+				ny = now.y + dy[dir];
+
+				Pos newPos = checkBound(nx, ny);
+
+				if (map[newPos.x][newPos.y] == 0 || visited[newPos.x][newPos.y]) {
+					continue;
+				}
+
+				if (newPos.x == target.x && newPos.y == target.y) {
+					return true;
+				}
+
+				visited[newPos.x][newPos.y] = true;
+				q.add(new Pos(newPos.x, newPos.y));
+
+			}
+		}
+		
+		return false;
+
 	}
 
 	public static boolean attackLaser(Pos attacker, Pos target) {
@@ -200,7 +230,6 @@ public class CodeTree6 {
 				if (target2.x == attacker.x && target2.y == attacker.y) {
 					break;
 				}
-				System.out.println(target2.x + " " + target2.y);
 
 				map[target2.x][target2.y] -= (attacker.power / 2);
 				if(map[target2.x][target2.y] < 0) {
