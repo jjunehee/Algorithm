@@ -9,13 +9,15 @@ public class CodeTree7 {
 
 	static int L, N, Q;
 	static int[][] map;
+	static int[][] tmp;
 	static boolean[][] isTrap;
 	static boolean[][] isWall;
 	static int[] dx = { -1, 0, 1, 0 };
 	static int[] dy = { 0, 1, 0, -1 };
 	static List<Command> commandList = new ArrayList<>();
 	static List<Robot> robotList = new ArrayList<>();
-
+	static int result;
+	static boolean[] ccheck;
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -57,7 +59,7 @@ public class CodeTree7 {
 					map[x][y] = i;
 				}
 			}
-
+			robotList.add(new Robot(i, k, 0));
 		}
 
 		for (int i = 0; i < Q; i++) {
@@ -66,7 +68,6 @@ public class CodeTree7 {
 			int dir = Integer.parseInt(st.nextToken());
 			commandList.add(new Command(num, dir));
 		}
-		printMap();
 
 		int result = simulation();
 		System.out.println(result);
@@ -81,12 +82,31 @@ public class CodeTree7 {
 				continue;
 			}
 
-			move(now.num, now.dir);
-			damage(now.num);
+			tmp = new int[L][L];
+			
 
+			for (int a = 0; a < L; a++) {
+				for (int b = 0; b < L; b++) {
+					tmp[a][b] = map[a][b];
+				}
+			}
+			
+			ccheck = new boolean[N+1];
+			move(now.num, now.dir);
+			tmpToMap();
+			damage(now.num);
+			
 		}
 
 		return check();
+	}
+
+	public static void tmpToMap() {
+		for (int i = 0; i < L; i++) {
+			for (int j = 0; j < L; j++) {
+				map[i][j] = tmp[i][j];
+			}
+		}
 	}
 
 	public static int check() {
@@ -102,7 +122,7 @@ public class CodeTree7 {
 				}
 			}
 		}
-		
+
 		return sum;
 	}
 
@@ -110,7 +130,7 @@ public class CodeTree7 {
 
 		for (int i = 0; i < L; i++) {
 			for (int j = 0; j < L; j++) {
-				if (map[i][j] > 0 && map[i][j] != num) {
+				if (map[i][j] > 0 && map[i][j] != num && ccheck[map[i][j]]) {
 					if (isTrap[i][j]) {
 						Robot robot = robotList.get(map[i][j]);
 						robot.damage += 1;
@@ -138,7 +158,6 @@ public class CodeTree7 {
 		for (int i = 0; i < L; i++) {
 			for (int j = 0; j < L; j++) {
 				if (map[i][j] == num) {
-
 					int nx, ny;
 					nx = i + dx[dir];
 					ny = j + dy[dir];
@@ -158,10 +177,12 @@ public class CodeTree7 {
 						continue;
 					}
 
-					System.out.println(nx + " " + ny);
+					if (map[nx][ny] == 0) {
+						continue;
+					}
+
 					if (map[nx][ny] != num) {
 						if (!canMove(map[nx][ny], dir)) {
-							System.out.println("여기로~");
 							return false;
 						}
 					}
@@ -175,6 +196,8 @@ public class CodeTree7 {
 
 	public static void move(int num, int dir) {
 
+		boolean[][] check = new boolean[L][L];
+		ccheck[num] = true;
 		for (int i = 0; i < L; i++) {
 			for (int j = 0; j < L; j++) {
 				if (map[i][j] == num) {
@@ -182,16 +205,22 @@ public class CodeTree7 {
 					int nx, ny;
 					nx = i + dx[dir];
 					ny = j + dy[dir];
-
 					if (map[nx][ny] == 0 || map[nx][ny] == num) {
-						map[nx][ny] = num;
-						map[i][j] = 0;
+						tmp[nx][ny] = num;
+						check[nx][ny] = true;
+						if (!check[i][j]) {
+							tmp[i][j] = 0;
+						}
 						continue;
 					}
 
 					move(map[nx][ny], dir);
-					map[nx][ny] = num;
-					map[i][j] = 0;
+					tmp[nx][ny] = num;
+					check[nx][ny] = true;
+					if (!check[i][j]) {
+						tmp[i][j] = 0;
+					}
+
 				}
 			}
 		}
@@ -203,15 +232,6 @@ public class CodeTree7 {
 			return true;
 		}
 		return false;
-	}
-
-	public static void printMap() {
-		for (int i = 0; i < L; i++) {
-			for (int j = 0; j < L; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
-		}
 	}
 
 	public static class Robot {
