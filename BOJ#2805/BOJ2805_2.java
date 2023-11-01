@@ -37,7 +37,6 @@ public class BOJ2805_2 {
 				if(mid < num) {
 					sum += (num - mid);
 				}
-				
 			}
 			
 			if(sum < M) {
