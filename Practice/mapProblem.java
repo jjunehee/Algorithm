@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class mapProblem {
 				System.out.println(keyStr + "  " + map.get(keyStr));
 			}
 		}
+		
+		
 	}
 	public static class Pairs {
 		
