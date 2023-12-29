@@ -72,6 +72,8 @@ public class BOJ6118 {
 			Check now = pq.poll();
 			if(now.dist == retDist) {
 				cnt++;
+			} else {
+				break;
 			}
 		}
 		
