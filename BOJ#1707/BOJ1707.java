@@ -48,11 +48,13 @@ public class BOJ1707 {
 		boolean[] visited = new boolean[V + 1];
 		boolean[] checkFlag = new boolean[V + 1];
 		boolean flag = true;
+		
 		outerloop: for (int i = 1; i <= V; i++) {
 			if (!visited[i]) {
+				
 				Queue<Check> q = new LinkedList<>();
+				
 				q.add(new Check(i, true));
-
 				visited[i] = true;
 				checkFlag[i] = true;
 
