@@ -1,17 +1,21 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ5214 {
 
 	static int N, K, M;
-	static int[][] info;
+	static List<Integer>[] htInfo;
+	static List<Integer>[] vInfo;
 	static boolean[][] graphInfo;
 	static int[] pick = new int[2];
 	static int ret = Integer.MAX_VALUE;
+
 	public static void main(String[] args) throws IOException {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,66 +26,72 @@ public class BOJ5214 {
 		K = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 
-		info = new int[M+1][K];
+		htInfo = new ArrayList[M + 1];
+		vInfo = new ArrayList[N + 1];
+		for (int i = 1; i <= M; i++) {
+			htInfo[i] = new ArrayList<>();
+		}
+		for (int i = 1; i <= N; i++) {
+			vInfo[i] = new ArrayList<>();
+		}
 		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < K; j++) {
 				int num = Integer.parseInt(st.nextToken());
-				info[i][j] = num;
+				htInfo[i].add(num);
+				vInfo[num].add(i);
 			}
-		}
-
-		graphInfo = new boolean[N + 1][N + 1];
-		for (int i = 1; i <= M; i++) {
-			combination(i, 0, 0);
 		}
 
 		System.out.println(solution());
-		
+
 	}
 
 	public static int solution() {
+		
+		if(N==1) {
+			return 1;
+		}
 
 		Queue<checkPoint> q = new LinkedList<>();
-		q.add(new checkPoint(1,1));
-		boolean[] visited = new boolean[N + 1];
-		visited[1] = true;
+		q.add(new checkPoint(1, 1));
+		
+		
+		boolean[] visitTube = new boolean[M + 1];
+		boolean[] visitStation = new boolean[N+1];
+		
+		visitStation[1] = true;
+
 		while (!q.isEmpty()) {
 			checkPoint now = q.poll();
-			if(now.v == N) {
+			if (now.v == N) {
 				ret = now.dist;
 				break;
 			}
-			for (int i = 1; i <= N; i++) {
-				if (graphInfo[now.v][i]) {
-					if (visited[i]) {
+
+			for (int hyperTube : vInfo[now.v]) {
+
+				if(visitTube[hyperTube]) {
+					continue;
+				}
+				visitTube[hyperTube] = true;
+				for (int v : htInfo[hyperTube]) {
+					if (visitStation[v]) {
 						continue;
 					}
-					visited[i] = true;
-					q.add(new checkPoint(i, now.dist + 1));
+
+					visitStation[v] = true;
+					q.add(new checkPoint(v, now.dist + 1));
 				}
 			}
 		}
-		
-		if(ret == Integer.MAX_VALUE) {
+
+		if (ret == Integer.MAX_VALUE) {
 			return -1;
 		} else {
 			return ret;
 		}
-	}
 
-	public static void combination(int m, int idx, int cnt) {
-
-		if (cnt == 2) {
-			graphInfo[pick[0]][pick[1]] = true;
-			graphInfo[pick[1]][pick[0]] = true;
-			return;
-		}
-
-		for (int i = idx; i < K; i++) {
-			pick[cnt] = info[m][i];
-			combination(m, i + 1, cnt + 1);
-		}
 	}
 
 	public static class checkPoint {
