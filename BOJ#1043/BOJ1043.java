@@ -84,7 +84,7 @@ public class BOJ1043 {
 			return v;
 		}
 
-		return find(graphInfo[v]);
+		return graphInfo[v] = find(graphInfo[v]);
 	}
 
 	public static void union(int v1, int v2) {
@@ -107,7 +107,6 @@ public class BOJ1043 {
 				if (isTrueman[check]) {
 					trueMan = check;
 					flag = true;
-					isTrueman[id] = true;
 				}
 			}
 
