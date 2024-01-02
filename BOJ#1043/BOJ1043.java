@@ -11,6 +11,7 @@ public class BOJ1043 {
 	static boolean[] isTrueman;
 	static int[] graphInfo;
 	static List<Integer>[] partyInfo;
+	static int ret;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -49,6 +50,27 @@ public class BOJ1043 {
 
 		makeSet();
 		makeGraph();
+
+		check();
+		
+		System.out.println(ret);
+	}
+
+	public static void check() {
+		for (int i = 1; i <= M; i++) {
+			
+			boolean flag = false;
+			for(int id : partyInfo[i]) {
+				if(isTrueman[find(id)]) {
+					flag = true;
+					break;
+				}
+			}
+			
+			if(!flag) {
+				ret++;
+			}
+		}
 	}
 
 	public static void makeSet() {
@@ -65,12 +87,38 @@ public class BOJ1043 {
 		return find(graphInfo[v]);
 	}
 
+	public static void union(int v1, int v2) {
+
+		v1 = find(v1);
+		v2 = find(v2);
+
+		graphInfo[v2] = v1;
+
+	}
+
 	public static void makeGraph() {
 
 		for (int i = 1; i <= M; i++) {
 
+			boolean flag = false;
+			int trueMan = 0;
 			for (int id : partyInfo[i]) {
-				
+				int check = find(id);
+				if (isTrueman[check]) {
+					trueMan = check;
+					flag = true;
+					isTrueman[id] = true;
+				}
+			}
+
+			if (flag) {
+				for (int id : partyInfo[i]) {
+					union(trueMan, id);
+				}
+			} else {
+				for (int id : partyInfo[i]) {
+					union(partyInfo[i].get(0), id);
+				}
 			}
 		}
 	}
