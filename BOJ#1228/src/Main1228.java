@@ -8,8 +8,7 @@ public class Main1228 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		
+				
 		StringBuilder sb = new StringBuilder();
 		for (int t = 1; t <= 10; t++) {
 			sb.append("#" + t + " ");
@@ -22,7 +21,7 @@ public class Main1228 {
 			}
 
 			int n = Integer.parseInt(br.readLine());
-
+			
 			st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < n; i++) {
 				String alpha = st.nextToken();
@@ -32,7 +31,7 @@ public class Main1228 {
 					list.add(x++, Integer.parseInt(st.nextToken()));
 				}
 			}
-
+			
 			for (int i = 0; i < 10; i++) {
 				sb.append(list.get(i) + " ");
 			}
