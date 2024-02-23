@@ -19,5 +19,6 @@ public class BOJ2193 {
 		}
 		
 		System.out.println(dp[N]);
+		
 	}
 }
