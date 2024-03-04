@@ -1,5 +1,3 @@
-import java.util.*;
-import java.io.*;
 
 // 다음 큰 숫자
 class BOJ12911 {
