@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -12,6 +14,7 @@ public class BOJ16973 {
 	static int x1, y1, x2, y2;
 	static int[][] map;
 	static Point[] pArray;
+	static List<Point> wallList = new ArrayList<>();
 
 	static int[] dx = { 1, 0, -1, 0 };
 	static int[] dy = { 0, -1, 0, 1 };
@@ -29,6 +32,9 @@ public class BOJ16973 {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
+				if (map[i][j] == 1) {
+					wallList.add(new Point(i, j, 0));
+				}
 			}
 		}
 
@@ -47,63 +53,47 @@ public class BOJ16973 {
 
 	public static void bfs() {
 
-		Queue<PointGroup> q = new LinkedList<>();
-		pArray = new Point[H * W];
+		Queue<Point> q = new LinkedList<>();
 		boolean[][] visited = new boolean[N][M];
-		int cnt = 0;
-		for (int i = x1; i < H; i++) {
-			for (int j = y1; j < W; j++) {
-				pArray[cnt++] = new Point(i, j);
-				visited[i][j] = true;
-			}
-		}
 
-		q.add(new PointGroup(pArray, 0));
+		visited[x1][y1] = true;
+		q.add(new Point(x1, y1, 0));
 
+		int ret = -1;
 		while (!q.isEmpty()) {
 
-			PointGroup now = q.poll();
-
+			Point now = q.poll();
 			if (check(now)) {
-				System.out.println(now.dist);
+				ret = now.dist;
 				break;
 			}
 
 			int nx, ny;
 			for (int dir = 0; dir < 4; dir++) {
+				nx = now.x + dx[dir];
+				ny = now.y + dy[dir];
 
-				boolean flag = true;
-				int visitCnt = 0;
-
-				for (Point p : now.pArray) {
-					nx = p.x + dx[dir];
-					ny = p.y + dy[dir];
-					if (isBound(nx, ny) || map[nx][ny] == 1) {
-						flag = false;
-						break;
-					} else if (visited[nx][ny]) {
-						visitCnt++;
-					}
+				if (isBound(nx, ny))
+					continue;
+				if (isWall(nx, ny))
+					continue;
+				if (visited[nx][ny]) {
+					continue;
+				}
+				if(map[nx][ny] == 1) {
+					continue;
 				}
 
-				if (flag && visitCnt != H * W) {
-					int idx = 0;
-					for (Point p : now.pArray) {
-						nx = p.x + dx[dir];
-						ny = p.y + dy[dir];
-						visited[nx][ny] = true;
-						pArray[idx++] = new Point(nx, ny);
-					}
-					q.add(new PointGroup(pArray, now.dist + 1));
-				}
-
+				visited[nx][ny] = true;
+				q.add(new Point(nx, ny, now.dist + 1));
 			}
 		}
+		
+		System.out.println(ret);
 
 	}
 
-	public static boolean check(PointGroup pg) {
-		Point p = pg.pArray[0];
+	public static boolean check(Point p) {
 		if (p.x == x2 && p.y == y2) {
 			return true;
 		}
@@ -111,31 +101,34 @@ public class BOJ16973 {
 	}
 
 	public static boolean isBound(int nx, int ny) {
-		if (nx < 0 || nx >= N || ny < 0 || ny >= M) {
+		if (nx < 0 || nx + H - 1 >= N || ny < 0 || ny + W - 1 >= M) {
 			return true;
 		}
 		return false;
 	}
 
-	public static class PointGroup {
+	public static boolean isWall(int nx, int ny) {
 
-		Point[] pArray = new Point[H * W];
-		int dist;
+		for (int i = 0; i < wallList.size(); i++) {
 
-		public PointGroup(Point[] pArray, int dist) {
-			for (int i = 0; i < H * W; i++) {
-				this.pArray[i] = pArray[i];
+			int wallX = wallList.get(i).x;
+			int wallY = wallList.get(i).y;
+
+			if (nx <= wallX && nx + H - 1 >= wallX && ny <= wallY && ny + W - 1 >= wallY) {
+				return true;
 			}
-			this.dist = dist;
 		}
+		return false;
 	}
 
 	public static class Point {
 		int x, y;
+		int dist;
 
-		public Point(int x, int y) {
+		public Point(int x, int y, int dist) {
 			this.x = x;
 			this.y = y;
+			this.dist = dist;
 		}
 	}
 }
