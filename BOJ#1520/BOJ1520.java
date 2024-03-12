@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
 public class BOJ1520 {
@@ -13,6 +15,7 @@ public class BOJ1520 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
@@ -28,8 +31,11 @@ public class BOJ1520 {
 			}
 		}
 
-		System.out.println(dfs(1, 1));
-
+		bw.write(dfs(1,1) + "\n");
+		
+		bw.flush();
+		bw.close();
+		br.close();
 	}
 
 	public static int dfs(int x, int y) {
@@ -37,7 +43,11 @@ public class BOJ1520 {
 			return 1;
 		}
 
-		if (dp[x][y] != -1) {
+		if (dp[x][y] != -1) { 
+			/* 
+			 * 그 곳이 저번에 계산 끝난 곳이라면 써먹자. 
+			 * 결국 x,y에서 N,M까지의 경우의 수는 전에 구한 결과와 같을테니
+			 */
 			return dp[x][y];
 		}
 
@@ -53,7 +63,11 @@ public class BOJ1520 {
 			}
 			
 			if(map[x][y] > map[nx][ny]) {
-				dp[x][y] += dfs(nx,ny);
+				/* 
+				 * x,y에서 갈 수 있는 경우의 수는 결국 그 자리에서 갈 수 있는 곳(nx,ny)에서 
+				 * N,M으로 가는 경우의 수의 합과 같다.
+				 */
+				dp[x][y] += dfs(nx,ny); 
 			}
 		}
 		
