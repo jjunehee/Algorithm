@@ -11,8 +11,11 @@ public class BOJ2636 {
 	static int[] dx = { 1, 0, -1, 0 };
 	static int[] dy = { 0, -1, 0, 1 };
 
+	static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -31,21 +34,15 @@ public class BOJ2636 {
 			}
 		}
 
-		air();
 		lego();
+		bw.write(sb.toString() + "\n");
+		bw.flush();
+		bw.close();
+		br.close();
 
 	}
 
-	public static void printMap() {
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				System.out.print(map[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	public static void air() {
+	public static void airSpread() {
 		Queue<Point> q = new LinkedList<>();
 		q.add(new Point(0, 0));
 		map[0][0] = 2;
@@ -69,28 +66,46 @@ public class BOJ2636 {
 		}
 	}
 
-	// 2112
+	public static void airClean() {
+		Queue<Point> q = new LinkedList<>();
+		q.add(new Point(0, 0));
+		map[0][0] = 0;
+
+		while (!q.isEmpty()) {
+			Point now = q.poll();
+			int nx, ny;
+			for (int dir = 0; dir < 4; dir++) {
+				nx = now.x + dx[dir];
+				ny = now.y + dy[dir];
+				if (isBound(nx, ny) || map[nx][ny] == 1) {
+					continue;
+				}
+
+				if (map[nx][ny] == 2) {
+					q.add(new Point(nx, ny));
+					map[nx][ny] = 0;
+				}
+
+			}
+		}
+	}
+
 	public static void lego() {
 
 		int hour = 0;
-		printMap();
-		while (true) {
-			air();
-			int cnt = gethole();
+		int cnt = 0;
+		while (totalCnt > 0) {
+			airClean();
+			airSpread();
+			cnt = gethole();
 			for (int i = 0; i < cnt; i++) {
 				Point now = q.poll();
 				map[now.x][now.y] = 0;
 				totalCnt--;
 			}
-			System.out.println(cnt);
-			break;
-//			hour++;
-//			if (totalCnt == 0) {
-//				System.out.println(hour);
-//				System.out.println(cnt);
-//				break;
-//			}
+			hour++;
 		}
+		sb.append(hour).append("\n").append(cnt);
 	}
 
 	public static int gethole() {
