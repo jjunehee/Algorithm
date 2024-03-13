@@ -1,51 +1,61 @@
-import java.util.Scanner;
+
+import java.util.*;
+import java.io.*;
 
 public class BOJ15961 {
 
-	static int[] sushi, count;
 	static int N, d, k, c;
-	static int ans;
+	static int[] sushi;
+	static int[] cnt;
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+	public static void main(String[] args) throws IOException {
 
-		N = sc.nextInt();
-		d = sc.nextInt();
-		k = sc.nextInt();
-		c = sc.nextInt();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		N = Integer.parseInt(st.nextToken());
+		d = Integer.parseInt(st.nextToken());
+		k = Integer.parseInt(st.nextToken());
+		c = Integer.parseInt(st.nextToken());
 
 		sushi = new int[N];
+		cnt = new int[d+1];
 		for (int i = 0; i < N; i++) {
-			sushi[i] = sc.nextInt();
+			sushi[i] = Integer.parseInt(br.readLine());
 		}
 
-		count = new int[d + 1]; // 초밥번호가 d번까지 있음
+		cnt[c]++;
+		int sum = 1;
 
-		count[c]++; // 쿠폰을 나중에 구간 변경해가면서 체크하려면 복잡. 이건 일단 무조건 먹은걸로 해놓고 가짓수 세자.
-		int tmp = 1; // 먹은 초밥 가짓수 (쿠폰에 있는 초밥은 무조건 먹음)
-		for (int i = 0; i < k; i++) { // i는 접시번호
-			if (count[sushi[i]] == 0) { // i 접시에 담긴 sushi[i] 초밥을 먹은 카운트가 0이었어?
-				tmp++; // 일단 가짓 수 증가
+		for (int i = 0; i < k; i++) {
+			if (cnt[sushi[i]] == 0) {
+				sum++;
 			}
-			count[sushi[i]]++; // 해당 초밥 카운트 기록
+			cnt[sushi[i]]++;
 		}
 		
-		ans = tmp;
+		int max = Integer.MIN_VALUE;
+		max = sum;
 
-		for (int s = 1; s < N; s++) { // 이제 다음 구간의 시작 위치를 s부터로 하자.
-			count[sushi[s - 1]]--; // 새로운 시작위치 바로 앞 접시의 초밥 뱉어
-			if (count[sushi[s - 1]] == 0) { // 헉.. 아깝다.. 이 초밥 딱 한번 먹었구나..
-				tmp--; // 가짓수 감소
+		for (int s = 0; s < N; s++) {
+			cnt[sushi[s]]--;
+			if (cnt[sushi[s]] == 0) {
+				sum--;
 			}
-			int newDish = (s + k - 1) % N; // 이제 저 뒤에 새로 먹게되는 접시번호
-			if (count[sushi[newDish]] == 0) {
-				tmp++;
+			
+			int next = (s + k) % N;
+			if(cnt[sushi[next]] == 0) {
+				sum++;
 			}
-			count[sushi[newDish]]++;
-			ans = Math.max(ans, tmp);
+			cnt[sushi[next]]++;
+			max = Math.max(max, sum);
 		}
-
-		System.out.println(ans);
+		
+		bw.write(max +"\n");
+		bw.flush();
+		bw.close();
+		br.close();
 
 	}
 }
