@@ -38,9 +38,7 @@ public class BOJ7569 {
 					} else if (map[h][n][m] == 1) {
 						ripeQ.add(new Point(h, n, m, 0));
 					}
-
 				}
-
 			}
 		}
 
@@ -79,24 +77,9 @@ public class BOJ7569 {
 
 			}
 			
-
 		}
 
 		return -1;
-	}
-
-	public static void printMap() {
-		for (int h = 0; h < H; h++) {
-			for (int n = 0; n < N; n++) {
-				for (int m = 0; m < M; m++) {
-					System.out.print(map[h][n][m] + " ");
-				}
-				System.out.println();
-			}
-			System.out.println("=========");
-		}
-		System.out.println();
-		System.out.println();
 	}
 
 	public static boolean isBound(int nx, int ny, int nz) {
