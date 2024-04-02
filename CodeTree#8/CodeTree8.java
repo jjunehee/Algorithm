@@ -41,7 +41,7 @@ public class CodeTree8 {
 			st = new StringTokenizer(br.readLine());
 			x = Integer.parseInt(st.nextToken());
 			y = Integer.parseInt(st.nextToken());
-			pArray[i] = new Person(new Pos(x, y), false);
+			pArray[i] = new Person(new Pos(x, y), -1, false);
 			map[x][y] = -1;
 		}
 
@@ -53,9 +53,9 @@ public class CodeTree8 {
 
 		check = M;
 		lego();
-		
+
 		System.out.println(moveRet);
-		System.out.println(exit.x + " " +exit.y);
+		System.out.println(exit.x + " " + exit.y);
 	}
 
 	public static void lego() {
@@ -91,7 +91,6 @@ public class CodeTree8 {
 				// 일단 이동을 할 수는 있는데, 출구와의 거리가 가까워져야함.
 				if (checkDist(person.pos.x, person.pos.y, nx, ny)) {
 					// 이제 진짜 이동
-					System.out.println(Math.abs(map[person.pos.x][person.pos.y]));
 					moveRet += Math.abs(map[person.pos.x][person.pos.y]);
 					pArray[i].pos.x = nx;
 					pArray[i].pos.y = ny;
@@ -104,7 +103,6 @@ public class CodeTree8 {
 			}
 
 		}
-
 		drawMap();
 
 	}
@@ -113,7 +111,7 @@ public class CodeTree8 {
 
 		for (int i = 1; i <= N; i++) {
 			for (int j = 1; j <= N; j++) {
-				if (map[i][j] == -1) {
+				if (map[i][j] < 0 && map[i][j] != -9999) {
 					map[i][j] = 0;
 				}
 			}
@@ -125,7 +123,7 @@ public class CodeTree8 {
 			if (person.exit) {
 				continue;
 			}
-			map[person.pos.x][person.pos.y]--;
+			map[person.pos.x][person.pos.y] += person.value;
 
 		}
 
@@ -185,7 +183,7 @@ public class CodeTree8 {
 		for (int i = 1; i <= N; i++) {
 			for (int j = 1; j <= N; j++) {
 				if (map[i][j] < 0 && map[i][j] != -9999) {
-					pArray[++check] = new Person(new Pos(i, j), false);
+					pArray[++check] = new Person(new Pos(i, j), map[i][j], false);
 				}
 			}
 		}
@@ -259,10 +257,12 @@ public class CodeTree8 {
 
 	public static class Person {
 		Pos pos;
+		int value;
 		boolean exit;
 
-		public Person(Pos pos, boolean exit) {
+		public Person(Pos pos, int value, boolean exit) {
 			this.pos = pos;
+			this.value = value;
 			this.exit = exit;
 		}
 	}
