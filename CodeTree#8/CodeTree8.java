@@ -17,6 +17,7 @@ public class CodeTree8 {
 	static int[] dy = { 0, 0, -1, 1 };
 	static int check = 1;
 
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
