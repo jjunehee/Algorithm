@@ -27,13 +27,6 @@ public class CodeTree8 {
 		K = Integer.parseInt(st.nextToken());
 
 		map = new int[N + 1][N + 1];
-		// map 입력
-		for (int i = 1; i <= N; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int j = 1; j <= N; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
 
 		int x, y;
 		pArray = new Person[M + 1];
