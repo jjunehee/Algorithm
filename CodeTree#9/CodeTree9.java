@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.io.*;
 
@@ -130,18 +129,16 @@ public class CodeTree9 {
 				hunterDir = 2;
 				check--;
 				cnt = 0;
+				
 			} else if (hunter.x == N / 2 + 1 && hunter.y == N / 2 + 1) {
 				reverse = false;
 				hunterDir = 0;
 				cnt = 0;
 				check++;
 			}
-//			printMap();
-//			printEMap();
 			// 사냥
 			hunt();
 			turn++;
-//			System.out.println("시간" + time);
 			time++;
 		}
 	}
@@ -170,11 +167,12 @@ public class CodeTree9 {
 			}
 
 			if (isHunter(nx, ny)) {
-				return;
+				continue;
 			} else {
 				// 이동 완료
 				person.pos.x = nx;
 				person.pos.y = ny;
+
 			}
 
 		}
@@ -233,9 +231,9 @@ public class CodeTree9 {
 				}
 			}
 		}
+
 		int nx = hunter.x;
 		int ny = hunter.y;
-
 		for (int dist = 1; dist <= 2; dist++) {
 			nx = nx + dx[hunterDir];
 			ny = ny + dy[hunterDir];
@@ -261,17 +259,6 @@ public class CodeTree9 {
 		}
 
 		score += (turn * huntCnt);
-	}
-
-	public static void printMap() {
-		for (int i = 1; i <= N; i++) {
-			for (int j = 1; j <= N; j++) {
-				System.out.print(map[i][j] + "   ");
-			}
-			System.out.println();
-		}
-		System.out.println(hunterDir);
-
 	}
 
 }
