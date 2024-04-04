@@ -100,16 +100,13 @@ public class CodeTree10 {
 
 	static void copyMonster() {
 		q = new LinkedList<>();
-		
 
 		for (int i = 0; i < mList.size(); i++) {
 			Monster monster = mList.get(i);
 
-			// 죽은 몬스터는 복제 할 필요 없음.
 			if (monster.dead) {
 				continue;
 			}
-			// 살아있는 몬스터들 복제한다.
 			q.add(new Monster(new Pos(monster.pos.x, monster.pos.y), monster.dir, false));
 		}
 	}
@@ -134,7 +131,6 @@ public class CodeTree10 {
 					continue;
 				}
 
-				// 이동 가능하다면, 이동?
 				monster.pos.x = nx;
 				monster.pos.y = ny;
 				break;
@@ -145,7 +141,6 @@ public class CodeTree10 {
 
 	static void movePac() {
 
-		// dfs로 64개 모두 이동해볼거야.
 		dfsRet = new int[3];
 		max = Integer.MIN_VALUE;
 		Pos[] history = new Pos[3];
@@ -161,7 +156,7 @@ public class CodeTree10 {
 	static void search(int x, int y, int depth, int value, Pos[] history) {
 
 		if (depth == 3) {
-
+			
 			if (value > max) {
 				max = value;
 				dfsRet[0] = x;
@@ -194,9 +189,13 @@ public class CodeTree10 {
 					sum++;
 				}
 			}
+			
+			boolean flag = visited[nx][ny];
 			visited[nx][ny] = true;
 			search(nx, ny, depth + 1, value + sum, history);
-			visited[nx][ny] = false;
+			if(!flag) {
+				visited[nx][ny] = false;
+			}
 		}
 	}
 
@@ -269,7 +268,7 @@ public class CodeTree10 {
 	static void printMonster() {
 		for (int i = 0; i < mList.size(); i++) {
 			Monster monster = mList.get(i);
-			System.out.println(monster.pos.x + " " + monster.pos.y + " " +monster.dead);
+			System.out.println(monster.pos.x + " " + monster.pos.y + " " + monster.dead);
 		}
 	}
 
