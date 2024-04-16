@@ -45,3 +45,23 @@ public class PROG131701 {
 		}
 	}
 }
+
+// dp를 이용해서 더 깔끔하게 풀 수 있다. (다른 사람 풀이 참고)
+//import java.util.*;
+//class Solution {
+//    public int solution(int[] elements) {
+//        
+//        
+//        int[] dp = new int[elements.length];
+//        
+//        Set<Integer> set = new HashSet<>();
+//        for(int len=1; len<=elements.length; len++) {
+//            for(int start = 0; start<elements.length; start++) {
+//                dp[start] += elements[(start+len-1)%elements.length];
+//                set.add(dp[start]);
+//            }
+//        }
+//        
+//        return set.size();
+//    }
+//}
