@@ -92,7 +92,7 @@ public class BOJ18808 {
 			}
 		}
 
-		// test branch
+		// test branch - a
 		return check;
 	}
 
