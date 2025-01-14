@@ -92,6 +92,7 @@ public class BOJ18808 {
 			}
 		}
 
+		// main branch
 		return check;
 	}
 
