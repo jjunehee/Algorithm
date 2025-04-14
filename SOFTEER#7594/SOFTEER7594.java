@@ -57,7 +57,7 @@ public class SOFTEER7594 {
 	
 	public static int calculate(Tree[] pickTree) {
 		
-		if(checkGroup(pickTree)) {
+		if(!checkGroup(pickTree)) {
 			return -1;
 		}
 		
@@ -81,6 +81,7 @@ public class SOFTEER7594 {
 				if(!visited[i][j] && pickTreeCheck[i][j]) {
 					
 					Queue<Pos> q = new LinkedList<>();
+					visited[i][j] = true;
 					q.add(new Pos(i,j));
 					int cnt = 1;
 					
