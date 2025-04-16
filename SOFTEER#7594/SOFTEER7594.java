@@ -40,43 +40,66 @@ public class SOFTEER7594 {
 			ret = max;
 		}
 		
-		
-		System.out.print(max);
-		
+		System.out.print(ret);
 	}
 	
 	public static void pickTreeGroup(int idx, int cnt) {
 		
-		if(cnt == 8) {
+		if(cnt == 4) {
+			printPickTree();
 			max = Math.max(max, calculateSum());
 			return;
 		}
 		
+		if(idx >= N*N) {
+			return;
+		}
 		
-		for(int i= idx/N; i<N; i++) {
-			for(int j = idx%N; j<N; j++) {
-				if(visited[i][j]) {
+		
+//		for(int i= idx/N; i<N; i++) {
+//			for(int j = idx%N; j<N; j++) {
+		
+		for(int i = idx; i< N*N; i++) {
+			
+			int x = i / N;
+			int y = i % N;
+				
+			if(visited[x][y]) {
+				continue;
+			}
+			
+			int nx, ny;
+			for(int dir=0; dir<2; dir++) {
+				nx = x + dx[dir];
+				ny = y + dy[dir];
+				
+				if(isBound(nx,ny) || visited[nx][ny]) {
 					continue;
 				}
 				
-				int nx, ny;
-				for(int dir=0; dir<2; dir++) {
-					nx = i + dx[dir];
-					ny = j + dy[dir];
-					
-					if(isBound(nx,ny) || visited[nx][ny]) {
-						continue;
-					}
-					
-					visited[i][j] = true;
-					visited[nx][ny] = true;
-					pickTreeGroup(i*N + j, cnt+1);
-					visited[i][j] = false;
-					visited[nx][ny] = false;
-				}
+				visited[x][y] = true;
+				visited[nx][ny] = true;
+//				System.out.println(x + " " + y);
+//				System.out.println(nx + " " + ny);
 				
+				pickTreeGroup(x*N + y + 1, cnt+1);
+				visited[x][y] = false;
+				visited[nx][ny] = false;
 			}
+				
 		}
+		
+	}
+	
+	public static void printPickTree() {
+		
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<N; j++) {
+				System.out.print(visited[i][j] ? "T " : "F ");
+			}
+			System.out.println();
+		}
+		System.out.println("=============");
 	}
 	
 	public static int calculateSum() {
@@ -90,7 +113,7 @@ public class SOFTEER7594 {
 			}
 		}
 		
-		System.out.println(sum);
+		
 		return sum;
 	}
 	
