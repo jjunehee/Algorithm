@@ -22,10 +22,10 @@ public class BOJ2491 {
 		
 		for(int i=1; i<N; i++) {
 			if(numbers[i-1] <= numbers[i]) {
-				increaseDP[i] = Math.max(increaseDP[i], increaseDP[i-1] + 1);
+				increaseDP[i] = increaseDP[i-1] + 1;
 			} 
 			if (numbers[i-1] >= numbers[i]) {
-				decreaseDP[i] = Math.max(decreaseDP[i], decreaseDP[i-1] + 1);
+				decreaseDP[i] = decreaseDP[i-1] + 1;
 			}
 		}
 		
