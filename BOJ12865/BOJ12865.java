@@ -22,15 +22,21 @@ public class BOJ12865 {
 
         // dp[i][k] : i번쨰 물품까지 사용하면서, k 무게를 채웠을떄의 최대 가치
         int[][] dp = new int[N+1][K+1];
-        for(int weight = 1; weight <= K; weight++) {
-            for(int i=1; i<=N; i++) {
-                dp[i][weight] = dp[i-1][weight];
-                if(weight - itemAray[i].weight >= 0) {
-                    dp[i][weight] = Math.max(dp[i-1][weight], itemAray[i].value + dp[i-1][weight - itemAray[i].weight]);
+
+        for(int k = 1; k <= K; k++) { // 버틸 수 있는 무게
+            for(int i=1; i<=N; i++) { // 물품
+                // 초기화 : 이전 물품까지 k 무게를 채웠을때의 최대 가치
+                dp[i][k] = dp[i-1][k];
+                if(k - itemAray[i].weight >= 0) { // 이번 차례의 물품을 버틸 수 있는 무게라면,
+                    // 비교
+                    // 1. 이전(i-1번) 물품까지 k 무게를 채웠을때의 최대 가치
+                    // 2. 이번 차례의 물품을 추가했었다면 얻을 가치
+                    dp[i][k] = Math.max(dp[i-1][k], itemAray[i].value + dp[i-1][k - itemAray[i].weight]);
                 }
             }
         }
 
+        // N번 물품까지 사용하면서 K 무게를 채웠을때 최대 가치
         System.out.print(dp[N][K]);
 
     }
