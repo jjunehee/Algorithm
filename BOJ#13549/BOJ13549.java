@@ -23,29 +23,31 @@ public class BOJ13549 {
             dp[i] = Integer.MAX_VALUE; 
         }
 
+        dp[N] = 0;
         searchByRecur(N, 0);
 
         System.out.print(dp[1]);
     }
 
-    public static void searchByRecur(int idx, int time) {        
-        System.out.println(idx + " " + time);
-        
-        if(idx >= 50) {
-            return;
-        }
+    public static void searchByRecur(int idx, int time) {
+
+        // System.out.print(idx + " " + time);
+
         // 순간이동
         if(idx*2 <= 100000 && dp[idx] < dp[idx*2]) {
+            // System.out.println("순간이동");
             dp[idx*2] = dp[idx];
             searchByRecur(idx*2, time);
         }
         // 우
         if(idx+1 <= 100000 && dp[idx] + 1 < dp[idx+1]) {
+            // System.out.println("좌");
             dp[idx+1] = dp[idx] + 1;
             searchByRecur(idx+1, time+1);
         }
         // 좌
         if(idx-1 >= 1 && dp[idx] + 1 < dp[idx-1]) {
+            // System.out.println("우");
             dp[idx-1] = dp[idx] + 1;
             searchByRecur(idx-1, time+1);
         }  
