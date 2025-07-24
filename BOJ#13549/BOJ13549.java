@@ -26,7 +26,6 @@ public class BOJ13549 {
         }
         
         dp[N] = 0;
-
         if(!isBound(N+1)) {
             pq.add(new Pos(N + 1, dp[N] + 1));
         }
@@ -37,7 +36,14 @@ public class BOJ13549 {
             pq.add(new Pos(N * 2, dp[N]));
         }
         // 다익스트라
-        System.out.print(searchByDijkstra(K));
+        int answer = 0;
+        if(N == K) {
+            answer = 0;
+        } else {
+            answer = searchByDijkstra(K);
+        }
+
+        System.out.print(answer);
     }
 
     public static int searchByDijkstra(int end) {
