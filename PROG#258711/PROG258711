@@ -1,0 +1,37 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(int[][] edges) {
+        
+        Map<Integer,Integer> in = new HashMap<>();
+        Map<Integer,Integer> out = new HashMap<>();
+        
+        for(int[] edge : edges) {
+            in.put(edge[1], in.getOrDefault(edge[1],0) + 1);
+            out.put(edge[0], out.getOrDefault(edge[0],0) + 1);
+        }
+        
+        int[] answer = new int[4];
+        
+        for(int n : out.keySet()) {
+            if(out.get(n) > 1) {
+                if(!in.containsKey(n)) {
+                    answer[0] = n;
+                } else {
+                    answer[3]++;
+                } 
+            }
+        }
+        
+        for(int n : in.keySet()) {
+            if(!out.containsKey(n)) {
+                answer[2]++;
+            }
+        }
+        
+        answer[1] = out.get(answer[0]) - answer[2] - answer[3];
+        
+        
+        return answer;
+    }
+}
