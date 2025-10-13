@@ -1,0 +1,85 @@
+import java.util.*;
+
+class Solution {
+    public String solution(int[] numbers, String hand) {
+        
+        // 숫자 패드 좌표 저장 변수
+        List<Pos> keypad = new ArrayList<>();
+        
+        // 0~9 좌표 초기화
+        keypad.add(new Pos(3,1));
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++) {
+                keypad.add(new Pos(i,j));
+            }
+        }
+        
+        // 왼손, 오른손 좌표 초기화
+        Pos right = new Pos(3,2);
+        Pos left = new Pos(3,0);
+        
+        List<Integer> leftNumber = List.of(1,4,7);
+        List<Integer> rightNumber = List.of(3,6,9);
+        
+        StringBuilder sb = new StringBuilder();
+        for(int number : numbers) {
+            
+            // 키패드 숫자 좌표
+            Pos keyPos = keypad.get(number);
+            
+            if(leftNumber.contains(number)) {
+                sb.append("L");
+                left.x = keyPos.x;
+                left.y = keyPos.y;
+            } else if(rightNumber.contains(number)) {
+                sb.append("R");
+                right.x = keyPos.x;
+                right.y = keyPos.y;
+            } else {
+                // 왼손으로부터의 거리
+                int leftDist = getDistance(left, keyPos);
+                // 오른손으로부터의 거리
+                int rightDist = getDistance(right, keyPos);
+
+                if(leftDist == rightDist) {
+                    if("right".equals(hand)) {
+                        sb.append("R");
+                        right.x = keyPos.x;
+                        right.y = keyPos.y;
+                    } else {
+                        sb.append("L");
+                        left.x = keyPos.x;
+                        left.y = keyPos.y;
+                    }
+                } else {
+                    if(leftDist < rightDist) {
+                        sb.append("L");
+                        left.x = keyPos.x;
+                        left.y = keyPos.y;
+                    } else {
+                        sb.append("R");
+                        right.x = keyPos.x;
+                        right.y = keyPos.y;
+                    }
+
+                }
+            }
+            
+        }
+        
+        String answer = sb.toString();
+        return answer;
+    }
+    
+    public int getDistance(Pos hand, Pos number) {
+        return Math.abs(hand.x - number.x) + Math.abs(hand.y - number.y);
+    }
+    
+    public static class Pos {
+        int x,y;
+        public Pos(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+}
