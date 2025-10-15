@@ -1,0 +1,27 @@
+class Solution {
+    public int[] solution(int[] sequence, int k) {
+        
+        int[] answer = new int[2];
+        
+        outerloop:
+        for(int n=1; n<=sequence.length; n++) {
+            for(int startIdx=0; startIdx<sequence.length; startIdx++) {
+                long sum = 0;
+                if(startIdx+n > sequence.length) {
+                    continue;
+                }
+                for(int i=startIdx; i<startIdx+n; i++) {
+                    sum += sequence[i];
+                }
+                if(sum == k) {
+                    answer[0] = startIdx;
+                    answer[1] = startIdx+n-1;
+                    break outerloop;
+                }
+            }
+            
+        }
+        
+        return answer;
+    }
+}
