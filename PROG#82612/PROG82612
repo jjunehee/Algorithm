@@ -1,0 +1,16 @@
+class Solution {
+    public long solution(int price, int money, int count) {
+        
+        long totalPrice = 0;
+        for(int c=1; c<=count; c++) { // 총 N번
+            totalPrice += price*c;
+        }
+        
+        long answer = 0;
+        if(totalPrice > money) {
+            answer = totalPrice - money;
+        }
+        
+        return answer;
+    }
+}
