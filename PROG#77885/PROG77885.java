@@ -19,29 +19,28 @@ class Solution {
     
     public long calculate(String numBinary) {
         
-        int ret = 0;
-        
         int idxCheck = numBinary.length();
         for(int i=numBinary.length()-1; i>=0; i--) {
             if(numBinary.charAt(i) == '1') {
+                
+                if(i==0) {
+                    idxCheck = i;
+                    break;
+                }
                 if(i-1 >= 0 && numBinary.charAt(i-1) == '0') {
-                    idxCheck = i-1;
+                    idxCheck = i;
                     break;
                 } else {
-                    if(i-2 >=0 && numBinary.charAt(i-2) == '0') {
-                        idxCheck = i-1;
-                    } else {
-                        continue;        
-                    }
+                    continue;        
                 }
                 
             } else {
-                idxCheck = numBinary.length() - i;
+                idxCheck = i;
                 break;
             }
         }
         
-        return Long.parseLong(numBinary,2) + (long)Math.pow(2,idxCheck-1);
+        return Long.parseLong(numBinary,2) + (long)Math.pow(2,numBinary.length()-idxCheck-1);
         
     }
 }
