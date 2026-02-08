@@ -1,0 +1,55 @@
+import java.util.*;
+class Solution {
+    public int solution(int[] queue1, int[] queue2) {
+        
+        // queue1
+        Queue<Integer> q1 = new LinkedList<>();
+        long sum1 = 0;
+        for(Integer num : queue1) {
+            q1.add(num);
+            sum1 += num;
+        }
+        
+        // queue2
+        Queue<Integer> q2 = new LinkedList<>();
+        long sum2 = 0;
+        for(Integer num : queue2) {
+            q2.add(num);
+            sum2 += num;
+        }
+        
+        if(((sum1 + sum2) % 2) != 0) {
+            return -1;    
+        }   
+        
+        int limitCnt = (q1.size() + q2.size()) * 2;
+        int cnt = 0;
+        while(true) {
+            
+            if(q1.isEmpty() || q2.isEmpty() || cnt > limitCnt) {
+                cnt = -1;
+                break;
+            }
+            
+            if(sum1 == sum2) {
+                break;
+            }
+            
+            if(sum1 > sum2) {
+                int num1 = q1.poll();
+                sum1 -= num1;
+                q2.add(num1);
+                sum2 += num1;
+            } else {
+                int num2 = q2.poll();
+                sum2 -= num2;
+                q1.add(num2);
+                sum1 += num2;
+            }
+            cnt++;
+            
+        }    
+    
+        return cnt;
+    }
+}
