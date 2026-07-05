@@ -1,42 +1,27 @@
-
-import java.util.*;
-
 class Solution {
     public int solution(int storey) {
         int answer = 0;
-        int len = String.valueOf(storey).length();
-        boolean flag = false;
-        // 맨오른쪽 자릿수부터 반올림 해가며 카운팅
-        while(true) {
-            // 일의 자리 숫자 확인
-            int check = storey % 10;
+        
+        while(storey > 0) {
+            int num = storey % 10;
             
-            if(check != 0) {
-                // 일의 자리 숫자가 5보다 크면 올가는게 이득
-                if(flag || check > 5) {
-                    storey += 10 - check;
-                    answer += 10 - check;
-                } else if (check == 5) {
-                  if(flag && storey/10 >= 5) {
-                    storey += 10 - check;
-                    answer += 10 - check;
-                  } else {
-                    storey -= check;   
-                    answer += check;  
-                  }
+            if (num == 5) {
+                if((storey/10)%10 >= 5) {
+                    storey += (10-num);
+                    answer += (10-num);
                 } else {
-                    storey -= check;   
-                    answer += check;
-                }    
-            }
+                    storey -= num;
+                    answer += num;
+                }
+            } else if(num > 5) {
+                storey += (10-num);
+                answer += (10-num);
+            } else if (num < 5) {
+                storey -= num;
+                answer += num;
+            } 
             
-            // 도착 및 다음 작업을 위한 세팅
-            if(storey == 0) {
-                break;
-            } else {
-                storey /= 10;   
-                flag = false;
-            }
+            storey /= 10;
         }
         
         return answer;
